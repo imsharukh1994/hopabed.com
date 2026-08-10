@@ -249,4 +249,13 @@ img {
   .container {
     padding: 0 1rem;
   }
+  .desktop-nav {
+    display: none !important;
+  }
+}
+
+@media (min-width: 769px) {
+  .mobile-nav-bar {
+    display: none !important;
+  }
 }

@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import Navbar from './components/Navbar';
 import MobileNav from './components/MobileNav';
+import Footer from './components/Footer';
 import LandingPage from './pages/LandingPage';
 import SearchResultsPage from './pages/SearchResultsPage';
 import ListingDetailPage from './pages/ListingDetailPage';
@@ -11,6 +12,8 @@ import TripsPage from './pages/TripsPage';
 import ListingWizard from './pages/ListingWizard';
 import ProfilePage from './pages/ProfilePage';
 import AdminDashboard from './pages/AdminDashboard';
+import OpenProtocolPage from './pages/OpenProtocolPage';
+import HostelPartnersPage from './pages/HostelPartnersPage';
 
 import { 
   INITIAL_DESTINATIONS, 
@@ -20,7 +23,7 @@ import {
 } from './data/mockData';
 
 export default function App() {
-  const [activeTab, setActiveTab] = useState('landing'); // 'landing', 'search', 'detail', 'wizard', 'host-dashboard', 'messaging', 'trips', 'profile', 'admin', 'service-share'
+  const [activeTab, setActiveTab] = useState('landing'); // 'landing', 'search', 'detail', 'wizard', 'host-dashboard', 'messaging', 'trips', 'profile', 'admin', 'service-share', 'protocol', 'hostel-partners'
   const [listings, setListings] = useState(INITIAL_LISTINGS);
   const [destinations] = useState(INITIAL_DESTINATIONS);
   const [bookings, setBookings] = useState(INITIAL_BOOKINGS);
@@ -30,7 +33,6 @@ export default function App() {
   const [bookingModalData, setBookingModalData] = useState(null);
   const [searchQuery, setSearchQuery] = useState('Bangkok');
   const [selectedCurrency, setSelectedCurrency] = useState('$');
-  const [userRole, setUserRole] = useState('traveler');
 
   // Navigation Handlers
   const handleSearch = ({ location }) => {
@@ -65,17 +67,15 @@ export default function App() {
 
   return (
     <div style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column', backgroundColor: 'var(--color-bg)' }}>
-      {/* Top Navbar */}
+      {/* Top Desktop & Responsive Web Navbar */}
       <Navbar 
         activeTab={activeTab}
         setActiveTab={setActiveTab}
-        userRole={userRole}
-        setUserRole={setUserRole}
         selectedCurrency={selectedCurrency}
         setSelectedCurrency={setSelectedCurrency}
       />
 
-      {/* Main View Router */}
+      {/* Main Website Router */}
       <main style={{ flex: 1 }}>
         {activeTab === 'landing' && (
           <LandingPage 
@@ -84,6 +84,7 @@ export default function App() {
             onSearch={handleSearch}
             onSelectListing={handleSelectListing}
             onDestinationClick={handleDestinationClick}
+            onNavigate={setActiveTab}
           />
         )}
 
@@ -143,7 +144,18 @@ export default function App() {
             listings={listings}
           />
         )}
+
+        {activeTab === 'protocol' && (
+          <OpenProtocolPage onNavigate={setActiveTab} />
+        )}
+
+        {activeTab === 'hostel-partners' && (
+          <HostelPartnersPage onNavigate={setActiveTab} />
+        )}
       </main>
+
+      {/* Website Footer */}
+      <Footer onNavigate={setActiveTab} />
 
       {/* Booking Flow Modal */}
       {bookingModalData && (
@@ -154,7 +166,7 @@ export default function App() {
         />
       )}
 
-      {/* Mobile Bottom Navigation Bar */}
+      {/* Mobile Bottom Navigation Bar (Hidden on Desktop) */}
       <MobileNav 
         activeTab={activeTab}
         setActiveTab={setActiveTab}

@@ -1,8 +1,8 @@
 import React from 'react';
 import Logo from './Logo';
-import { Globe, User, ShieldCheck, Heart, Sparkles, Building2, LayoutDashboard } from 'lucide-react';
+import { Globe, User, ShieldCheck, Heart, Sparkles, Building2, Cpu, ArrowRight } from 'lucide-react';
 
-export default function Navbar({ activeTab, setActiveTab, userRole, setUserRole, selectedCurrency, setSelectedCurrency }) {
+export default function Navbar({ activeTab, setActiveTab, selectedCurrency, setSelectedCurrency }) {
   return (
     <header style={{
       backgroundColor: 'var(--color-surface)',
@@ -16,14 +16,14 @@ export default function Navbar({ activeTab, setActiveTab, userRole, setUserRole,
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'space-between',
-        height: '72px'
+        height: '76px'
       }}>
         {/* Brand Logo */}
-        <button onClick={() => setActiveTab('landing')} style={{ background: 'none', border: 'none' }}>
+        <button onClick={() => setActiveTab('landing')} style={{ background: 'none', border: 'none', cursor: 'pointer' }}>
           <Logo size="medium" />
         </button>
 
-        {/* Desktop Navigation Links */}
+        {/* Desktop Web Navigation */}
         <nav style={{ display: 'flex', alignItems: 'center', gap: '1.75rem' }} className="desktop-nav">
           <button 
             onClick={() => setActiveTab('search')} 
@@ -33,23 +33,23 @@ export default function Navbar({ activeTab, setActiveTab, userRole, setUserRole,
               fontSize: '0.95rem'
             }}
           >
-            Explore Beds
+            Explore Stays
           </button>
-          
+
           <button 
-            onClick={() => setActiveTab('wizard')} 
+            onClick={() => setActiveTab('hostel-partners')} 
             style={{ 
-              color: activeTab === 'wizard' ? 'var(--color-primary)' : 'var(--color-text-main)',
-              fontWeight: activeTab === 'wizard' ? 800 : 600,
+              color: activeTab === 'hostel-partners' ? 'var(--color-primary)' : 'var(--color-text-main)',
+              fontWeight: activeTab === 'hostel-partners' ? 800 : 600,
               fontSize: '0.95rem',
               display: 'inline-flex',
               alignItems: 'center',
               gap: '4px'
             }}
           >
-            <Sparkles size={16} color="var(--color-primary)" /> Become a Host
+            <Building2 size={16} color="var(--color-teal)" /> Hostel Partners
           </button>
-
+          
           <button 
             onClick={() => setActiveTab('service-share')} 
             style={{ 
@@ -62,6 +62,20 @@ export default function Navbar({ activeTab, setActiveTab, userRole, setUserRole,
             }}
           >
             <Heart size={16} color="var(--color-teal)" /> Service-Share
+          </button>
+
+          <button 
+            onClick={() => setActiveTab('protocol')} 
+            style={{ 
+              color: activeTab === 'protocol' ? 'var(--color-primary)' : 'var(--color-text-muted)',
+              fontWeight: 600,
+              fontSize: '0.95rem',
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: '4px'
+            }}
+          >
+            <Cpu size={16} color="var(--color-primary)" /> Open Protocol
           </button>
         </nav>
 
@@ -87,7 +101,16 @@ export default function Navbar({ activeTab, setActiveTab, userRole, setUserRole,
             </select>
           </div>
 
-          {/* Role Switcher Pill */}
+          {/* Become a Host CTA */}
+          <button 
+            className="btn-primary"
+            onClick={() => setActiveTab('wizard')}
+            style={{ padding: '0.55rem 1.1rem', fontSize: '0.88rem' }}
+          >
+            <Sparkles size={15} /> Become a Host
+          </button>
+
+          {/* Portal Switcher Pill */}
           <div style={{ 
             backgroundColor: 'var(--color-bg)', 
             borderRadius: 'var(--radius-pill)', 
@@ -97,30 +120,14 @@ export default function Navbar({ activeTab, setActiveTab, userRole, setUserRole,
             gap: '2px'
           }}>
             <button 
-              onClick={() => setActiveTab('search')}
-              style={{
-                padding: '0.35rem 0.75rem',
-                borderRadius: 'var(--radius-pill)',
-                fontSize: '0.8rem',
-                fontWeight: 700,
-                backgroundColor: activeTab !== 'host-dashboard' && activeTab !== 'admin' ? 'var(--color-surface)' : 'transparent',
-                color: activeTab !== 'host-dashboard' && activeTab !== 'admin' ? 'var(--color-text-main)' : 'var(--color-text-muted)',
-                boxShadow: activeTab !== 'host-dashboard' && activeTab !== 'admin' ? 'var(--shadow-sm)' : 'none'
-              }}
-            >
-              Traveler
-            </button>
-
-            <button 
               onClick={() => setActiveTab('host-dashboard')}
               style={{
-                padding: '0.35rem 0.75rem',
+                padding: '0.35rem 0.65rem',
                 borderRadius: 'var(--radius-pill)',
-                fontSize: '0.8rem',
+                fontSize: '0.78rem',
                 fontWeight: 700,
                 backgroundColor: activeTab === 'host-dashboard' ? 'var(--color-primary)' : 'transparent',
                 color: activeTab === 'host-dashboard' ? '#FFFFFF' : 'var(--color-text-muted)',
-                boxShadow: activeTab === 'host-dashboard' ? 'var(--shadow-primary)' : 'none',
                 display: 'inline-flex',
                 alignItems: 'center',
                 gap: '4px'
@@ -132,9 +139,9 @@ export default function Navbar({ activeTab, setActiveTab, userRole, setUserRole,
             <button 
               onClick={() => setActiveTab('admin')}
               style={{
-                padding: '0.35rem 0.75rem',
+                padding: '0.35rem 0.65rem',
                 borderRadius: 'var(--radius-pill)',
-                fontSize: '0.8rem',
+                fontSize: '0.78rem',
                 fontWeight: 700,
                 backgroundColor: activeTab === 'admin' ? 'var(--color-teal)' : 'transparent',
                 color: activeTab === 'admin' ? '#FFFFFF' : 'var(--color-text-muted)',
@@ -147,7 +154,7 @@ export default function Navbar({ activeTab, setActiveTab, userRole, setUserRole,
             </button>
           </div>
 
-          {/* User Profile Button */}
+          {/* User Profile Trigger */}
           <button 
             onClick={() => setActiveTab('profile')}
             style={{
@@ -162,12 +169,6 @@ export default function Navbar({ activeTab, setActiveTab, userRole, setUserRole,
           >
             <User size={18} color="var(--color-text-muted)" />
             <span style={{ fontSize: '0.85rem', fontWeight: 700 }}>Profile</span>
-            <span style={{
-              width: '8px',
-              height: '8px',
-              backgroundColor: 'var(--color-green)',
-              borderRadius: '50%'
-            }}></span>
           </button>
         </div>
       </div>
