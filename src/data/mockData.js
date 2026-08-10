@@ -152,40 +152,6 @@ export const INITIAL_LISTINGS = [
     houseRules: ['Must love dogs!', 'Clear daily task communication'],
     available: true,
     isServiceShare: true
-  },
-  {
-    id: 'bh-105',
-    title: 'Condo guest alcove in Roma Norte',
-    city: 'Mexico City',
-    country: 'Mexico',
-    address: 'Calle Colima, Roma Norte',
-    distFromCenter: '1.5 km',
-    lat: 19.419444,
-    lng: -99.162778,
-    pricePerNight: 6,
-    currency: '$',
-    type: 'couch',
-    typeLabel: 'Couch / Shared Space',
-    rating: 4.9,
-    reviewsCount: 44,
-    images: [
-      'https://images.unsplash.com/photo-1505691938895-1758d7feb511?auto=format&fit=crop&w=800&q=80',
-      'https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&w=800&q=80'
-    ],
-    host: {
-      id: 'host-carlos',
-      name: 'Carlos Mendoza',
-      avatar: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&w=200&q=80',
-      isVerified: true,
-      trustPassport: true,
-      responseRate: '97%',
-      joinedDate: 'Mar 2022',
-      bio: 'Architect based in CDMX. Love sharing Mexican culture, street taco spots, and art gallery recommendations.'
-    },
-    amenities: ['Wi-Fi', 'Espresso Machine', 'Kitchen', 'Rooftop Patio'],
-    houseRules: ['Respect common space', 'No smoking'],
-    available: true,
-    isServiceShare: false
   }
 ];
 

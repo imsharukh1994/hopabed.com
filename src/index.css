@@ -1,28 +1,29 @@
 :root {
   /* Color Palette Tokens */
   --color-primary: #F4845F;       /* Sunset Orange */
-  --color-primary-dark: #E06743;
-  --color-primary-light: #FFEDE8;
+  --color-primary-dark: #E0532C;
+  --color-primary-light: #FFF0EB;
   
   --color-teal: #2D6A4F;          /* Deep Teal */
   --color-teal-dark: #1F4B37;
-  --color-teal-light: #E7F4EE;
+  --color-teal-light: #E8F5E9;
 
-  --color-bg: #FEF9EF;            /* Warm Cream */
+  --color-bg: #FFFFFF;            /* Clean Modern White */
+  --color-bg-alt: #F8FAFC;        /* Soft Slate */
   --color-surface: #FFFFFF;
-  --color-surface-hover: #F8FAF9;
+  --color-surface-hover: #F1F5F9;
   
-  --color-text-main: #1E293B;     /* Charcoal */
-  --color-text-muted: #64748B;
+  --color-text-main: #0F172A;     /* Dark Slate Header */
+  --color-text-muted: #475569;
   --color-text-light: #94A3B8;
 
-  --color-yellow: #F4D35E;        /* Soft Yellow */
-  --color-yellow-light: #FFF9E6;
+  --color-yellow: #F59E0B;        /* Soft Amber Yellow */
+  --color-yellow-light: #FEF3C7;
   
-  --color-green: #52B788;         /* Leaf Green */
-  --color-green-light: #E8F7F0;
+  --color-green: #10B981;         /* Emerald Green */
+  --color-green-light: #D1FAE5;
   
-  --color-red: #E63946;           /* Soft Red */
+  --color-red: #EF4444;           /* Soft Red */
   --color-border: #E2E8F0;
   --color-border-dark: #CBD5E1;
 
@@ -31,10 +32,10 @@
   --font-family-body: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
 
   /* Shadows */
-  --shadow-sm: 0 1px 3px rgba(0,0,0,0.06), 0 1px 2px rgba(0,0,0,0.04);
-  --shadow-md: 0 4px 12px rgba(30, 41, 59, 0.08);
-  --shadow-lg: 0 10px 25px rgba(30, 41, 59, 0.12);
-  --shadow-primary: 0 4px 14px rgba(244, 132, 95, 0.35);
+  --shadow-sm: 0 1px 3px rgba(0,0,0,0.05), 0 1px 2px rgba(0,0,0,0.03);
+  --shadow-md: 0 4px 16px rgba(15, 23, 42, 0.08);
+  --shadow-lg: 0 12px 32px rgba(15, 23, 42, 0.12);
+  --shadow-primary: 0 4px 16px rgba(244, 132, 95, 0.35);
 
   /* Border Radius */
   --radius-sm: 8px;
@@ -91,9 +92,78 @@ img {
 
 /* UI Utility Classes */
 .container {
+  width: 100%;
   max-width: 1280px;
   margin: 0 auto;
-  padding: 0 1.5rem;
+  padding: 0 2rem;
+}
+
+/* Desktop Grid Systems */
+.grid-destinations-desktop {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 1.25rem;
+}
+
+.grid-listings-desktop {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1.5rem;
+}
+
+.grid-metrics-desktop {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1.5rem;
+}
+
+.grid-features-desktop {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 2rem;
+}
+
+/* Responsive Media Queries */
+@media (max-width: 1024px) {
+  .container {
+    padding: 0 1.5rem;
+  }
+  .grid-destinations-desktop {
+    grid-template-columns: repeat(3, 1fr);
+  }
+  .grid-listings-desktop {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .grid-metrics-desktop {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .grid-features-desktop {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 640px) {
+  .container {
+    padding: 0 1rem;
+  }
+  .grid-destinations-desktop {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .grid-listings-desktop {
+    grid-template-columns: 1fr;
+  }
+  .grid-metrics-desktop {
+    grid-template-columns: 1fr;
+  }
+  .desktop-nav {
+    display: none !important;
+  }
+}
+
+@media (min-width: 769px) {
+  .mobile-nav-bar {
+    display: none !important;
+  }
 }
 
 /* Button Variants */
@@ -102,12 +172,13 @@ img {
   color: #FFFFFF;
   padding: 0.75rem 1.5rem;
   border-radius: var(--radius-pill);
-  font-size: 1rem;
+  font-size: 0.95rem;
   box-shadow: var(--shadow-primary);
   display: inline-flex;
   align-items: center;
   justify-content: center;
   gap: 0.5rem;
+  white-space: nowrap;
 }
 
 .btn-primary:hover {
@@ -122,7 +193,12 @@ img {
   background-color: transparent;
   padding: 0.65rem 1.25rem;
   border-radius: var(--radius-pill);
-  font-size: 0.95rem;
+  font-size: 0.92rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  white-space: nowrap;
 }
 
 .btn-secondary:hover {
@@ -137,6 +213,11 @@ img {
   background-color: var(--color-surface);
   padding: 0.65rem 1.25rem;
   border-radius: var(--radius-pill);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  white-space: nowrap;
 }
 
 .btn-outline:hover {
@@ -146,27 +227,27 @@ img {
 
 /* Badges & Chips */
 .badge-price {
-  background-color: var(--color-yellow);
-  color: var(--color-text-main);
+  background-color: var(--color-yellow-light);
+  color: #B45309;
   font-weight: 800;
   padding: 0.35rem 0.75rem;
   border-radius: var(--radius-pill);
   font-family: var(--font-family-heading);
-  font-size: 0.9rem;
+  font-size: 0.85rem;
   display: inline-flex;
   align-items: center;
 }
 
 .badge-verified {
-  background-color: var(--color-green-light);
+  background-color: var(--color-teal-light);
   color: var(--color-teal);
   font-size: 0.8rem;
-  font-weight: 700;
-  padding: 0.25rem 0.6rem;
+  font-weight: 800;
+  padding: 0.25rem 0.65rem;
   border-radius: var(--radius-pill);
   display: inline-flex;
   align-items: center;
-  gap: 0.25rem;
+  gap: 0.3rem;
   border: 1px solid rgba(45, 106, 79, 0.2);
 }
 
@@ -174,37 +255,12 @@ img {
   background-color: #E0F2FE;
   color: #0369A1;
   font-size: 0.8rem;
-  font-weight: 700;
-  padding: 0.25rem 0.6rem;
+  font-weight: 800;
+  padding: 0.25rem 0.65rem;
   border-radius: var(--radius-pill);
   display: inline-flex;
   align-items: center;
-  gap: 0.25rem;
-}
-
-.badge-hostel {
-  background-color: #F3E8FF;
-  color: #6B21A8;
-  font-size: 0.8rem;
-  font-weight: 700;
-  padding: 0.25rem 0.6rem;
-  border-radius: var(--radius-pill);
-}
-
-/* Custom Scrollbar */
-::-webkit-scrollbar {
-  width: 8px;
-  height: 8px;
-}
-::-webkit-scrollbar-track {
-  background: var(--color-bg);
-}
-::-webkit-scrollbar-thumb {
-  background: var(--color-border-dark);
-  border-radius: 4px;
-}
-::-webkit-scrollbar-thumb:hover {
-  background: var(--color-muted);
+  gap: 0.3rem;
 }
 
 /* Leaflet Custom Price Marker Pins */
@@ -236,26 +292,4 @@ img {
 
 .animate-fade-in {
   animation: fadeIn 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-}
-
-/* Layout Utilities */
-.grid-listings {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-  gap: 1.5rem;
-}
-
-@media (max-width: 768px) {
-  .container {
-    padding: 0 1rem;
-  }
-  .desktop-nav {
-    display: none !important;
-  }
-}
-
-@media (min-width: 769px) {
-  .mobile-nav-bar {
-    display: none !important;
-  }
 }

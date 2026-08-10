@@ -21,33 +21,33 @@ export default function LandingPage({
   };
 
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', gap: '3.5rem', paddingBottom: '3rem' }}>
+    <div style={{ display: 'flex', flexDirection: 'column', gap: '4rem', paddingBottom: '3rem' }}>
       {/* HERO BANNER SECTION */}
       <section style={{
         position: 'relative',
-        minHeight: '600px',
+        minHeight: '580px',
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
-        padding: '5rem 1.5rem 6.5rem 1.5rem',
-        backgroundImage: 'linear-gradient(180deg, rgba(15, 23, 42, 0.6) 0%, rgba(15, 23, 42, 0.85) 100%), url("https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?auto=format&fit=crop&w=1600&q=80")',
+        padding: '5rem 2rem 7rem 2rem',
+        backgroundImage: 'linear-gradient(180deg, rgba(15, 23, 42, 0.65) 0%, rgba(15, 23, 42, 0.85) 100%), url("https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=1600&q=80")',
         backgroundSize: 'cover',
         backgroundPosition: 'center',
         color: '#FFFFFF'
       }}>
-        <div style={{ maxWidth: '960px', width: '100%', textIndent: 0, textAlign: 'center', display: 'flex', flexDirection: 'column', gap: '1.75rem', zIndex: 2 }}>
+        <div style={{ maxWidth: '980px', width: '100%', textIndent: 0, textAlign: 'center', display: 'flex', flexDirection: 'column', gap: '1.75rem', zIndex: 2 }}>
           {/* Top Protocol Tagline Badge */}
           <div style={{ 
             display: 'inline-flex', 
             alignItems: 'center', 
             gap: '8px', 
             backgroundColor: 'rgba(255, 255, 255, 0.18)', 
-            backdropFilter: 'blur(10px)', 
-            padding: '0.45rem 1.25rem', 
+            backdropFilter: 'blur(12px)', 
+            padding: '0.5rem 1.35rem', 
             borderRadius: 'var(--radius-pill)', 
             width: 'fit-content', 
             margin: '0 auto', 
-            fontSize: '0.88rem', 
+            fontSize: '0.9rem', 
             fontWeight: 800,
             border: '1px solid rgba(255, 255, 255, 0.3)'
           }}>
@@ -57,7 +57,7 @@ export default function LandingPage({
 
           {/* Main Title Heading */}
           <h1 style={{ 
-            fontSize: 'clamp(2.4rem, 5.5vw, 4.2rem)', 
+            fontSize: 'clamp(2.5rem, 5.5vw, 4.2rem)', 
             color: '#FFFFFF', 
             textShadow: '0 4px 20px rgba(0,0,0,0.5)', 
             fontWeight: 900, 
@@ -71,7 +71,7 @@ export default function LandingPage({
           <p style={{ 
             fontSize: '1.2rem', 
             color: '#F1F5F9', 
-            maxWidth: '680px', 
+            maxWidth: '700px', 
             margin: '0 auto', 
             textShadow: '0 2px 6px rgba(0,0,0,0.6)', 
             lineHeight: 1.5,
@@ -92,7 +92,7 @@ export default function LandingPage({
               justifyContent: 'space-between',
               gap: '1rem',
               boxShadow: '0 20px 45px rgba(0,0,0,0.35)',
-              maxWidth: '880px',
+              maxWidth: '920px',
               width: '100%',
               margin: '1.5rem auto 0 auto',
               flexWrap: 'wrap',
@@ -162,17 +162,14 @@ export default function LandingPage({
         </div>
       </section>
 
-      {/* METRICS FLOATING CARD ROW */}
-      <section className="container" style={{ marginTop: '-4.5rem', position: 'relative', zIndex: 10 }}>
-        <div style={{ 
-          backgroundColor: 'var(--color-surface)', 
+      {/* METRICS FLOATING HORIZONTAL CARD ROW */}
+      <section className="container" style={{ marginTop: '-5.5rem', position: 'relative', zIndex: 10 }}>
+        <div className="grid-metrics-desktop" style={{ 
+          backgroundColor: '#FFFFFF', 
           borderRadius: 'var(--radius-lg)', 
           padding: '2rem 1.5rem', 
           boxShadow: 'var(--shadow-lg)', 
           border: '1px solid var(--color-border)',
-          display: 'grid', 
-          gridTemplateColumns: 'repeat(auto-fit, minmax(190px, 1fr))', 
-          gap: '1.5rem', 
           textAlign: 'center' 
         }}>
           <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '4px' }}>
@@ -188,7 +185,7 @@ export default function LandingPage({
           </div>
 
           <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '4px' }}>
-            <span style={{ fontSize: '2.2rem', fontWeight: 900, color: '#D97706', lineHeight: 1 }}>50+</span>
+            <span style={{ fontSize: '2.2rem', fontWeight: 900, color: 'var(--color-yellow)', lineHeight: 1 }}>50+</span>
             <span style={{ color: 'var(--color-text-main)', fontSize: '0.92rem', fontWeight: 800 }}>Pilot Cities & Nodes</span>
             <span style={{ color: 'var(--color-text-muted)', fontSize: '0.78rem' }}>Global federated network</span>
           </div>
@@ -203,7 +200,7 @@ export default function LandingPage({
         </div>
       </section>
 
-      {/* POPULAR DESTINATIONS GRID */}
+      {/* POPULAR DESTINATIONS 6-COLUMN GRID */}
       <section className="container">
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '1.5rem' }}>
           <div>
@@ -218,11 +215,7 @@ export default function LandingPage({
           </button>
         </div>
 
-        <div style={{
-          display: 'grid',
-          gridTemplateColumns: 'repeat(auto-fill, minmax(180px, 1fr))',
-          gap: '1.25rem'
-        }}>
+        <div className="grid-destinations-desktop">
           {destinations.map((dest) => (
             <div
               key={dest.id}
@@ -231,7 +224,7 @@ export default function LandingPage({
                 borderRadius: 'var(--radius-md)',
                 overflow: 'hidden',
                 position: 'relative',
-                height: '200px',
+                height: '210px',
                 cursor: 'pointer',
                 boxShadow: 'var(--shadow-sm)',
                 transition: 'var(--transition)'
@@ -261,15 +254,15 @@ export default function LandingPage({
       </section>
 
       {/* HOW IT WORKS (3 STEPS) */}
-      <section style={{ backgroundColor: 'var(--color-surface)', padding: '4rem 0', borderY: '1px solid var(--color-border)' }}>
+      <section style={{ backgroundColor: 'var(--color-bg-alt)', padding: '4.5rem 0', borderY: '1px solid var(--color-border)' }}>
         <div className="container">
           <div style={{ textAlign: 'center', maxWidth: '600px', margin: '0 auto 3rem auto' }}>
             <h2 style={{ fontSize: '2rem', fontWeight: 900, marginBottom: '0.5rem' }}>How BedHopper Works</h2>
             <p style={{ color: 'var(--color-text-muted)', fontSize: '0.98rem' }}>The extreme-budget marketplace built on trust and open infrastructure</p>
           </div>
 
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '2rem' }}>
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '0.85rem', textAlign: 'center', alignItems: 'center' }}>
+          <div className="grid-features-desktop">
+            <div style={{ backgroundColor: '#FFFFFF', padding: '2.25rem 1.75rem', borderRadius: 'var(--radius-lg)', border: '1px solid var(--color-border)', boxShadow: 'var(--shadow-sm)', display: 'flex', flexDirection: 'column', gap: '1rem', textAlign: 'center', alignItems: 'center' }}>
               <div style={{ width: '64px', height: '64px', borderRadius: '50%', backgroundColor: 'var(--color-primary-light)', color: 'var(--color-primary)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 900, fontSize: '1.5rem' }}>
                 1
               </div>
@@ -279,7 +272,7 @@ export default function LandingPage({
               </p>
             </div>
 
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '0.85rem', textAlign: 'center', alignItems: 'center' }}>
+            <div style={{ backgroundColor: '#FFFFFF', padding: '2.25rem 1.75rem', borderRadius: 'var(--radius-lg)', border: '1px solid var(--color-border)', boxShadow: 'var(--shadow-sm)', display: 'flex', flexDirection: 'column', gap: '1rem', textAlign: 'center', alignItems: 'center' }}>
               <div style={{ width: '64px', height: '64px', borderRadius: '50%', backgroundColor: 'var(--color-teal-light)', color: 'var(--color-teal)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 900, fontSize: '1.5rem' }}>
                 2
               </div>
@@ -289,8 +282,8 @@ export default function LandingPage({
               </p>
             </div>
 
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '0.85rem', textAlign: 'center', alignItems: 'center' }}>
-              <div style={{ width: '64px', height: '64px', borderRadius: '50%', backgroundColor: 'var(--color-yellow-light)', color: '#D97706', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 900, fontSize: '1.5rem' }}>
+            <div style={{ backgroundColor: '#FFFFFF', padding: '2.25rem 1.75rem', borderRadius: 'var(--radius-lg)', border: '1px solid var(--color-border)', boxShadow: 'var(--shadow-sm)', display: 'flex', flexDirection: 'column', gap: '1rem', textAlign: 'center', alignItems: 'center' }}>
+              <div style={{ width: '64px', height: '64px', borderRadius: '50%', backgroundColor: 'var(--color-yellow-light)', color: 'var(--color-yellow)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 900, fontSize: '1.5rem' }}>
                 3
               </div>
               <h3 style={{ fontSize: '1.25rem', fontWeight: 800 }}>Book Safely or Service-Share</h3>
@@ -302,7 +295,7 @@ export default function LandingPage({
         </div>
       </section>
 
-      {/* FEATURED LISTINGS GRID */}
+      {/* FEATURED LISTINGS 4-COLUMN GRID */}
       <section className="container">
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '1.5rem' }}>
           <div>
@@ -311,7 +304,7 @@ export default function LandingPage({
           </div>
         </div>
 
-        <div className="grid-listings">
+        <div className="grid-listings-desktop">
           {featuredListings.map((listing) => (
             <ListingCard 
               key={listing.id} 
