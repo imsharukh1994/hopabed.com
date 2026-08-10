@@ -1,0 +1,252 @@
+:root {
+  /* Color Palette Tokens */
+  --color-primary: #F4845F;       /* Sunset Orange */
+  --color-primary-dark: #E06743;
+  --color-primary-light: #FFEDE8;
+  
+  --color-teal: #2D6A4F;          /* Deep Teal */
+  --color-teal-dark: #1F4B37;
+  --color-teal-light: #E7F4EE;
+
+  --color-bg: #FEF9EF;            /* Warm Cream */
+  --color-surface: #FFFFFF;
+  --color-surface-hover: #F8FAF9;
+  
+  --color-text-main: #1E293B;     /* Charcoal */
+  --color-text-muted: #64748B;
+  --color-text-light: #94A3B8;
+
+  --color-yellow: #F4D35E;        /* Soft Yellow */
+  --color-yellow-light: #FFF9E6;
+  
+  --color-green: #52B788;         /* Leaf Green */
+  --color-green-light: #E8F7F0;
+  
+  --color-red: #E63946;           /* Soft Red */
+  --color-border: #E2E8F0;
+  --color-border-dark: #CBD5E1;
+
+  /* Typography */
+  --font-family-heading: 'Nunito', -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-family-body: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+
+  /* Shadows */
+  --shadow-sm: 0 1px 3px rgba(0,0,0,0.06), 0 1px 2px rgba(0,0,0,0.04);
+  --shadow-md: 0 4px 12px rgba(30, 41, 59, 0.08);
+  --shadow-lg: 0 10px 25px rgba(30, 41, 59, 0.12);
+  --shadow-primary: 0 4px 14px rgba(244, 132, 95, 0.35);
+
+  /* Border Radius */
+  --radius-sm: 8px;
+  --radius-md: 14px;
+  --radius-lg: 20px;
+  --radius-pill: 9999px;
+
+  /* Transitions */
+  --transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Reset & Base Setup */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: var(--font-family-body);
+  background-color: var(--color-bg);
+  color: var(--color-text-main);
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+  min-height: 100vh;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-family-heading);
+  font-weight: 800;
+  color: var(--color-text-main);
+  line-height: 1.25;
+}
+
+button {
+  font-family: var(--font-family-heading);
+  cursor: pointer;
+  border: none;
+  background: none;
+  font-weight: 700;
+  transition: var(--transition);
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
+/* UI Utility Classes */
+.container {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 0 1.5rem;
+}
+
+/* Button Variants */
+.btn-primary {
+  background-color: var(--color-primary);
+  color: #FFFFFF;
+  padding: 0.75rem 1.5rem;
+  border-radius: var(--radius-pill);
+  font-size: 1rem;
+  box-shadow: var(--shadow-primary);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+}
+
+.btn-primary:hover {
+  background-color: var(--color-primary-dark);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 18px rgba(244, 132, 95, 0.45);
+}
+
+.btn-secondary {
+  border: 2px solid var(--color-teal);
+  color: var(--color-teal);
+  background-color: transparent;
+  padding: 0.65rem 1.25rem;
+  border-radius: var(--radius-pill);
+  font-size: 0.95rem;
+}
+
+.btn-secondary:hover {
+  background-color: var(--color-teal);
+  color: #FFFFFF;
+  transform: translateY(-1px);
+}
+
+.btn-outline {
+  border: 1px solid var(--color-border-dark);
+  color: var(--color-text-main);
+  background-color: var(--color-surface);
+  padding: 0.65rem 1.25rem;
+  border-radius: var(--radius-pill);
+}
+
+.btn-outline:hover {
+  background-color: var(--color-surface-hover);
+  border-color: var(--color-text-main);
+}
+
+/* Badges & Chips */
+.badge-price {
+  background-color: var(--color-yellow);
+  color: var(--color-text-main);
+  font-weight: 800;
+  padding: 0.35rem 0.75rem;
+  border-radius: var(--radius-pill);
+  font-family: var(--font-family-heading);
+  font-size: 0.9rem;
+  display: inline-flex;
+  align-items: center;
+}
+
+.badge-verified {
+  background-color: var(--color-green-light);
+  color: var(--color-teal);
+  font-size: 0.8rem;
+  font-weight: 700;
+  padding: 0.25rem 0.6rem;
+  border-radius: var(--radius-pill);
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  border: 1px solid rgba(45, 106, 79, 0.2);
+}
+
+.badge-service-share {
+  background-color: #E0F2FE;
+  color: #0369A1;
+  font-size: 0.8rem;
+  font-weight: 700;
+  padding: 0.25rem 0.6rem;
+  border-radius: var(--radius-pill);
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.badge-hostel {
+  background-color: #F3E8FF;
+  color: #6B21A8;
+  font-size: 0.8rem;
+  font-weight: 700;
+  padding: 0.25rem 0.6rem;
+  border-radius: var(--radius-pill);
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+::-webkit-scrollbar-track {
+  background: var(--color-bg);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--color-border-dark);
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-muted);
+}
+
+/* Leaflet Custom Price Marker Pins */
+.custom-map-pin {
+  background-color: var(--color-primary);
+  color: #FFFFFF;
+  font-weight: 800;
+  font-family: var(--font-family-heading);
+  padding: 4px 10px;
+  border-radius: 16px;
+  box-shadow: 0 3px 10px rgba(0,0,0,0.3);
+  font-size: 13px;
+  white-space: nowrap;
+  border: 2px solid #FFFFFF;
+  transition: transform 0.2s ease;
+}
+
+.custom-map-pin:hover, .custom-map-pin.active {
+  background-color: var(--color-teal);
+  transform: scale(1.15);
+  z-index: 1000 !important;
+}
+
+/* Animations */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+/* Layout Utilities */
+.grid-listings {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 1.5rem;
+}
+
+@media (max-width: 768px) {
+  .container {
+    padding: 0 1rem;
+  }
+}
