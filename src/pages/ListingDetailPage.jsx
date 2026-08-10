@@ -1,10 +1,12 @@
 import React, { useState } from 'react';
 import { Star, ShieldCheck, Heart, MapPin, Share2, CheckCircle, Wifi, Coffee, Sparkles, AlertCircle, ArrowLeft } from 'lucide-react';
+import ServiceShareModal from '../components/ServiceShareModal';
 
 export default function ListingDetailPage({ listing, onBack, onBook }) {
   const [checkInDate, setCheckInDate] = useState('2026-08-12');
   const [checkOutDate, setCheckOutDate] = useState('2026-08-14');
   const [guestsCount, setGuestsCount] = useState(1);
+  const [showServiceShareModal, setShowServiceShareModal] = useState(false);
 
   if (!listing) return null;
 
@@ -12,6 +14,25 @@ export default function ListingDetailPage({ listing, onBack, onBook }) {
   const nightlyTotal = listing.pricePerNight * nights;
   const platformFee = listing.isServiceShare ? 0 : Number((nightlyTotal * 0.08).toFixed(2));
   const totalPrice = Number((nightlyTotal + platformFee).toFixed(2));
+
+  const handleBookingClick = () => {
+    if (listing.isServiceShare) {
+      setShowServiceShareModal(true);
+    } else {
+      onBook(listing, { checkInDate, checkOutDate, guestsCount, totalPrice });
+    }
+  };
+
+  const handleAgreementSigned = (agreementData) => {
+    setShowServiceShareModal(false);
+    onBook(listing, { 
+      checkInDate, 
+      checkOutDate, 
+      guestsCount, 
+      totalPrice: 0,
+      serviceShareAgreement: agreementData 
+    });
+  };
 
   return (
     <div className="container" style={{ paddingTop: '1.5rem', paddingBottom: '4rem', display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
@@ -279,7 +300,7 @@ export default function ListingDetailPage({ listing, onBack, onBook }) {
             <button 
               className="btn-primary" 
               style={{ width: '100%', padding: '0.9rem', fontSize: '1.05rem', borderRadius: 'var(--radius-pill)' }}
-              onClick={() => onBook(listing, { checkInDate, checkOutDate, guestsCount, totalPrice })}
+              onClick={handleBookingClick}
             >
               {listing.isServiceShare ? 'Apply for Service-Share' : 'Request to Book'}
             </button>
@@ -290,6 +311,15 @@ export default function ListingDetailPage({ listing, onBack, onBook }) {
           </div>
         </div>
       </div>
+
+      {/* Service-Share Agreement Modal */}
+      {showServiceShareModal && (
+        <ServiceShareModal 
+          listing={listing}
+          onClose={() => setShowServiceShareModal(false)}
+          onAgreementSigned={handleAgreementSigned}
+        />
+      )}
     </div>
   );
 }
