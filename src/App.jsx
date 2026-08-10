@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import Navbar from './components/Navbar';
 import MobileNav from './components/MobileNav';
 import Footer from './components/Footer';
+import AuthModal from './components/AuthModal';
 import LandingPage from './pages/LandingPage';
 import SearchResultsPage from './pages/SearchResultsPage';
 import ListingDetailPage from './pages/ListingDetailPage';
@@ -24,7 +25,7 @@ import {
 } from './data/mockData';
 
 export default function App() {
-  const [activeTab, setActiveTab] = useState('landing'); // 'landing', 'search', 'detail', 'wizard', 'host-dashboard', 'messaging', 'trips', 'profile', 'admin', 'service-share', 'protocol', 'hostel-partners'
+  const [activeTab, setActiveTab] = useState('landing'); 
   const [listings, setListings] = useState(INITIAL_LISTINGS);
   const [destinations] = useState(INITIAL_DESTINATIONS);
   const [bookings, setBookings] = useState(INITIAL_BOOKINGS);
@@ -34,6 +35,19 @@ export default function App() {
   const [bookingModalData, setBookingModalData] = useState(null);
   const [searchQuery, setSearchQuery] = useState('Bangkok');
   const [selectedCurrency, setSelectedCurrency] = useState('$');
+
+  // Authentication State
+  const [currentUser, setCurrentUser] = useState({
+    id: 'usr-anna',
+    name: 'Anna Schmidt',
+    email: 'anna@bedhopper.org',
+    role: 'host',
+    isVerified: true,
+    trustPassport: true,
+    avatar: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=200&q=80'
+  });
+  const [showAuthModal, setShowAuthModal] = useState(false);
+  const [authMode, setAuthMode] = useState('login');
 
   // Navigation Handlers
   const handleSearch = ({ location }) => {
@@ -66,14 +80,32 @@ export default function App() {
     setActiveTab('host-dashboard');
   };
 
+  const handleOpenAuth = (mode = 'login') => {
+    setAuthMode(mode);
+    setShowAuthModal(true);
+  };
+
+  const handleLoginSuccess = (userSession) => {
+    setCurrentUser(userSession);
+    setShowAuthModal(false);
+  };
+
+  const handleLogout = () => {
+    setCurrentUser(null);
+    setActiveTab('landing');
+  };
+
   return (
     <div style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column', backgroundColor: 'var(--color-bg)' }}>
-      {/* Top Desktop & Responsive Web Navbar */}
+      {/* Top Desktop Navbar */}
       <Navbar 
         activeTab={activeTab}
         setActiveTab={setActiveTab}
         selectedCurrency={selectedCurrency}
         setSelectedCurrency={setSelectedCurrency}
+        currentUser={currentUser}
+        onOpenAuth={handleOpenAuth}
+        onLogout={handleLogout}
       />
 
       {/* Main Website Router */}
@@ -136,7 +168,7 @@ export default function App() {
         )}
 
         {activeTab === 'profile' && (
-          <ProfilePage />
+          <ProfilePage currentUser={currentUser} />
         )}
 
         {activeTab === 'admin' && (
@@ -168,6 +200,15 @@ export default function App() {
           bookingData={bookingModalData}
           onClose={() => setBookingModalData(null)}
           onConfirmBooking={handleConfirmBooking}
+        />
+      )}
+
+      {/* Authentication Modal */}
+      {showAuthModal && (
+        <AuthModal 
+          initialMode={authMode}
+          onClose={() => setShowAuthModal(false)}
+          onLoginSuccess={handleLoginSuccess}
         />
       )}
 

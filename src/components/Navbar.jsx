@@ -1,8 +1,16 @@
 import React, { useState, useRef, useEffect } from 'react';
 import Logo from './Logo';
-import { Globe, User, ShieldCheck, Heart, Sparkles, Building2, Cpu, Compass, ChevronDown, Menu, LogOut, LayoutDashboard } from 'lucide-react';
+import { Globe, User, ShieldCheck, Heart, Sparkles, Building2, Cpu, Compass, ChevronDown, Menu, LogOut, LayoutDashboard, LogIn } from 'lucide-react';
 
-export default function Navbar({ activeTab, setActiveTab, selectedCurrency, setSelectedCurrency }) {
+export default function Navbar({ 
+  activeTab, 
+  setActiveTab, 
+  selectedCurrency, 
+  setSelectedCurrency,
+  currentUser,
+  onOpenAuth,
+  onLogout
+}) {
   const [showMenu, setShowMenu] = useState(false);
   const menuRef = useRef(null);
 
@@ -134,7 +142,7 @@ export default function Navbar({ activeTab, setActiveTab, selectedCurrency, setS
         </div>
 
         {/* RIGHT: Clean Utility Actions */}
-        <div style={{ display: 'flex', alignItems: 'center', gap: '1.25rem' }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '1.1rem' }}>
           {/* Currency Selector Dropdown */}
           <div style={{ display: 'inline-flex', alignItems: 'center', gap: '4px', fontSize: '0.88rem', color: 'var(--color-text-muted)', fontWeight: 600 }}>
             <Globe size={16} />
@@ -165,139 +173,128 @@ export default function Navbar({ activeTab, setActiveTab, selectedCurrency, setS
             className="btn-primary"
             onClick={() => setActiveTab('wizard')}
             style={{ 
-              padding: '0.6rem 1.25rem', 
-              fontSize: '0.9rem',
+              padding: '0.55rem 1.1rem', 
+              fontSize: '0.88rem',
               display: 'inline-flex',
               alignItems: 'center',
               gap: '6px',
               whiteSpace: 'nowrap'
             }}
           >
-            <Sparkles size={16} />
+            <Sparkles size={15} />
             <span>Become a Host</span>
           </button>
 
-          {/* Combined User Menu Dropdown Button (Airbnb Style) */}
-          <div style={{ position: 'relative' }} ref={menuRef}>
-            <button 
-              onClick={() => setShowMenu(!showMenu)}
-              style={{
-                display: 'inline-flex',
-                alignItems: 'center',
-                gap: '8px',
-                padding: '0.45rem 0.85rem',
-                border: '1px solid var(--color-border)',
-                borderRadius: 'var(--radius-pill)',
-                backgroundColor: 'var(--color-surface)',
-                boxShadow: showMenu ? 'var(--shadow-md)' : 'none',
-                transition: 'var(--transition)'
-              }}
-            >
-              <Menu size={18} color="var(--color-text-muted)" />
-              <div style={{
-                width: '28px',
-                height: '28px',
-                borderRadius: '50%',
-                backgroundColor: 'var(--color-teal)',
-                color: '#FFFFFF',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                fontSize: '0.8rem',
-                fontWeight: 800
-              }}>
-                A
-              </div>
-            </button>
+          {/* Log In & Sign Up / User Menu Dropdown Button */}
+          {!currentUser ? (
+            <div style={{ display: 'flex', gap: '0.5rem' }}>
+              <button 
+                className="btn-outline" 
+                onClick={() => onOpenAuth('login')}
+                style={{ padding: '0.5rem 1rem', fontSize: '0.88rem' }}
+              >
+                Log In
+              </button>
+              <button 
+                className="btn-secondary" 
+                onClick={() => onOpenAuth('signup')}
+                style={{ padding: '0.5rem 1rem', fontSize: '0.88rem' }}
+              >
+                Sign Up
+              </button>
+            </div>
+          ) : (
+            <div style={{ position: 'relative' }} ref={menuRef}>
+              <button 
+                onClick={() => setShowMenu(!showMenu)}
+                style={{
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  gap: '8px',
+                  padding: '0.4rem 0.75rem',
+                  border: '1px solid var(--color-border)',
+                  borderRadius: 'var(--radius-pill)',
+                  backgroundColor: 'var(--color-surface)',
+                  boxShadow: showMenu ? 'var(--shadow-md)' : 'none',
+                  transition: 'var(--transition)'
+                }}
+              >
+                <Menu size={18} color="var(--color-text-muted)" />
+                <img 
+                  src={currentUser.avatar} 
+                  alt={currentUser.name} 
+                  style={{ width: '28px', height: '28px', borderRadius: '50%', objectFit: 'cover' }}
+                />
+              </button>
 
-            {/* Dropdown Popup Menu */}
-            {showMenu && (
-              <div style={{
-                position: 'absolute',
-                top: 'calc(100% + 8px)',
-                right: 0,
-                width: '220px',
-                backgroundColor: 'var(--color-surface)',
-                borderRadius: 'var(--radius-md)',
-                boxShadow: '0 10px 25px rgba(15, 23, 42, 0.15)',
-                border: '1px solid var(--color-border)',
-                padding: '0.5rem 0',
-                zIndex: 2000,
-                display: 'flex',
-                flexDirection: 'column'
-              }} className="animate-fade-in">
-                <button 
-                  onClick={() => { setActiveTab('profile'); setShowMenu(false); }}
-                  style={{
-                    padding: '0.7rem 1.25rem',
-                    display: 'flex',
-                    alignItems: 'center',
-                    gap: '10px',
-                    fontSize: '0.9rem',
-                    fontWeight: 700,
-                    color: 'var(--color-text-main)',
-                    textAlign: 'left'
-                  }}
-                >
-                  <User size={16} />
-                  <span>My Profile & Trust Passport</span>
-                </button>
+              {/* Dropdown Popup Menu */}
+              {showMenu && (
+                <div style={{
+                  position: 'absolute',
+                  top: 'calc(100% + 8px)',
+                  right: 0,
+                  width: '230px',
+                  backgroundColor: 'var(--color-surface)',
+                  borderRadius: 'var(--radius-md)',
+                  boxShadow: '0 10px 25px rgba(15, 23, 42, 0.15)',
+                  border: '1px solid var(--color-border)',
+                  padding: '0.5rem 0',
+                  zIndex: 2000,
+                  display: 'flex',
+                  flexDirection: 'column'
+                }} className="animate-fade-in">
+                  <div style={{ padding: '0.5rem 1.25rem', borderBottom: '1px solid var(--color-border)' }}>
+                    <strong style={{ fontSize: '0.92rem', color: 'var(--color-text-main)' }}>{currentUser.name}</strong>
+                    <div style={{ fontSize: '0.78rem', color: 'var(--color-teal)', fontWeight: 800, display: 'flex', alignItems: 'center', gap: '4px' }}>
+                      <ShieldCheck size={13} /> Trust Passport Active
+                    </div>
+                  </div>
 
-                <button 
-                  onClick={() => { setActiveTab('trips'); setShowMenu(false); }}
-                  style={{
-                    padding: '0.7rem 1.25rem',
-                    display: 'flex',
-                    alignItems: 'center',
-                    gap: '10px',
-                    fontSize: '0.9rem',
-                    fontWeight: 700,
-                    color: 'var(--color-text-main)',
-                    textAlign: 'left'
-                  }}
-                >
-                  <Compass size={16} />
-                  <span>My Trips & Stays</span>
-                </button>
+                  <button 
+                    onClick={() => { setActiveTab('profile'); setShowMenu(false); }}
+                    style={{ padding: '0.65rem 1.25rem', display: 'flex', alignItems: 'center', gap: '10px', fontSize: '0.88rem', fontWeight: 700, textAlign: 'left' }}
+                  >
+                    <User size={16} />
+                    <span>My Profile & Passport</span>
+                  </button>
 
-                <div style={{ height: '1px', backgroundColor: 'var(--color-border)', margin: '0.35rem 0' }}></div>
+                  <button 
+                    onClick={() => { setActiveTab('trips'); setShowMenu(false); }}
+                    style={{ padding: '0.65rem 1.25rem', display: 'flex', alignItems: 'center', gap: '10px', fontSize: '0.88rem', fontWeight: 700, textAlign: 'left' }}
+                  >
+                    <Compass size={16} />
+                    <span>My Trips & Stays</span>
+                  </button>
 
-                <button 
-                  onClick={() => { setActiveTab('host-dashboard'); setShowMenu(false); }}
-                  style={{
-                    padding: '0.7rem 1.25rem',
-                    display: 'flex',
-                    alignItems: 'center',
-                    gap: '10px',
-                    fontSize: '0.9rem',
-                    fontWeight: 700,
-                    color: 'var(--color-primary)',
-                    textAlign: 'left'
-                  }}
-                >
-                  <Building2 size={16} />
-                  <span>Host Dashboard</span>
-                </button>
+                  <button 
+                    onClick={() => { setActiveTab('host-dashboard'); setShowMenu(false); }}
+                    style={{ padding: '0.65rem 1.25rem', display: 'flex', alignItems: 'center', gap: '10px', fontSize: '0.88rem', fontWeight: 700, color: 'var(--color-primary)', textAlign: 'left' }}
+                  >
+                    <Building2 size={16} />
+                    <span>Host Dashboard</span>
+                  </button>
 
-                <button 
-                  onClick={() => { setActiveTab('admin'); setShowMenu(false); }}
-                  style={{
-                    padding: '0.7rem 1.25rem',
-                    display: 'flex',
-                    alignItems: 'center',
-                    gap: '10px',
-                    fontSize: '0.9rem',
-                    fontWeight: 700,
-                    color: 'var(--color-teal)',
-                    textAlign: 'left'
-                  }}
-                >
-                  <ShieldCheck size={16} />
-                  <span>Admin Control Center</span>
-                </button>
-              </div>
-            )}
-          </div>
+                  <button 
+                    onClick={() => { setActiveTab('admin'); setShowMenu(false); }}
+                    style={{ padding: '0.65rem 1.25rem', display: 'flex', alignItems: 'center', gap: '10px', fontSize: '0.88rem', fontWeight: 700, color: 'var(--color-teal)', textAlign: 'left' }}
+                  >
+                    <ShieldCheck size={16} />
+                    <span>Admin Control Center</span>
+                  </button>
+
+                  <div style={{ height: '1px', backgroundColor: 'var(--color-border)', margin: '0.35rem 0' }}></div>
+
+                  <button 
+                    onClick={() => { onLogout(); setShowMenu(false); }}
+                    style={{ padding: '0.65rem 1.25rem', display: 'flex', alignItems: 'center', gap: '10px', fontSize: '0.88rem', fontWeight: 700, color: 'var(--color-red)', textAlign: 'left' }}
+                  >
+                    <LogOut size={16} />
+                    <span>Log Out</span>
+                  </button>
+                </div>
+              )}
+            </div>
+          )}
         </div>
       </div>
     </header>
