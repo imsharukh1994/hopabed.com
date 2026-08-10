@@ -1,6 +1,6 @@
 import React from 'react';
 import Logo from './Logo';
-import { Globe, User, ShieldCheck, Heart, Sparkles, Building2, Cpu } from 'lucide-react';
+import { Globe, User, ShieldCheck, Heart, Sparkles, Building2, Cpu, Compass } from 'lucide-react';
 
 export default function Navbar({ activeTab, setActiveTab, selectedCurrency, setSelectedCurrency }) {
   return (
@@ -88,6 +88,22 @@ export default function Navbar({ activeTab, setActiveTab, selectedCurrency, setS
           >
             <Cpu size={16} color="var(--color-primary)" />
             <span>Open Protocol</span>
+          </button>
+
+          <button 
+            onClick={() => setActiveTab('travel-guides')} 
+            style={{ 
+              color: activeTab === 'travel-guides' ? 'var(--color-primary)' : 'var(--color-text-muted)',
+              fontWeight: 600,
+              fontSize: '0.92rem',
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: '6px',
+              whiteSpace: 'nowrap'
+            }}
+          >
+            <Compass size={16} color="var(--color-yellow)" />
+            <span>Travel Guides</span>
           </button>
         </nav>
 

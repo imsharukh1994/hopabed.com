@@ -14,6 +14,7 @@ import ProfilePage from './pages/ProfilePage';
 import AdminDashboard from './pages/AdminDashboard';
 import OpenProtocolPage from './pages/OpenProtocolPage';
 import HostelPartnersPage from './pages/HostelPartnersPage';
+import TravelGuidesPage from './pages/TravelGuidesPage';
 
 import { 
   INITIAL_DESTINATIONS, 
@@ -151,6 +152,10 @@ export default function App() {
 
         {activeTab === 'hostel-partners' && (
           <HostelPartnersPage onNavigate={setActiveTab} />
+        )}
+
+        {activeTab === 'travel-guides' && (
+          <TravelGuidesPage onSearch={handleSearch} />
         )}
       </main>
 
