@@ -105,4 +105,21 @@ CREATE TABLE IF NOT EXISTS service_share_agreements (
 CREATE INDEX IF NOT EXISTS idx_listings_city ON listings(city);
 CREATE INDEX IF NOT EXISTS idx_listings_price ON listings(price_per_night);
 CREATE INDEX IF NOT EXISTS idx_bookings_guest ON bookings(guest_id);
-CREATE INDEX IF NOT EXISTS idx_bookings_listing ON bookings(listing_id);
+CREATE INDEX IF NOT EXISTS idx_bookings_listing ON listings(id);
+
+-- ENABLE ROW LEVEL SECURITY (RLS) POLICIES FOR PUBLIC READ ACCESS
+ALTER TABLE listings ENABLE ROW LEVEL SECURITY;
+ALTER TABLE bookings ENABLE ROW LEVEL SECURITY;
+ALTER TABLE users ENABLE ROW LEVEL SECURITY;
+
+DROP POLICY IF EXISTS "Public listings viewable" ON listings;
+CREATE POLICY "Public listings viewable" ON listings FOR SELECT USING (true);
+
+DROP POLICY IF EXISTS "Public listings insertable" ON listings;
+CREATE POLICY "Public listings insertable" ON listings FOR INSERT WITH CHECK (true);
+
+DROP POLICY IF EXISTS "Public bookings viewable" ON bookings;
+CREATE POLICY "Public bookings viewable" ON bookings FOR SELECT USING (true);
+
+DROP POLICY IF EXISTS "Public bookings insertable" ON bookings;
+CREATE POLICY "Public bookings insertable" ON bookings FOR INSERT WITH CHECK (true);

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Navbar from './components/Navbar';
 import MobileNav from './components/MobileNav';
 import Footer from './components/Footer';
@@ -20,45 +20,39 @@ import TravelGuidesPage from './pages/TravelGuidesPage';
 import { getCloudListings, saveCloudListing, saveCloudBooking } from './services/dbService';
 
 import { 
-  INITIAL_DESTINATIONS, 
-  INITIAL_LISTINGS, 
-  INITIAL_BOOKINGS, 
-  INITIAL_MESSAGES 
+  INITIAL_DESTINATIONS
 } from './data/mockData';
 
 export default function App() {
   const [activeTab, setActiveTab] = useState('landing'); 
-  const [listings, setListings] = useState(INITIAL_LISTINGS);
+  const [listings, setListings] = useState([]); // Empty array - strictly real cloud database listings only!
   const [destinations] = useState(INITIAL_DESTINATIONS);
-  const [bookings, setBookings] = useState(INITIAL_BOOKINGS);
-  const [messages, setMessages] = useState(INITIAL_MESSAGES);
+  const [bookings, setBookings] = useState([]);
+  const [messages, setMessages] = useState([]);
+  const [loadingCloud, setLoadingCloud] = useState(true);
   
   const [selectedListing, setSelectedListing] = useState(null);
   const [bookingModalData, setBookingModalData] = useState(null);
   const [searchQuery, setSearchQuery] = useState('Bangkok');
   const [selectedCurrency, setSelectedCurrency] = useState('$');
 
-  // Load real Cloud Database Listings on Mount
-  React.useEffect(() => {
+  // Load ONLY real Cloud Database Listings on Mount
+  useEffect(() => {
     async function loadCloudData() {
+      setLoadingCloud(true);
       const realListings = await getCloudListings();
-      if (realListings && realListings.length > 0) {
-        setListings(realListings);
+      if (realListings) {
+        setListings(realListings); // Set exactly what Supabase cloud returns (empty array if 0 records)
+      } else {
+        setListings([]);
       }
+      setLoadingCloud(false);
     }
     loadCloudData();
   }, []);
 
   // Authentication State
-  const [currentUser, setCurrentUser] = useState({
-    id: 'usr-anna',
-    name: 'Anna Schmidt',
-    email: 'anna@bedhopper.org',
-    role: 'host',
-    isVerified: true,
-    trustPassport: true,
-    avatar: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=200&q=80'
-  });
+  const [currentUser, setCurrentUser] = useState(null);
   const [showAuthModal, setShowAuthModal] = useState(false);
   const [authMode, setAuthMode] = useState('login');
 
