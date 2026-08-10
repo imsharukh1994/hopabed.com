@@ -1,5 +1,6 @@
 import React from 'react';
 import { ShieldCheck, Cpu, Network, ArrowRight, Github, Code, CheckCircle, Server } from 'lucide-react';
+import NodeConfigurator from '../components/NodeConfigurator';
 
 export default function OpenProtocolPage({ onNavigate }) {
   return (
@@ -22,7 +23,7 @@ export default function OpenProtocolPage({ onNavigate }) {
             BedHopper is not a centralized platform company. It is an open, federated protocol for ultra-low-cost room and bed sharing—similar to how Email or Mastodon work for communication.
           </p>
           <div style={{ display: 'flex', gap: '1rem', justifyContent: 'center', marginTop: '1rem' }}>
-            <a href="https://github.com/imsharukh1994/bedhopper" target="_blank" rel="noreferrer" className="btn-primary" style={{ display: 'inline-flex', alignItems: 'center', gap: '8px' }}>
+            <a href="https://github.com/imsharukh1994/hopabed.com" target="_blank" rel="noreferrer" className="btn-primary" style={{ display: 'inline-flex', alignItems: 'center', gap: '8px' }}>
               <Github size={18} /> View GitHub Repo
             </a>
             <button className="btn-secondary" style={{ color: '#FFFFFF', borderColor: '#FFFFFF' }} onClick={() => onNavigate('search')}>
@@ -32,8 +33,13 @@ export default function OpenProtocolPage({ onNavigate }) {
         </div>
       </section>
 
-      {/* 3-Sided Protocol Architecture Diagram */}
+      {/* Interactive Node Configurator Section */}
       <section className="container" style={{ paddingTop: '3.5rem' }}>
+        <NodeConfigurator onNavigate={onNavigate} />
+      </section>
+
+      {/* 3-Sided Protocol Architecture Diagram */}
+      <section className="container" style={{ paddingTop: '4rem' }}>
         <h2 style={{ fontSize: '2rem', textAlign: 'center', marginBottom: '0.5rem' }}>3-Sided Federated Architecture</h2>
         <p style={{ color: 'var(--color-text-muted)', textAlign: 'center', marginBottom: '2.5rem' }}>
           No platform lock-in. No single entity owns the network or your reputation.
@@ -88,22 +94,22 @@ export default function OpenProtocolPage({ onNavigate }) {
               </thead>
               <tbody>
                 <tr style={{ borderBottom: '1px solid var(--color-border)' }}>
-                  <td style={{ padding: '0.85rem', fontWeight: 700 }}>Host Commission</td>
+                  <td style={{ padding: '0.85rem', fontWeight: 800 }}>Host Commission</td>
                   <td style={{ padding: '0.85rem' }}>15% – 20% total fee</td>
                   <td style={{ padding: '0.85rem', fontWeight: 800, color: 'var(--color-teal)' }}>0% (Zero Commission)</td>
                 </tr>
                 <tr style={{ borderBottom: '1px solid var(--color-border)' }}>
-                  <td style={{ padding: '0.85rem', fontWeight: 700 }}>Platform Lock-in</td>
+                  <td style={{ padding: '0.85rem', fontWeight: 800 }}>Platform Lock-in</td>
                   <td style={{ padding: '0.85rem' }}>High (Reviews trapped)</td>
                   <td style={{ padding: '0.85rem', fontWeight: 800, color: 'var(--color-teal)' }}>Zero Lock-in (Portable Trust)</td>
                 </tr>
                 <tr style={{ borderBottom: '1px solid var(--color-border)' }}>
-                  <td style={{ padding: '0.85rem', fontWeight: 700 }}>Under-$10/night Stays</td>
+                  <td style={{ padding: '0.85rem', fontWeight: 800 }}>Under-$10/night Stays</td>
                   <td style={{ padding: '0.85rem' }}>None (Fees inflate price)</td>
                   <td style={{ padding: '0.85rem', fontWeight: 800, color: 'var(--color-teal)' }}>Primary Focus Segment</td>
                 </tr>
                 <tr style={{ borderBottom: '1px solid var(--color-border)' }}>
-                  <td style={{ padding: '0.85rem', fontWeight: 700 }}>Source Code & Governance</td>
+                  <td style={{ padding: '0.85rem', fontWeight: 800 }}>Source Code & Governance</td>
                   <td style={{ padding: '0.85rem' }}>Closed Proprietary</td>
                   <td style={{ padding: '0.85rem', fontWeight: 800, color: 'var(--color-teal)' }}>Open Source (MIT License)</td>
                 </tr>
