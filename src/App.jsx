@@ -17,6 +17,8 @@ import OpenProtocolPage from './pages/OpenProtocolPage';
 import HostelPartnersPage from './pages/HostelPartnersPage';
 import TravelGuidesPage from './pages/TravelGuidesPage';
 
+import { getCloudListings, saveCloudListing, saveCloudBooking } from './services/dbService';
+
 import { 
   INITIAL_DESTINATIONS, 
   INITIAL_LISTINGS, 
@@ -35,6 +37,17 @@ export default function App() {
   const [bookingModalData, setBookingModalData] = useState(null);
   const [searchQuery, setSearchQuery] = useState('Bangkok');
   const [selectedCurrency, setSelectedCurrency] = useState('$');
+
+  // Load real Cloud Database Listings on Mount
+  React.useEffect(() => {
+    async function loadCloudData() {
+      const realListings = await getCloudListings();
+      if (realListings && realListings.length > 0) {
+        setListings(realListings);
+      }
+    }
+    loadCloudData();
+  }, []);
 
   // Authentication State
   const [currentUser, setCurrentUser] = useState({
@@ -69,15 +82,17 @@ export default function App() {
     setBookingModalData({ listing, details });
   };
 
-  const handleConfirmBooking = (newBooking) => {
+  const handleConfirmBooking = async (newBooking) => {
     setBookings([newBooking, ...bookings]);
     setBookingModalData(null);
     setActiveTab('trips');
+    await saveCloudBooking(newBooking, currentUser?.id);
   };
 
-  const handlePublishListing = (newListing) => {
+  const handlePublishListing = async (newListing) => {
     setListings([newListing, ...listings]);
     setActiveTab('host-dashboard');
+    await saveCloudListing(newListing, currentUser?.id);
   };
 
   const handleOpenAuth = (mode = 'login') => {
