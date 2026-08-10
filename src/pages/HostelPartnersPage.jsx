@@ -1,5 +1,6 @@
 import React from 'react';
 import { Building2, DollarSign, CheckCircle, TrendingUp, ShieldCheck, ArrowRight } from 'lucide-react';
+import HostCalculator from '../components/HostCalculator';
 
 export default function HostelPartnersPage({ onNavigate }) {
   return (
@@ -25,10 +26,16 @@ export default function HostelPartnersPage({ onNavigate }) {
           </p>
           <div style={{ display: 'flex', gap: '1rem', justifyContent: 'center', marginTop: '1rem' }}>
             <button className="btn-primary" onClick={() => onNavigate('wizard')}>
-              Register Your Property <ArrowRight size={18} />
+              <span>Register Your Property</span>
+              <ArrowRight size={18} />
             </button>
           </div>
         </div>
+      </section>
+
+      {/* Host Earnings Calculator */}
+      <section className="container" style={{ paddingTop: '3.5rem' }}>
+        <HostCalculator onStartHosting={() => onNavigate('wizard')} />
       </section>
 
       {/* Benefits */}

@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Search, Calendar, Users, MapPin, ShieldCheck, Heart, Sparkles, ArrowRight, Building2, Cpu, CheckCircle2, Star } from 'lucide-react';
 import ListingCard from '../components/ListingCard';
+import HostCalculator from '../components/HostCalculator';
 
 export default function LandingPage({ 
   destinations, 
@@ -315,48 +316,9 @@ export default function LandingPage({
         </div>
       </section>
 
-      {/* FOR HOSTS & HOSTELS SECTION */}
+      {/* FOR HOSTS & HOSTELS SECTION WITH CALCULATOR */}
       <section className="container">
-        <div style={{ backgroundColor: 'var(--color-surface)', borderRadius: 'var(--radius-lg)', padding: '3.5rem 3rem', border: '1px solid var(--color-border)', boxShadow: 'var(--shadow-md)' }}>
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '3rem', alignItems: 'center' }}>
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
-              <span className="badge-price" style={{ width: 'fit-content' }}>100% Host Retention</span>
-              <h2 style={{ fontSize: '2.2rem', fontWeight: 900, lineHeight: 1.25 }}>Monetize Spare Spaces & Unsold Hostel Beds</h2>
-              <p style={{ color: 'var(--color-text-muted)', fontSize: '1rem', lineHeight: 1.6 }}>
-                Whether you have a spare couch in Bangkok or run an 80-bed hostel in Mexico City, BedHopper empowers you to list capacity with zero host commission fees.
-              </p>
-              
-              <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '10px', fontSize: '0.95rem', fontWeight: 700 }}>
-                  <CheckCircle2 color="var(--color-teal)" size={20} />
-                  <span>Zero commission on all booking earnings</span>
-                </div>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '10px', fontSize: '0.95rem', fontWeight: 700 }}>
-                  <CheckCircle2 color="var(--color-teal)" size={20} />
-                  <span>Stripe Connect automated payouts directly to your bank account</span>
-                </div>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '10px', fontSize: '0.95rem', fontWeight: 700 }}>
-                  <CheckCircle2 color="var(--color-teal)" size={20} />
-                  <span>Commercial Hostel portal option for $20/month flat</span>
-                </div>
-              </div>
-
-              <div style={{ display: 'flex', gap: '1rem', marginTop: '0.5rem' }}>
-                <button className="btn-primary" onClick={() => onNavigate('wizard')}>
-                  <span>Become a Host</span>
-                  <ArrowRight size={18} />
-                </button>
-                <button className="btn-secondary" onClick={() => onNavigate('hostel-partners')}>
-                  Hostel Partners Info
-                </button>
-              </div>
-            </div>
-
-            <div style={{ borderRadius: 'var(--radius-md)', overflow: 'hidden', height: '360px', boxShadow: 'var(--shadow-lg)' }}>
-              <img src="https://images.unsplash.com/photo-1555854877-bab0e564b8d5?auto=format&fit=crop&w=1000&q=80" alt="Hostel Room" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
-            </div>
-          </div>
-        </div>
+        <HostCalculator onStartHosting={() => onNavigate('wizard')} />
       </section>
 
       {/* OPEN PROTOCOL SECTION */}
