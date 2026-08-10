@@ -6,11 +6,16 @@ yarn-debug.log*
 yarn-error.log*
 pnpm-debug.log*
 
-# Node modules
+# Node modules & build
 node_modules/
 dist/
 dist-ssr/
 *.local
+
+# Environment secret files
+.env
+.env.local
+.env.*.local
 
 # Editor directories
 .vscode/*
