@@ -1,6 +1,6 @@
 import React from 'react';
 import Logo from './Logo';
-import { Globe, User, ShieldCheck, Heart, Sparkles, Building2, Cpu, ArrowRight } from 'lucide-react';
+import { Globe, User, ShieldCheck, Heart, Sparkles, Building2, Cpu } from 'lucide-react';
 
 export default function Navbar({ activeTab, setActiveTab, selectedCurrency, setSelectedCurrency }) {
   return (
@@ -9,28 +9,34 @@ export default function Navbar({ activeTab, setActiveTab, selectedCurrency, setS
       borderBottom: '1px solid var(--color-border)',
       position: 'sticky',
       top: 0,
-      zIndex: 100,
-      boxShadow: 'var(--shadow-sm)'
+      zIndex: 1000,
+      boxShadow: '0 2px 10px rgba(0,0,0,0.04)'
     }}>
       <div className="container" style={{
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'space-between',
-        height: '76px'
+        height: '72px'
       }}>
         {/* Brand Logo */}
-        <button onClick={() => setActiveTab('landing')} style={{ background: 'none', border: 'none', cursor: 'pointer' }}>
+        <button 
+          onClick={() => setActiveTab('landing')} 
+          style={{ background: 'none', border: 'none', cursor: 'pointer', display: 'inline-flex', alignItems: 'center' }}
+        >
           <Logo size="medium" />
         </button>
 
-        {/* Desktop Web Navigation */}
-        <nav style={{ display: 'flex', alignItems: 'center', gap: '1.75rem' }} className="desktop-nav">
+        {/* Desktop Web Navigation Links */}
+        <nav style={{ display: 'flex', alignItems: 'center', gap: '1.5rem' }} className="desktop-nav">
           <button 
             onClick={() => setActiveTab('search')} 
             style={{ 
               color: activeTab === 'search' ? 'var(--color-primary)' : 'var(--color-text-main)',
               fontWeight: activeTab === 'search' ? 800 : 600,
-              fontSize: '0.95rem'
+              fontSize: '0.92rem',
+              display: 'inline-flex',
+              alignItems: 'center',
+              whiteSpace: 'nowrap'
             }}
           >
             Explore Stays
@@ -41,13 +47,15 @@ export default function Navbar({ activeTab, setActiveTab, selectedCurrency, setS
             style={{ 
               color: activeTab === 'hostel-partners' ? 'var(--color-primary)' : 'var(--color-text-main)',
               fontWeight: activeTab === 'hostel-partners' ? 800 : 600,
-              fontSize: '0.95rem',
+              fontSize: '0.92rem',
               display: 'inline-flex',
               alignItems: 'center',
-              gap: '4px'
+              gap: '6px',
+              whiteSpace: 'nowrap'
             }}
           >
-            <Building2 size={16} color="var(--color-teal)" /> Hostel Partners
+            <Building2 size={16} color="var(--color-teal)" />
+            <span>Hostel Partners</span>
           </button>
           
           <button 
@@ -55,13 +63,15 @@ export default function Navbar({ activeTab, setActiveTab, selectedCurrency, setS
             style={{ 
               color: activeTab === 'service-share' ? 'var(--color-teal)' : 'var(--color-text-muted)',
               fontWeight: 600,
-              fontSize: '0.95rem',
+              fontSize: '0.92rem',
               display: 'inline-flex',
               alignItems: 'center',
-              gap: '4px'
+              gap: '6px',
+              whiteSpace: 'nowrap'
             }}
           >
-            <Heart size={16} color="var(--color-teal)" /> Service-Share
+            <Heart size={16} color="var(--color-teal)" />
+            <span>Service-Share</span>
           </button>
 
           <button 
@@ -69,20 +79,22 @@ export default function Navbar({ activeTab, setActiveTab, selectedCurrency, setS
             style={{ 
               color: activeTab === 'protocol' ? 'var(--color-primary)' : 'var(--color-text-muted)',
               fontWeight: 600,
-              fontSize: '0.95rem',
+              fontSize: '0.92rem',
               display: 'inline-flex',
               alignItems: 'center',
-              gap: '4px'
+              gap: '6px',
+              whiteSpace: 'nowrap'
             }}
           >
-            <Cpu size={16} color="var(--color-primary)" /> Open Protocol
+            <Cpu size={16} color="var(--color-primary)" />
+            <span>Open Protocol</span>
           </button>
         </nav>
 
         {/* Right Utility Actions */}
-        <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '0.85rem' }}>
           {/* Currency Selector */}
-          <div style={{ display: 'flex', alignItems: 'center', gap: '4px', fontSize: '0.85rem', color: 'var(--color-text-muted)', fontWeight: 600 }}>
+          <div style={{ display: 'inline-flex', alignItems: 'center', gap: '4px', fontSize: '0.85rem', color: 'var(--color-text-muted)', fontWeight: 600 }}>
             <Globe size={16} />
             <select 
               value={selectedCurrency} 
@@ -92,7 +104,8 @@ export default function Navbar({ activeTab, setActiveTab, selectedCurrency, setS
                 background: 'transparent',
                 fontWeight: 700,
                 color: 'var(--color-text-main)',
-                cursor: 'pointer'
+                cursor: 'pointer',
+                outline: 'none'
               }}
             >
               <option value="$">USD ($)</option>
@@ -105,9 +118,17 @@ export default function Navbar({ activeTab, setActiveTab, selectedCurrency, setS
           <button 
             className="btn-primary"
             onClick={() => setActiveTab('wizard')}
-            style={{ padding: '0.55rem 1.1rem', fontSize: '0.88rem' }}
+            style={{ 
+              padding: '0.55rem 1.1rem', 
+              fontSize: '0.88rem',
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: '6px',
+              whiteSpace: 'nowrap'
+            }}
           >
-            <Sparkles size={15} /> Become a Host
+            <Sparkles size={15} />
+            <span>Become a Host</span>
           </button>
 
           {/* Portal Switcher Pill */}
@@ -116,7 +137,8 @@ export default function Navbar({ activeTab, setActiveTab, selectedCurrency, setS
             borderRadius: 'var(--radius-pill)', 
             padding: '3px', 
             border: '1px solid var(--color-border)',
-            display: 'flex',
+            display: 'inline-flex',
+            alignItems: 'center',
             gap: '2px'
           }}>
             <button 
@@ -130,10 +152,12 @@ export default function Navbar({ activeTab, setActiveTab, selectedCurrency, setS
                 color: activeTab === 'host-dashboard' ? '#FFFFFF' : 'var(--color-text-muted)',
                 display: 'inline-flex',
                 alignItems: 'center',
-                gap: '4px'
+                gap: '4px',
+                whiteSpace: 'nowrap'
               }}
             >
-              <Building2 size={13} /> Host Panel
+              <Building2 size={13} />
+              <span>Host Panel</span>
             </button>
 
             <button 
@@ -147,10 +171,12 @@ export default function Navbar({ activeTab, setActiveTab, selectedCurrency, setS
                 color: activeTab === 'admin' ? '#FFFFFF' : 'var(--color-text-muted)',
                 display: 'inline-flex',
                 alignItems: 'center',
-                gap: '4px'
+                gap: '4px',
+                whiteSpace: 'nowrap'
               }}
             >
-              <ShieldCheck size={13} /> Admin
+              <ShieldCheck size={13} />
+              <span>Admin</span>
             </button>
           </div>
 
@@ -158,13 +184,14 @@ export default function Navbar({ activeTab, setActiveTab, selectedCurrency, setS
           <button 
             onClick={() => setActiveTab('profile')}
             style={{
-              display: 'flex',
+              display: 'inline-flex',
               alignItems: 'center',
-              gap: '0.5rem',
+              gap: '0.4rem',
               padding: '0.4rem 0.8rem',
               border: '1px solid var(--color-border)',
               borderRadius: 'var(--radius-pill)',
-              backgroundColor: 'var(--color-surface)'
+              backgroundColor: 'var(--color-surface)',
+              whiteSpace: 'nowrap'
             }}
           >
             <User size={18} color="var(--color-text-muted)" />
