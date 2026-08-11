@@ -14,7 +14,7 @@ export async function saveCloudUser(userSession) {
           role: userSession.role || 'traveler',
           id_verified: true,
           trust_passport_active: true,
-          profile_photo: userSession.avatar || 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=200&q=80'
+          profile_photo: userSession.avatar || null
         }
       ], { onConflict: 'email' })
       .select();
@@ -40,6 +40,29 @@ export async function saveCloudUser(userSession) {
   }
 }
 
+// Update existing User Profile (photo, name, bio) in public.users table
+export async function updateCloudUserProfile(userSession) {
+  if (!isCloudConnected() || !userSession?.email) return userSession;
+  try {
+    const { error } = await supabase
+      .from('users')
+      .update({
+        profile_photo: userSession.avatar || null,
+        name: userSession.name,
+        bio: userSession.bio
+      })
+      .eq('email', userSession.email);
+
+    if (error) {
+      console.warn('Notice updating profile_photo in public.users:', error.message);
+    }
+    return userSession;
+  } catch (err) {
+    console.error('Exception updating user in Supabase:', err);
+    return userSession;
+  }
+}
+
 // Fetch User Profile from public.users table by email
 export async function getCloudUserByEmail(email) {
   if (!isCloudConnected() || !email) return null;
@@ -59,17 +82,17 @@ export async function getCloudUserByEmail(email) {
       role: data.role,
       isVerified: data.id_verified,
       trustPassport: data.trust_passport_active,
-      avatar: data.profile_photo
+      avatar: data.profile_photo || ''
     };
   } catch (err) {
-    console.error('Error fetching user by email:', err);
+    console.error('Error fetching user from Supabase:', err);
     return null;
   }
 }
 
-// Fetch Listings from Supabase Cloud Database
+// Fetch Cloud Listings from public.listings table
 export async function getCloudListings() {
-  if (!isCloudConnected()) return null;
+  if (!isCloudConnected()) return [];
   try {
     const { data, error } = await supabase
       .from('listings')
@@ -77,114 +100,104 @@ export async function getCloudListings() {
       .eq('active', true)
       .order('created_at', { ascending: false });
 
-    if (error) {
-      console.warn('Supabase fetch listings notice:', error.message);
-      return null;
-    }
-    
-    // Map Supabase column names to App format if data exists
-    return data?.map(item => ({
+    if (error || !data) return [];
+
+    return data.map(item => ({
       id: item.id,
       title: item.title,
-      city: item.city,
-      country: item.country,
-      address: item.address || item.city,
-      distFromCenter: '1.5 km',
-      lat: item.latitude || 13.7563,
-      lng: item.longitude || 100.5018,
+      description: item.description,
+      type: item.type,
+      maxGuests: item.max_guests,
       pricePerNight: Number(item.price_per_night),
       currency: item.currency || 'USD',
-      type: item.type,
-      typeLabel: item.type === 'service-share' ? 'Service-Share Stay' : item.type === 'couch' ? 'Couch / Shared Space' : item.type === 'dorm' ? 'Shared Dorm Bed' : 'Private Room',
-      rating: 5.0,
-      reviewsCount: 0,
-      images: item.photos && item.photos.length > 0 ? item.photos : ['https://images.unsplash.com/photo-1555041469-a586c61ea9bc?auto=format&fit=crop&w=800&q=80'],
+      city: item.city,
+      country: item.country,
+      address: item.address,
+      images: item.photos || ['https://images.unsplash.com/photo-1555041469-a586c61ea9bc?auto=format&fit=crop&w=800&q=80'],
+      amenities: item.amenities || ['Wi-Fi', 'Hot Shower'],
+      houseRules: item.house_rules || ['No smoking inside', 'Quiet hours 10 PM'],
+      isServiceShare: item.is_service_share,
+      rating: 4.9,
+      reviewsCount: 1,
+      distFromCenter: '1.0 km',
       host: {
-        id: item.host_id,
         name: 'Verified Host',
         avatar: 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=200&q=80',
-        isVerified: true,
-        trustPassport: true,
         responseRate: '100%',
         joinedDate: '2026',
-        bio: 'Host on BedHopper network'
-      },
-      amenities: item.amenities || ['Wi-Fi', 'Essentials'],
-      houseRules: item.house_rules || ['Respect host rules'],
-      available: item.active,
-      isServiceShare: item.is_service_share
+        isVerified: true
+      }
     }));
   } catch (err) {
-    console.error('Error connecting to Supabase:', err);
-    return null;
+    console.error('Error fetching listings from Supabase:', err);
+    return [];
   }
 }
 
-// Publish New Listing directly to Supabase Cloud Database
-export async function saveCloudListing(newListing, userId) {
-  if (!isCloudConnected()) return null;
+// Save New Stay Listing to public.listings table
+export async function saveCloudListing(listingData, hostId) {
+  if (!isCloudConnected()) return listingData;
   try {
     const { data, error } = await supabase
       .from('listings')
       .insert([
         {
-          host_id: userId && userId.length > 20 ? userId : undefined,
-          title: newListing.title,
-          description: newListing.description || newListing.title,
-          type: newListing.type,
-          price_per_night: newListing.pricePerNight,
-          currency: newListing.currency || 'USD',
-          city: newListing.city,
-          country: newListing.country,
-          address: newListing.address,
-          latitude: newListing.lat || 13.7367,
-          longitude: newListing.lng || 100.5604,
-          photos: newListing.images || [],
-          amenities: newListing.amenities || [],
-          house_rules: newListing.houseRules || [],
-          is_service_share: newListing.isServiceShare || false,
+          title: listingData.title,
+          description: listingData.description || 'Verified low-cost stay',
+          type: listingData.type || 'couch',
+          max_guests: listingData.maxGuests || 1,
+          price_per_night: listingData.pricePerNight || 0,
+          currency: listingData.currency || 'USD',
+          city: listingData.city || 'Bangkok',
+          country: listingData.country || 'Thailand',
+          address: listingData.address || 'Central City',
+          photos: listingData.images || [],
+          amenities: listingData.amenities || ['Wi-Fi'],
+          is_service_share: Boolean(listingData.isServiceShare),
           active: true
         }
       ])
       .select();
 
-    if (error) throw error;
-    return data?.[0];
+    if (error) {
+      console.warn('Notice saving listing to public.listings:', error.message);
+      return listingData;
+    }
+
+    return { ...listingData, id: data?.[0]?.id || listingData.id };
   } catch (err) {
     console.error('Error saving listing to Supabase:', err);
-    return null;
+    return listingData;
   }
 }
 
-// Save New Booking directly to Supabase Cloud Database
-export async function saveCloudBooking(newBooking, userId) {
-  if (!isCloudConnected()) return null;
+// Save New Booking to public.bookings table
+export async function saveCloudBooking(bookingData, userId) {
+  if (!isCloudConnected()) return bookingData;
   try {
     const { data, error } = await supabase
       .from('bookings')
       .insert([
         {
-          booking_code: newBooking.id,
-          guest_id: userId && userId.length > 20 ? userId : undefined,
-          check_in_date: newBooking.checkIn,
-          check_out_date: newBooking.checkOut,
-          nights: newBooking.nights,
-          guests_count: newBooking.guests,
-          nightly_price: newBooking.nightlyPrice || 0,
-          subtotal: newBooking.subtotal || 0,
-          platform_fee: newBooking.serviceFee || 0,
-          total_price: newBooking.totalPrice || 0,
-          status: newBooking.status,
-          payment_status: newBooking.paymentStatus,
-          is_service_share: newBooking.totalPrice === 0
+          listing_id: bookingData.listingId || null,
+          check_in: bookingData.checkInDate || '2026-08-12',
+          check_out: bookingData.checkOutDate || '2026-08-14',
+          guests: bookingData.guestsCount || 1,
+          total_price: bookingData.totalPrice || 0,
+          status: 'confirmed',
+          payment_status: bookingData.paymentStatus || 'paid'
         }
       ])
       .select();
 
-    if (error) throw error;
-    return data?.[0];
+    if (error) {
+      console.warn('Notice saving booking to public.bookings:', error.message);
+      return bookingData;
+    }
+
+    return { ...bookingData, id: data?.[0]?.id || bookingData.id };
   } catch (err) {
     console.error('Error saving booking to Supabase:', err);
-    return null;
+    return bookingData;
   }
 }

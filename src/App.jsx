@@ -29,7 +29,7 @@ import CityGuideModal from './components/CityGuideModal';
 import HostInquiryModal from './components/HostInquiryModal';
 import HostReviewsModal from './components/HostReviewsModal';
 
-import { getCloudListings, saveCloudListing, saveCloudBooking } from './services/dbService';
+import { getCloudListings, saveCloudListing, saveCloudBooking, updateCloudUserProfile } from './services/dbService';
 
 import { 
   INITIAL_DESTINATIONS,
@@ -283,9 +283,10 @@ export default function App() {
             onOpenTrustModal={() => setShowTrustModal(true)}
             onOpenSOSModal={() => setShowSOSModal(true)}
             onLogout={handleLogout}
-            onUpdateUser={(updated) => {
+            onUpdateUser={async (updated) => {
               setCurrentUser(updated);
               localStorage.setItem('bedhopper_user', JSON.stringify(updated));
+              await updateCloudUserProfile(updated);
             }}
           />
         )}
