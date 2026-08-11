@@ -59,6 +59,7 @@ export default function TrustPassportModal({ isOpen, onClose, onVerifySuccess })
       const res = await requestRealAadhaarOtp(cleanNum);
       if (res.success && res.referenceId) {
         setReferenceId(res.referenceId);
+        setAadhaarOtp('');
         setDigilockerState('otp_sent');
       }
     } catch (err) {
@@ -309,7 +310,7 @@ export default function TrustPassportModal({ isOpen, onClose, onVerifySuccess })
                   {(digilockerState === 'otp_sent' || digilockerState === 'verifying_otp' || digilockerState === 'verified') && (
                     <div style={{ display: 'flex', flexDirection: 'column', gap: '10px', backgroundColor: '#1e293b', padding: '12px', borderRadius: '12px', border: '1px solid #10b981' }}>
                       <div style={{ fontSize: '12px', color: '#34d399', fontWeight: 800 }}>
-                        📲 Real UIDAI SMS OTP sent to your Aadhaar-registered mobile phone!
+                        📲 Real UIDAI SMS OTP sent to your Aadhaar-registered mobile phone. Type the 6-digit code from your SMS:
                       </div>
                       
                       <div style={{ display: 'flex', gap: '8px' }}>
