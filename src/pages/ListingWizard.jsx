@@ -31,26 +31,13 @@ export default function ListingWizard({ onPublishListing, onCancel }) {
     setIsUploading(true);
 
     for (const file of files) {
-      // Instant local preview via FileReader
-      const reader = new FileReader();
-      reader.onload = (event) => {
-        const localPreviewUrl = event.target.result;
-        setPhotosList(prev => [...prev, localPreviewUrl]);
-      };
-      reader.readAsDataURL(file);
-
-      // Async cloud upload to Supabase Storage
       try {
-        const cloudUrl = await uploadToSupabaseStorage(file, 'hopabed.bucket');
-        if (cloudUrl) {
-          // Replace or append cloud URL
-          setPhotosList(prev => {
-            const filtered = prev.filter(url => !url.startsWith('data:'));
-            return [...filtered, cloudUrl];
-          });
+        const photoUrl = await uploadToSupabaseStorage(file, 'hopabed.bucket');
+        if (photoUrl) {
+          setPhotosList(prev => [...prev, photoUrl]);
         }
       } catch (err) {
-        console.warn('Cloud storage upload note:', err);
+        console.warn('Photo upload note:', err);
       }
     }
 

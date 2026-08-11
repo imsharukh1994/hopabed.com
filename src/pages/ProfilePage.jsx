@@ -20,21 +20,10 @@ export default function ProfilePage({ currentUser, onOpenTrustModal, onOpenSOSMo
 
     setIsUploading(true);
 
-    // Instant local FileReader preview
-    const reader = new FileReader();
-    reader.onload = (event) => {
-      const localUrl = event.target.result;
-      if (onUpdateUser) {
-        onUpdateUser({ ...user, avatar: localUrl });
-      }
-    };
-    reader.readAsDataURL(file);
-
-    // Async cloud upload to Supabase Storage
     try {
-      const cloudUrl = await uploadToSupabaseStorage(file, 'hopabed.bucket');
-      if (cloudUrl && onUpdateUser) {
-        onUpdateUser({ ...user, avatar: cloudUrl });
+      const avatarUrl = await uploadToSupabaseStorage(file, 'hopabed.bucket');
+      if (avatarUrl && onUpdateUser) {
+        onUpdateUser({ ...user, avatar: avatarUrl });
       }
     } catch (err) {
       console.warn('Avatar upload note:', err);

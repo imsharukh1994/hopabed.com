@@ -132,3 +132,15 @@ CREATE POLICY "Public bookings viewable" ON bookings FOR SELECT USING (true);
 
 DROP POLICY IF EXISTS "Public bookings insertable" ON bookings;
 CREATE POLICY "Public bookings insertable" ON bookings FOR INSERT WITH CHECK (true);
+
+-- 8. SUPABASE STORAGE BUCKET POLICIES FOR hopabed.bucket
+INSERT INTO storage.buckets (id, name, public) 
+VALUES ('hopabed.bucket', 'hopabed.bucket', true)
+ON CONFLICT (id) DO UPDATE SET public = true;
+
+DROP POLICY IF EXISTS "Public Storage Select" ON storage.objects;
+CREATE POLICY "Public Storage Select" ON storage.objects FOR SELECT USING (bucket_id = 'hopabed.bucket');
+
+DROP POLICY IF EXISTS "Public Storage Insert" ON storage.objects;
+CREATE POLICY "Public Storage Insert" ON storage.objects FOR INSERT WITH CHECK (bucket_id = 'hopabed.bucket');
+
