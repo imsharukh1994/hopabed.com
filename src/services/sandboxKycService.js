@@ -3,8 +3,8 @@
  * Handles real UIDAI Aadhaar e-KYC OTP generation & verification via Sandbox.co.in API
  */
 
-const SANDBOX_API_KEY = import.meta.env.VITE_SANDBOX_API_KEY || 'key_live_9808f386b14b49d4b66f0e6943307f58';
-const SANDBOX_API_SECRET = import.meta.env.VITE_SANDBOX_API_SECRET || 'secret_live_c4ad1791635f41c99d5d7b330fca2fd3';
+const SANDBOX_API_KEY = import.meta.env.VITE_SANDBOX_API_KEY || 'key_test_dd642613030948a984158d6b35ad9c4e';
+const SANDBOX_API_SECRET = import.meta.env.VITE_SANDBOX_API_SECRET || 'secret_test_2969e213929447a78d62a1f5f77e3895';
 const BASE_URL = '/api-sandbox';
 
 let cachedAccessToken = null;
