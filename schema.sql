@@ -107,10 +107,19 @@ CREATE INDEX IF NOT EXISTS idx_listings_price ON listings(price_per_night);
 CREATE INDEX IF NOT EXISTS idx_bookings_guest ON bookings(guest_id);
 CREATE INDEX IF NOT EXISTS idx_bookings_listing ON listings(id);
 
--- ENABLE ROW LEVEL SECURITY (RLS) POLICIES FOR PUBLIC READ ACCESS
+-- ENABLE ROW LEVEL SECURITY (RLS) POLICIES FOR PUBLIC READ/WRITE ACCESS
 ALTER TABLE listings ENABLE ROW LEVEL SECURITY;
 ALTER TABLE bookings ENABLE ROW LEVEL SECURITY;
 ALTER TABLE users ENABLE ROW LEVEL SECURITY;
+
+DROP POLICY IF EXISTS "Public users viewable" ON users;
+CREATE POLICY "Public users viewable" ON users FOR SELECT USING (true);
+
+DROP POLICY IF EXISTS "Public users insertable" ON users;
+CREATE POLICY "Public users insertable" ON users FOR INSERT WITH CHECK (true);
+
+DROP POLICY IF EXISTS "Public users updatable" ON users;
+CREATE POLICY "Public users updatable" ON users FOR UPDATE USING (true);
 
 DROP POLICY IF EXISTS "Public listings viewable" ON listings;
 CREATE POLICY "Public listings viewable" ON listings FOR SELECT USING (true);

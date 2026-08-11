@@ -1,6 +1,6 @@
 import React from 'react';
 
-export default function Logo({ size = 'medium', showText = true, className = '' }) {
+export default function Logo({ size = 'medium', showText = true, textColor = null, className = '' }) {
   const heights = {
     small: 28,
     medium: 36,
@@ -12,7 +12,7 @@ export default function Logo({ size = 'medium', showText = true, className = '' 
 
   return (
     <div className={`flex-center gap-2 ${className}`} style={{ display: 'inline-flex', alignItems: 'center', gap: '8px' }}>
-      {/* BedHopper Vector Logo Pin */}
+      {/* hopabed.com Vector Logo Pin */}
       <svg width={pinSize} height={pinSize} viewBox="0 0 100 120" fill="none" xmlns="http://www.w3.org/2000/svg">
         {/* Shadow */}
         <ellipse cx="50" cy="112" rx="28" ry="7" fill="#1F4B37" fillOpacity="0.25" />
@@ -39,7 +39,7 @@ export default function Logo({ size = 'medium', showText = true, className = '' 
         </defs>
       </svg>
 
-      {/* Wordmark */}
+      {/* Wordmark: hopabed.com */}
       {showText && (
         <span style={{ 
           fontFamily: 'var(--font-family-heading)', 
@@ -48,8 +48,8 @@ export default function Logo({ size = 'medium', showText = true, className = '' 
           letterSpacing: '-0.5px',
           lineHeight: 1
         }}>
-          <span style={{ color: '#1E293B' }}>bed</span>
-          <span style={{ color: '#F4845F' }}>hopper</span>
+          <span style={{ color: 'var(--color-primary)' }}>hopa</span>
+          <span style={{ color: textColor || 'var(--color-text-main)', transition: 'color 0.3s ease' }}>bed.com</span>
         </span>
       )}
     </div>

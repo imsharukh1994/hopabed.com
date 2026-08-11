@@ -1,50 +1,70 @@
 :root {
-  /* Color Palette Tokens */
+  /* Common Accent Colors */
   --color-primary: #F4845F;       /* Sunset Orange */
   --color-primary-dark: #E0532C;
-  --color-primary-light: #FFF0EB;
+  --color-primary-light: rgba(244, 132, 95, 0.15);
   
-  --color-teal: #2D6A4F;          /* Deep Teal */
-  --color-teal-dark: #1F4B37;
-  --color-teal-light: #E8F5E9;
+  --color-teal: #0D9488;          /* Vibrant Teal */
+  --color-teal-dark: #0F766E;
+  --color-teal-light: rgba(13, 148, 136, 0.15);
 
-  --color-bg: #FFFFFF;            /* Clean Modern White */
-  --color-bg-alt: #F8FAFC;        /* Soft Slate */
-  --color-surface: #FFFFFF;
-  --color-surface-hover: #F1F5F9;
-  
-  --color-text-main: #0F172A;     /* Dark Slate Header */
-  --color-text-muted: #475569;
-  --color-text-light: #94A3B8;
-
-  --color-yellow: #F59E0B;        /* Soft Amber Yellow */
-  --color-yellow-light: #FEF3C7;
-  
-  --color-green: #10B981;         /* Emerald Green */
-  --color-green-light: #D1FAE5;
-  
-  --color-red: #EF4444;           /* Soft Red */
-  --color-border: #E2E8F0;
-  --color-border-dark: #CBD5E1;
+  --color-accent: #0284C7;
+  --color-yellow: #F59E0B;
+  --color-green: #10B981;
+  --color-red: #EF4444;
 
   /* Typography */
   --font-family-heading: 'Nunito', -apple-system, BlinkMacSystemFont, sans-serif;
   --font-family-body: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
 
-  /* Shadows */
-  --shadow-sm: 0 1px 3px rgba(0,0,0,0.05), 0 1px 2px rgba(0,0,0,0.03);
-  --shadow-md: 0 4px 16px rgba(15, 23, 42, 0.08);
-  --shadow-lg: 0 12px 32px rgba(15, 23, 42, 0.12);
-  --shadow-primary: 0 4px 16px rgba(244, 132, 95, 0.35);
-
-  /* Border Radius */
-  --radius-sm: 8px;
-  --radius-md: 14px;
-  --radius-lg: 20px;
+  /* Radius */
+  --radius-sm: 10px;
+  --radius-md: 16px;
+  --radius-lg: 24px;
   --radius-pill: 9999px;
 
   /* Transitions */
-  --transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  --transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Light Theme Variables */
+[data-theme="light"] {
+  --color-bg: #F8FAFC;
+  --color-bg-alt: #F1F5F9;
+  --color-surface: #FFFFFF;
+  --color-surface-hover: #F8FAFC;
+  --color-header-bg: #FFFFFF;
+  
+  --color-text-main: #0F172A;
+  --color-text-muted: #64748B;
+  --color-text-light: #94A3B8;
+
+  --color-border: #E2E8F0;
+  --color-border-dark: #CBD5E1;
+
+  --shadow-sm: 0 2px 4px rgba(15, 23, 42, 0.05);
+  --shadow-md: 0 8px 20px rgba(15, 23, 42, 0.08);
+  --shadow-lg: 0 16px 36px rgba(15, 23, 42, 0.12);
+}
+
+/* Dark Theme Variables (Default) */
+[data-theme="dark"] {
+  --color-bg: #0F172A;
+  --color-bg-alt: #1E293B;
+  --color-surface: #1E293B;
+  --color-surface-hover: #334155;
+  --color-header-bg: #0F172A;
+
+  --color-text-main: #F8FAFC;
+  --color-text-muted: #94A3B8;
+  --color-text-light: #64748B;
+
+  --color-border: #334155;
+  --color-border-dark: #475569;
+
+  --shadow-sm: 0 2px 4px rgba(0,0,0,0.2);
+  --shadow-md: 0 8px 24px rgba(0,0,0,0.3);
+  --shadow-lg: 0 16px 40px rgba(0,0,0,0.5);
 }
 
 /* Reset & Base Setup */
@@ -61,6 +81,7 @@ body {
   line-height: 1.5;
   -webkit-font-smoothing: antialiased;
   min-height: 100vh;
+  transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 h1, h2, h3, h4, h5, h6 {
@@ -93,12 +114,12 @@ img {
 /* UI Utility Classes */
 .container {
   width: 100%;
-  max-width: 1280px;
+  max-width: 1240px;
   margin: 0 auto;
   padding: 0 2rem;
 }
 
-/* Desktop Grid Systems */
+/* Responsive Grid Systems */
 .grid-destinations-desktop {
   display: grid;
   grid-template-columns: repeat(6, 1fr);
@@ -123,7 +144,19 @@ img {
   gap: 2rem;
 }
 
-/* Responsive Media Queries */
+/* Desktop vs Mobile Navbar Visibility Fix */
+@media (min-width: 769px) {
+  .mobile-nav-bar {
+    display: none !important;
+  }
+}
+
+@media (max-width: 768px) {
+  .mobile-nav-bar {
+    display: flex !important;
+  }
+}
+
 @media (max-width: 1024px) {
   .container {
     padding: 0 1.5rem;
@@ -160,12 +193,6 @@ img {
   }
 }
 
-@media (min-width: 769px) {
-  .mobile-nav-bar {
-    display: none !important;
-  }
-}
-
 /* Button Variants */
 .btn-primary {
   background-color: var(--color-primary);
@@ -173,7 +200,6 @@ img {
   padding: 0.75rem 1.5rem;
   border-radius: var(--radius-pill);
   font-size: 0.95rem;
-  box-shadow: var(--shadow-primary);
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -184,31 +210,10 @@ img {
 .btn-primary:hover {
   background-color: var(--color-primary-dark);
   transform: translateY(-2px);
-  box-shadow: 0 6px 18px rgba(244, 132, 95, 0.45);
-}
-
-.btn-secondary {
-  border: 2px solid var(--color-teal);
-  color: var(--color-teal);
-  background-color: transparent;
-  padding: 0.65rem 1.25rem;
-  border-radius: var(--radius-pill);
-  font-size: 0.92rem;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 0.5rem;
-  white-space: nowrap;
-}
-
-.btn-secondary:hover {
-  background-color: var(--color-teal);
-  color: #FFFFFF;
-  transform: translateY(-1px);
 }
 
 .btn-outline {
-  border: 1px solid var(--color-border-dark);
+  border: 1px solid var(--color-border);
   color: var(--color-text-main);
   background-color: var(--color-surface);
   padding: 0.65rem 1.25rem;
@@ -222,66 +227,6 @@ img {
 
 .btn-outline:hover {
   background-color: var(--color-surface-hover);
-  border-color: var(--color-text-main);
-}
-
-/* Badges & Chips */
-.badge-price {
-  background-color: var(--color-yellow-light);
-  color: #B45309;
-  font-weight: 800;
-  padding: 0.35rem 0.75rem;
-  border-radius: var(--radius-pill);
-  font-family: var(--font-family-heading);
-  font-size: 0.85rem;
-  display: inline-flex;
-  align-items: center;
-}
-
-.badge-verified {
-  background-color: var(--color-teal-light);
-  color: var(--color-teal);
-  font-size: 0.8rem;
-  font-weight: 800;
-  padding: 0.25rem 0.65rem;
-  border-radius: var(--radius-pill);
-  display: inline-flex;
-  align-items: center;
-  gap: 0.3rem;
-  border: 1px solid rgba(45, 106, 79, 0.2);
-}
-
-.badge-service-share {
-  background-color: #E0F2FE;
-  color: #0369A1;
-  font-size: 0.8rem;
-  font-weight: 800;
-  padding: 0.25rem 0.65rem;
-  border-radius: var(--radius-pill);
-  display: inline-flex;
-  align-items: center;
-  gap: 0.3rem;
-}
-
-/* Leaflet Custom Price Marker Pins */
-.custom-map-pin {
-  background-color: var(--color-primary);
-  color: #FFFFFF;
-  font-weight: 800;
-  font-family: var(--font-family-heading);
-  padding: 4px 10px;
-  border-radius: 16px;
-  box-shadow: 0 3px 10px rgba(0,0,0,0.3);
-  font-size: 13px;
-  white-space: nowrap;
-  border: 2px solid #FFFFFF;
-  transition: transform 0.2s ease;
-}
-
-.custom-map-pin:hover, .custom-map-pin.active {
-  background-color: var(--color-teal);
-  transform: scale(1.15);
-  z-index: 1000 !important;
 }
 
 /* Animations */

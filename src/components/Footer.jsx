@@ -5,7 +5,7 @@ import { Globe, Heart, ShieldCheck, Github, Twitter, Mail, ArrowRight } from 'lu
 export default function Footer({ onNavigate }) {
   return (
     <footer style={{
-      backgroundColor: '#0F172A', // Slate dark
+      backgroundColor: '#0F172A',
       color: '#94A3B8',
       paddingTop: '4rem',
       paddingBottom: '2.5rem',
@@ -16,9 +16,9 @@ export default function Footer({ onNavigate }) {
         {/* Top Newsletter & Brand Header */}
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '2.5rem', borderBottom: '1px solid #1E293B', paddingBottom: '2.5rem' }}>
           <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
-            <Logo size="medium" />
-            <p style={{ fontSize: '0.92rem', color: '94A3B8', lineHeight: 1.6, maxWidth: '380px' }}>
-              BedHopper is the open-source, ultra-low-cost accommodation protocol. Connecting budget travelers with verified couches, dorms, and service-share stays worldwide.
+            <Logo size="medium" textColor="#FFFFFF" />
+            <p style={{ fontSize: '0.92rem', color: '#94A3B8', lineHeight: 1.6, maxWidth: '380px' }}>
+              hopabed.com is the open-source, ultra-low-cost accommodation protocol. Connecting budget travelers with verified couches, dorms, and service-share stays worldwide.
             </p>
             <div style={{ display: 'flex', gap: '1rem', marginTop: '0.5rem' }}>
               <a href="https://github.com/imsharukh1994/bedhopper" target="_blank" rel="noreferrer" style={{ color: '#F8FAFC', backgroundColor: '#1E293B', padding: '0.5rem', borderRadius: '50%' }}>
@@ -36,8 +36,8 @@ export default function Footer({ onNavigate }) {
           {/* Newsletter Subscription Box */}
           <div style={{ backgroundColor: '#1E293B', padding: '1.75rem', borderRadius: 'var(--radius-md)', display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
             <h4 style={{ color: '#F8FAFC', fontSize: '1.1rem', fontWeight: 800 }}>Subscribe to Extreme-Budget Stays</h4>
-            <p style={{ fontSize: '0.85rem', color: '#94A3B8' }}>Get weekly alerts on $1–$5/night stays and new pilot city node launches.</p>
-            <form onSubmit={(e) => { e.preventDefault(); alert('Subscribed to BedHopper alerts!'); }} style={{ display: 'flex', gap: '8px', marginTop: '0.5rem' }}>
+            <p style={{ fontSize: '0.85rem', color: '#94A3B8' }}>Get weekly alerts on $1–$5/night stays and new pilot city node launches on hopabed.com.</p>
+            <form onSubmit={(e) => { e.preventDefault(); alert('Subscribed to hopabed.com alerts!'); }} style={{ display: 'flex', gap: '8px', marginTop: '0.5rem' }}>
               <input 
                 type="email" 
                 placeholder="Enter your email address" 
@@ -68,7 +68,7 @@ export default function Footer({ onNavigate }) {
             <button onClick={() => onNavigate('search')} style={{ textIndent: 0, textAlign: 'left', color: '#94A3B8', fontSize: '0.88rem' }}>Bangkok Beds ($2/night)</button>
             <button onClick={() => onNavigate('search')} style={{ textIndent: 0, textAlign: 'left', color: '#94A3B8', fontSize: '0.88rem' }}>Mexico City Stays ($5/night)</button>
             <button onClick={() => onNavigate('search')} style={{ textIndent: 0, textAlign: 'left', color: '#94A3B8', fontSize: '0.88rem' }}>Lisbon Backpackers ($4/night)</button>
-            <button onClick={() => onNavigate('service-share')} style={{ textIndent: 0, textAlign: 'left', color: 'var(--color-yellow)', fontSize: '0.88rem', fontWeight: 700 }}>Service-Share Free Stays</button>
+            <button onClick={() => onNavigate('search')} style={{ textIndent: 0, textAlign: 'left', color: '#94A3B8', fontSize: '0.88rem' }}>Verified Backpacker Stays</button>
           </div>
 
           {/* Col 2: For Hosts & Hostels */}
@@ -77,15 +77,14 @@ export default function Footer({ onNavigate }) {
             <button onClick={() => onNavigate('wizard')} style={{ textIndent: 0, textAlign: 'left', color: '#94A3B8', fontSize: '0.88rem' }}>Become a Bed Host</button>
             <button onClick={() => onNavigate('hostel-partners')} style={{ textIndent: 0, textAlign: 'left', color: '#94A3B8', fontSize: '0.88rem' }}>Commercial Hostel Portal</button>
             <button onClick={() => onNavigate('host-dashboard')} style={{ textIndent: 0, textAlign: 'left', color: '#94A3B8', fontSize: '0.88rem' }}>Host Dashboard</button>
-            <button onClick={() => onNavigate('protocol')} style={{ textIndent: 0, textAlign: 'left', color: '#94A3B8', fontSize: '0.88rem' }}>Node Operator Licensing</button>
+            <button onClick={() => onNavigate('search')} style={{ textIndent: 0, textAlign: 'left', color: '#94A3B8', fontSize: '0.88rem' }}>Extreme-Budget Guarantee</button>
           </div>
 
-          {/* Col 3: Protocol & Open Source */}
+          {/* Col 3: Travel Guides & Perks */}
           <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
-            <h4 style={{ color: '#F8FAFC', fontSize: '0.95rem', fontWeight: 800 }}>Open Protocol</h4>
-            <button onClick={() => onNavigate('protocol')} style={{ textIndent: 0, textAlign: 'left', color: '#94A3B8', fontSize: '0.88rem' }}>Architecture Overview</button>
-            <button onClick={() => onNavigate('protocol')} style={{ textIndent: 0, textAlign: 'left', color: '#94A3B8', fontSize: '0.88rem' }}>Self-Hosting Guide</button>
-            <a href="https://github.com/imsharukh1994/bedhopper" target="_blank" rel="noreferrer" style={{ color: '#94A3B8', fontSize: '0.88rem' }}>GitHub Repository (MIT)</a>
+            <h4 style={{ color: '#F8FAFC', fontSize: '0.95rem', fontWeight: 800 }}>Community & Guides</h4>
+            <button onClick={() => onNavigate('travel-guides')} style={{ textIndent: 0, textAlign: 'left', color: '#94A3B8', fontSize: '0.88rem' }}>Budget Travel Guides</button>
+            <button onClick={() => onNavigate('search')} style={{ textIndent: 0, textAlign: 'left', color: '#94A3B8', fontSize: '0.88rem' }}>Top Backpacker Hubs</button>
             <button onClick={() => onNavigate('profile')} style={{ textIndent: 0, textAlign: 'left', color: 'var(--color-teal-light)', fontSize: '0.88rem', fontWeight: 700 }}>Portable Trust Passport</button>
           </div>
 
@@ -101,7 +100,7 @@ export default function Footer({ onNavigate }) {
 
         {/* Bottom Banner Bar */}
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: '1rem', borderTop: '1px solid #1E293B', paddingTop: '1.5rem', fontSize: '0.82rem' }}>
-          <span>© 2026 BedHopper Protocol. Open Infrastructure under MIT License.</span>
+          <span>© 2026 hopabed.com Protocol. Open Infrastructure under MIT License.</span>
           <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
             <span style={{ display: 'inline-flex', alignItems: 'center', gap: '4px', color: 'var(--color-green)' }}>
               <ShieldCheck size={14} /> 100% Zero Host Commission Guaranteed

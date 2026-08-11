@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
-import { Star, ShieldCheck, Heart, MapPin, Share2, CheckCircle, Wifi, Coffee, Sparkles, AlertCircle, ArrowLeft } from 'lucide-react';
+import { Star, ShieldCheck, Heart, MapPin, Share2, CheckCircle, Wifi, Coffee, Sparkles, AlertCircle, ArrowLeft, MessageCircle } from 'lucide-react';
 import ServiceShareModal from '../components/ServiceShareModal';
+import { formatPrice } from '../utils/currency';
 
-export default function ListingDetailPage({ listing, onBack, onBook }) {
+export default function ListingDetailPage({ listing, onBack, onBook, onOpenInquiry, onOpenReviews, selectedCurrency = 'USD' }) {
   const [checkInDate, setCheckInDate] = useState('2026-08-12');
   const [checkOutDate, setCheckOutDate] = useState('2026-08-14');
   const [guestsCount, setGuestsCount] = useState(1);
@@ -48,17 +49,21 @@ export default function ListingDetailPage({ listing, onBack, onBook }) {
       <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', flexWrap: 'wrap', gap: '1rem' }}>
         <div>
           <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '4px' }}>
-            <span className="badge-price">${listing.pricePerNight}/night</span>
+            <span className="badge-price">{formatPrice(listing.pricePerNight, selectedCurrency)}/night</span>
             {listing.isServiceShare && <span className="badge-service-share"><Sparkles size={13} /> Service-Share Stay</span>}
             <span className="badge-verified"><ShieldCheck size={13} /> Verified Host</span>
           </div>
           <h1 style={{ fontSize: '2rem', fontWeight: 900 }}>{listing.title}</h1>
           <div style={{ display: 'flex', alignItems: 'center', gap: '12px', color: 'var(--color-text-muted)', fontSize: '0.9rem', marginTop: '4px' }}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '3px' }}>
+            <button 
+              onClick={() => onOpenReviews && onOpenReviews(listing)}
+              style={{ display: 'flex', alignItems: 'center', gap: '3px', background: 'none', border: 'none', cursor: 'pointer', padding: 0 }}
+              title="Click to view host ratings breakdown & reviews"
+            >
               <Star size={16} fill="var(--color-yellow)" color="var(--color-yellow)" />
-              <span style={{ fontWeight: 800, color: 'var(--color-text-main)' }}>{listing.rating}</span>
-              <span>({listing.reviewsCount} reviews)</span>
-            </div>
+              <span style={{ fontWeight: 800, color: 'var(--color-text-main)', textDecoration: 'underline' }}>{listing.rating}</span>
+              <span style={{ color: 'var(--color-primary)', fontWeight: 700 }}>({listing.reviewsCount} reviews)</span>
+            </button>
             <span>•</span>
             <div style={{ display: 'flex', alignItems: 'center', gap: '3px' }}>
               <MapPin size={15} />
@@ -116,30 +121,52 @@ export default function ListingDetailPage({ listing, onBack, onBook }) {
             border: '1px solid var(--color-border)',
             display: 'flex',
             alignItems: 'center',
+            justifyContent: 'space-between',
             gap: '1.25rem',
             boxShadow: 'var(--shadow-sm)'
           }}>
-            <img 
-              src={listing.host?.avatar} 
-              alt={listing.host?.name} 
-              style={{ width: '64px', height: '64px', borderRadius: '50%', objectFit: 'cover', border: '2px solid var(--color-primary)' }}
-            />
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '0.25rem' }}>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                <h3 style={{ fontSize: '1.2rem' }}>Hosted by {listing.host?.name}</h3>
-                {listing.host?.isVerified && (
-                  <span className="badge-verified">
-                    <ShieldCheck size={13} /> Verified Host
-                  </span>
-                )}
+            <div style={{ display: 'flex', alignItems: 'center', gap: '1.25rem' }}>
+              <img 
+                src={listing.host?.avatar} 
+                alt={listing.host?.name} 
+                style={{ width: '64px', height: '64px', borderRadius: '50%', objectFit: 'cover', border: '2px solid var(--color-primary)' }}
+              />
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '0.25rem' }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                  <h3 style={{ fontSize: '1.2rem' }}>Hosted by {listing.host?.name}</h3>
+                  {listing.host?.isVerified && (
+                    <span className="badge-verified">
+                      <ShieldCheck size={13} /> Verified Host
+                    </span>
+                  )}
+                </div>
+                <p style={{ fontSize: '0.85rem', color: 'var(--color-text-muted)' }}>
+                  Response rate: <strong>{listing.host?.responseRate}</strong> • Joined {listing.host?.joinedDate}
+                </p>
+                <p style={{ fontSize: '0.9rem', color: 'var(--color-text-main)', marginTop: '0.25rem' }}>
+                  "{listing.host?.bio}"
+                </p>
               </div>
-              <p style={{ fontSize: '0.85rem', color: 'var(--color-text-muted)' }}>
-                Response rate: <strong>{listing.host?.responseRate}</strong> • Joined {listing.host?.joinedDate}
-              </p>
-              <p style={{ fontSize: '0.9rem', color: 'var(--color-text-main)', marginTop: '0.25rem' }}>
-                "{listing.host?.bio}"
-              </p>
             </div>
+
+            {/* Ask Host a Question Button */}
+            <button
+              onClick={() => onOpenInquiry && onOpenInquiry(listing)}
+              className="btn-outline"
+              style={{
+                fontSize: '0.85rem',
+                fontWeight: 800,
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: '6px',
+                whiteSpace: 'nowrap',
+                backgroundColor: 'var(--color-bg)',
+                borderColor: 'var(--color-primary)',
+                color: 'var(--color-primary)'
+              }}
+            >
+              <MessageCircle size={16} /> Ask Host
+            </button>
           </div>
 
           {/* Service-Share Callout Box if applicable */}
@@ -203,7 +230,7 @@ export default function ListingDetailPage({ listing, onBack, onBook }) {
         </div>
 
         {/* Right Side: Sticky Price & Booking Card */}
-        <div style={{ position: 'sticky', top: '90px', height: 'fit-content' }}>
+        <div style={{ position: 'sticky', top: '90px', height: 'fit-content', display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
           <div style={{
             backgroundColor: 'var(--color-surface)',
             borderRadius: 'var(--radius-lg)',
@@ -224,16 +251,20 @@ export default function ListingDetailPage({ listing, onBack, onBook }) {
               ) : (
                 <div>
                   <span style={{ fontSize: '1.75rem', fontWeight: 900, color: 'var(--color-primary)' }}>
-                    {listing.currency}{listing.pricePerNight}
+                    {formatPrice(listing.pricePerNight, selectedCurrency)}
                   </span>
                   <span style={{ fontSize: '0.85rem', color: 'var(--color-text-muted)' }}> / night</span>
                 </div>
               )}
 
-              <div style={{ display: 'flex', alignItems: 'center', gap: '4px', fontSize: '0.9rem', fontWeight: 800 }}>
+              <button 
+                onClick={() => onOpenReviews && onOpenReviews(listing)}
+                style={{ display: 'flex', alignItems: 'center', gap: '4px', fontSize: '0.9rem', fontWeight: 800, background: 'none', border: 'none', cursor: 'pointer', padding: 0 }}
+                title="Click to view ratings breakdown"
+              >
                 <Star size={15} fill="var(--color-yellow)" color="var(--color-yellow)" />
-                <span>{listing.rating}</span>
-              </div>
+                <span style={{ color: 'var(--color-text-main)' }}>{listing.rating}</span>
+              </button>
             </div>
 
             {/* Date Picker inputs */}
@@ -249,7 +280,7 @@ export default function ListingDetailPage({ listing, onBack, onBook }) {
                     type="date" 
                     value={checkInDate} 
                     onChange={(e) => setCheckInDate(e.target.value)}
-                    style={{ width: '100%', border: 'none', background: 'transparent', fontWeight: 700, outline: 'none', fontSize: '0.85rem' }} 
+                    style={{ width: '100%', border: 'none', background: 'transparent', fontWeight: 700, outline: 'none', fontSize: '0.85rem', color: 'var(--color-text-main)' }} 
                   />
                 </div>
                 <div style={{ padding: '0.6rem 0.8rem', backgroundColor: 'var(--color-bg)', borderLeft: '1px solid var(--color-border)' }}>
@@ -258,7 +289,7 @@ export default function ListingDetailPage({ listing, onBack, onBook }) {
                     type="date" 
                     value={checkOutDate} 
                     onChange={(e) => setCheckOutDate(e.target.value)}
-                    style={{ width: '100%', border: 'none', background: 'transparent', fontWeight: 700, outline: 'none', fontSize: '0.85rem' }} 
+                    style={{ width: '100%', border: 'none', background: 'transparent', fontWeight: 700, outline: 'none', fontSize: '0.85rem', color: 'var(--color-text-main)' }} 
                   />
                 </div>
               </div>
@@ -268,10 +299,16 @@ export default function ListingDetailPage({ listing, onBack, onBook }) {
                 <select 
                   value={guestsCount} 
                   onChange={(e) => setGuestsCount(Number(e.target.value))}
-                  style={{ width: '100%', border: 'none', background: 'transparent', fontWeight: 700, outline: 'none', fontSize: '0.9rem', cursor: 'pointer' }}
+                  style={{ width: '100%', border: 'none', background: 'transparent', fontWeight: 700, outline: 'none', fontSize: '0.9rem', cursor: 'pointer', color: 'var(--color-text-main)' }}
                 >
                   <option value={1}>1 Guest</option>
                   <option value={2}>2 Guests</option>
+                  <option value={3}>3 Guests</option>
+                  <option value={4}>4 Guests</option>
+                  <option value={5}>5 Guests</option>
+                  <option value={6}>6 Guests</option>
+                  <option value={8}>8 Guests (Group)</option>
+                  <option value={10}>10+ Guests (Group)</option>
                 </select>
               </div>
             </div>
@@ -280,18 +317,18 @@ export default function ListingDetailPage({ listing, onBack, onBook }) {
             {!listing.isServiceShare && (
               <div style={{ display: 'flex', flexDirection: 'column', gap: '0.6rem', fontSize: '0.92rem', color: 'var(--color-text-muted)' }}>
                 <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                  <span>{listing.currency}{listing.pricePerNight} x {nights} nights</span>
-                  <span>{listing.currency}{nightlyTotal.toFixed(2)}</span>
+                  <span>{formatPrice(listing.pricePerNight, selectedCurrency)} x {nights} nights</span>
+                  <span>{formatPrice(nightlyTotal, selectedCurrency)}</span>
                 </div>
                 <div style={{ display: 'flex', justifyContent: 'space-between' }}>
                   <span style={{ display: 'inline-flex', alignItems: 'center', gap: '4px' }}>
-                    BedHopper Platform Fee (8%)
+                    hopabed.com Platform Fee (8%)
                   </span>
-                  <span>{listing.currency}{platformFee.toFixed(2)}</span>
+                  <span>{formatPrice(platformFee, selectedCurrency)}</span>
                 </div>
                 <div style={{ borderTop: '1px solid var(--color-border)', paddingTop: '0.6rem', display: 'flex', justifyContent: 'space-between', fontWeight: 900, color: 'var(--color-text-main)', fontSize: '1.1rem' }}>
                   <span>Total (incl. taxes)</span>
-                  <span style={{ color: 'var(--color-primary)' }}>{listing.currency}{totalPrice.toFixed(2)}</span>
+                  <span style={{ color: 'var(--color-primary)' }}>{formatPrice(totalPrice, selectedCurrency)}</span>
                 </div>
               </div>
             )}
@@ -305,8 +342,8 @@ export default function ListingDetailPage({ listing, onBack, onBook }) {
               {listing.isServiceShare ? 'Apply for Service-Share' : 'Request to Book'}
             </button>
 
-            <p style={{ fontSize: '0.78rem', color: 'var(--color-text-muted)', textIndent: 0, textAlign: 'center' }}>
-              🔒 Powered by BedHopper Trust Protocol & Stripe Connect
+            <p style={{ fontSize: '0.78rem', color: 'var(--color-text-muted)', textAlign: 'center' }}>
+              🔒 Powered by hopabed.com Trust Protocol & Stripe Connect
             </p>
           </div>
         </div>

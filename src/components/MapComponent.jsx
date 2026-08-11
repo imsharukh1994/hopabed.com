@@ -1,10 +1,20 @@
 import React, { useEffect, useRef } from 'react';
 import L from 'leaflet';
+import { formatPrice } from '../utils/currency';
 
-export default function MapComponent({ listings, selectedListing, onSelectListing, center = [13.756331, 100.501765], zoom = 12 }) {
+export default function MapComponent({ 
+  listings = [], 
+  selectedListing, 
+  onSelectListing, 
+  center = [13.756331, 100.501765], 
+  zoom = 12,
+  selectedCurrency = 'USD',
+  radiusKm = null
+}) {
   const mapContainerRef = useRef(null);
   const mapInstanceRef = useRef(null);
   const markersRef = useRef([]);
+  const circleRef = useRef(null);
 
   useEffect(() => {
     if (!mapContainerRef.current) return;
@@ -19,12 +29,28 @@ export default function MapComponent({ listings, selectedListing, onSelectListin
 
       L.control.zoom({ position: 'bottomright' }).addTo(mapInstanceRef.current);
 
-      // OpenStreetMap Light tiles
-      L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+      // CartoDB Dark/Light style tiles for modern UI
+      L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png', {
+        attribution: '&copy; <a href="https://carto.com/">CARTO</a>'
       }).addTo(mapInstanceRef.current);
     } else {
       mapInstanceRef.current.setView(center, zoom);
+    }
+
+    // Radius Circle Visualizer
+    if (circleRef.current) {
+      circleRef.current.remove();
+      circleRef.current = null;
+    }
+
+    if (radiusKm && center) {
+      circleRef.current = L.circle(center, {
+        radius: radiusKm * 1000,
+        color: '#0284c7',
+        fillColor: '#0284c7',
+        fillOpacity: 0.1,
+        weight: 1.5
+      }).addTo(mapInstanceRef.current);
     }
 
     // Clear existing markers
@@ -36,19 +62,33 @@ export default function MapComponent({ listings, selectedListing, onSelectListin
       if (!listing.lat || !listing.lng) return;
 
       const isSelected = selectedListing && selectedListing.id === listing.id;
-      const priceText = listing.isServiceShare ? 'FREE' : `${listing.currency}${listing.pricePerNight}`;
+      const formattedPrice = listing.isServiceShare 
+        ? 'FREE' 
+        : formatPrice(listing.pricePerNight, selectedCurrency);
 
       const iconHTML = `
-        <div class="custom-map-pin ${isSelected ? 'active' : ''}">
-          ${priceText}
+        <div style="
+          background-color: ${isSelected ? '#0284c7' : listing.isServiceShare ? '#059669' : '#0f172a'};
+          color: #ffffff;
+          padding: 4px 10px;
+          border-radius: 16px;
+          font-size: 11px;
+          font-weight: 800;
+          box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+          border: 2px solid ${isSelected ? '#ffffff' : 'rgba(255,255,255,0.4)'};
+          white-space: nowrap;
+          cursor: pointer;
+          transition: transform 0.2s;
+        ">
+          ${formattedPrice}
         </div>
       `;
 
       const customIcon = L.divIcon({
-        className: 'custom-leaflet-marker',
+        className: 'custom-leaflet-marker-pill',
         html: iconHTML,
-        iconSize: [50, 26],
-        iconAnchor: [25, 13]
+        iconSize: [60, 28],
+        iconAnchor: [30, 14]
       });
 
       const marker = L.marker([listing.lat, listing.lng], { icon: customIcon })
@@ -60,13 +100,12 @@ export default function MapComponent({ listings, selectedListing, onSelectListin
       markersRef.current.push(marker);
     });
 
-    // Cleanup on unmount
     return () => {
       if (mapInstanceRef.current) {
         markersRef.current.forEach(m => m.remove());
       }
     };
-  }, [listings, selectedListing, center, zoom]);
+  }, [listings, selectedListing, center, zoom, selectedCurrency, radiusKm]);
 
   return (
     <div 
@@ -74,10 +113,10 @@ export default function MapComponent({ listings, selectedListing, onSelectListin
       style={{ 
         width: '100%', 
         height: '100%', 
-        minHeight: '400px', 
-        borderRadius: 'var(--radius-md)', 
+        minHeight: '420px', 
+        borderRadius: '16px', 
         overflow: 'hidden',
-        border: '1px solid var(--color-border)',
+        border: '1px solid #334155',
         zIndex: 1
       }} 
     />

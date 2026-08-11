@@ -1,5 +1,72 @@
 import { supabase, isCloudConnected } from '../lib/supabaseClient';
 
+// Save User Profile directly to public.users table in Supabase
+export async function saveCloudUser(userSession) {
+  if (!isCloudConnected() || !userSession?.email) return userSession;
+  try {
+    const { data, error } = await supabase
+      .from('users')
+      .upsert([
+        {
+          name: userSession.name || userSession.email.split('@')[0],
+          email: userSession.email,
+          password_hash: 'hashed_auth_session',
+          role: userSession.role || 'traveler',
+          id_verified: true,
+          trust_passport_active: true,
+          profile_photo: userSession.avatar || 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=200&q=80'
+        }
+      ], { onConflict: 'email' })
+      .select();
+
+    if (error) {
+      console.warn('Notice saving user to public.users:', error.message);
+      return userSession;
+    }
+
+    const savedRecord = data?.[0];
+    return {
+      id: savedRecord?.id || userSession.id,
+      name: savedRecord?.name || userSession.name,
+      email: savedRecord?.email || userSession.email,
+      role: savedRecord?.role || userSession.role,
+      isVerified: savedRecord?.id_verified ?? true,
+      trustPassport: savedRecord?.trust_passport_active ?? true,
+      avatar: savedRecord?.profile_photo || userSession.avatar
+    };
+  } catch (err) {
+    console.error('Error saving user to Supabase:', err);
+    return userSession;
+  }
+}
+
+// Fetch User Profile from public.users table by email
+export async function getCloudUserByEmail(email) {
+  if (!isCloudConnected() || !email) return null;
+  try {
+    const { data, error } = await supabase
+      .from('users')
+      .select('*')
+      .eq('email', email)
+      .single();
+
+    if (error || !data) return null;
+
+    return {
+      id: data.id,
+      name: data.name,
+      email: data.email,
+      role: data.role,
+      isVerified: data.id_verified,
+      trustPassport: data.trust_passport_active,
+      avatar: data.profile_photo
+    };
+  } catch (err) {
+    console.error('Error fetching user by email:', err);
+    return null;
+  }
+}
+
 // Fetch Listings from Supabase Cloud Database
 export async function getCloudListings() {
   if (!isCloudConnected()) return null;
@@ -26,7 +93,7 @@ export async function getCloudListings() {
       lat: item.latitude || 13.7563,
       lng: item.longitude || 100.5018,
       pricePerNight: Number(item.price_per_night),
-      currency: item.currency || '$',
+      currency: item.currency || 'USD',
       type: item.type,
       typeLabel: item.type === 'service-share' ? 'Service-Share Stay' : item.type === 'couch' ? 'Couch / Shared Space' : item.type === 'dorm' ? 'Shared Dorm Bed' : 'Private Room',
       rating: 5.0,
@@ -61,7 +128,7 @@ export async function saveCloudListing(newListing, userId) {
       .from('listings')
       .insert([
         {
-          host_id: userId || 'a1111111-1111-1111-1111-111111111111',
+          host_id: userId && userId.length > 20 ? userId : undefined,
           title: newListing.title,
           description: newListing.description || newListing.title,
           type: newListing.type,
@@ -98,15 +165,15 @@ export async function saveCloudBooking(newBooking, userId) {
       .insert([
         {
           booking_code: newBooking.id,
-          guest_id: userId || 'c3333333-3333-3333-3333-333333333333',
+          guest_id: userId && userId.length > 20 ? userId : undefined,
           check_in_date: newBooking.checkIn,
           check_out_date: newBooking.checkOut,
           nights: newBooking.nights,
           guests_count: newBooking.guests,
-          nightly_price: newBooking.nightlyPrice,
-          subtotal: newBooking.subtotal,
-          platform_fee: newBooking.serviceFee,
-          total_price: newBooking.totalPrice,
+          nightly_price: newBooking.nightlyPrice || 0,
+          subtotal: newBooking.subtotal || 0,
+          platform_fee: newBooking.serviceFee || 0,
+          total_price: newBooking.totalPrice || 0,
           status: newBooking.status,
           payment_status: newBooking.paymentStatus,
           is_service_share: newBooking.totalPrice === 0
