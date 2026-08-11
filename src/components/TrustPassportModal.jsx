@@ -1,13 +1,14 @@
 import React, { useState, useRef } from 'react';
-import { ShieldCheck, CheckCircle2, Camera, Upload, Lock, Award, X, Sparkles, ChevronRight, FileText } from 'lucide-react';
+import { ShieldCheck, CheckCircle2, Camera, Upload, Lock, Award, X, Sparkles, ChevronRight, FileText, CreditCard } from 'lucide-react';
 import { uploadToSupabaseStorage } from '../services/storageService';
 
 export default function TrustPassportModal({ isOpen, onClose, onVerifySuccess }) {
   const [step, setStep] = useState(1);
-  const [idType, setIdType] = useState('passport');
+  const [idType, setIdType] = useState('aadhaar');
+  const [idNumber, setIdNumber] = useState('');
   const [idFileName, setIdFileName] = useState('');
   const [selfieCaptured, setSelfieCaptured] = useState(false);
-  const [phone, setPhone] = useState('+1 (555) 019-2834');
+  const [phone, setPhone] = useState('+91 98765 43210');
   const [verifying, setVerifying] = useState(false);
   const docInputRef = useRef(null);
 
@@ -17,7 +18,6 @@ export default function TrustPassportModal({ isOpen, onClose, onVerifySuccess })
     const file = e.target.files?.[0];
     if (file) {
       setIdFileName(file.name);
-      // Upload document scan securely to Supabase Storage
       try {
         await uploadToSupabaseStorage(file, 'hopabed.bucket');
       } catch (err) {
@@ -56,7 +56,7 @@ export default function TrustPassportModal({ isOpen, onClose, onVerifySuccess })
     }}>
       <div style={{
         width: '100%',
-        maxWidth: '520px',
+        maxWidth: '540px',
         backgroundColor: '#1e293b',
         borderRadius: '24px',
         border: '1px solid rgba(255, 255, 255, 0.1)',
@@ -95,7 +95,7 @@ export default function TrustPassportModal({ isOpen, onClose, onVerifySuccess })
             </div>
             <div>
               <div style={{ fontSize: '18px', fontWeight: 800, color: '#fff' }}>hopabed.com Trust Passport</div>
-              <div style={{ fontSize: '12px', color: 'rgba(255, 255, 255, 0.85)' }}>Zero-Trust Decentralized Identity Verification</div>
+              <div style={{ fontSize: '12px', color: 'rgba(255, 255, 255, 0.85)' }}>Aadhaar, PAN & Passport ID Verification</div>
             </div>
           </div>
           <button onClick={onClose} style={{ background: 'none', border: 'none', color: '#fff', cursor: 'pointer' }}>
@@ -126,35 +126,69 @@ export default function TrustPassportModal({ isOpen, onClose, onVerifySuccess })
         <div style={{ padding: '24px' }}>
           {step === 1 && (
             <div>
-              <h3 style={{ fontSize: '16px', fontWeight: 700, marginBottom: '8px' }}>Select Government Issued ID</h3>
+              <h3 style={{ fontSize: '16px', fontWeight: 700, marginBottom: '8px' }}>Select ID Document</h3>
               <p style={{ fontSize: '13px', color: '#94a3b8', marginBottom: '16px' }}>
-                Select your document type and upload a clear scan or photo (Passport, National ID, or Driver's License).
+                Select your document type to verify your identity on hopabed.com.
               </p>
 
-              <div style={{ display: 'flex', gap: '10px', marginBottom: '16px' }}>
+              {/* ID Selector Grid */}
+              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '10px', marginBottom: '16px' }}>
                 {[
-                  { id: 'passport', label: 'Passport' },
-                  { id: 'national_id', label: 'National ID' },
-                  { id: 'drivers_license', label: "Driver's License" }
+                  { id: 'aadhaar', label: '🇮🇳 Aadhaar Card', placeholder: 'Enter 12-Digit Aadhaar (XXXX-XXXX-XXXX)' },
+                  { id: 'pan', label: '🆔 PAN Card', placeholder: 'Enter 10-Digit PAN (ABCDE1234F)' },
+                  { id: 'passport', label: '📘 Passport', placeholder: 'Enter Passport Number' },
+                  { id: 'drivers_license', label: "🪪 Driver's License", placeholder: 'Enter License Number' }
                 ].map(item => (
                   <button
                     key={item.id}
-                    onClick={() => setIdType(item.id)}
+                    onClick={() => {
+                      setIdType(item.id);
+                      setIdNumber('');
+                    }}
                     style={{
-                      flex: 1,
-                      padding: '12px 8px',
+                      padding: '12px 10px',
                       borderRadius: '12px',
                       backgroundColor: idType === item.id ? '#047857' : '#0f172a',
                       border: `1px solid ${idType === item.id ? '#10b981' : '#334155'}`,
                       color: '#fff',
-                      fontSize: '12px',
-                      fontWeight: 700,
-                      cursor: 'pointer'
+                      fontSize: '13px',
+                      fontWeight: 800,
+                      cursor: 'pointer',
+                      textAlign: 'left'
                     }}
                   >
                     {item.label}
                   </button>
                 ))}
+              </div>
+
+              {/* Document Number Input */}
+              <div style={{ marginBottom: '16px' }}>
+                <label style={{ fontSize: '11px', fontWeight: 800, color: '#94a3b8', display: 'block', marginBottom: '6px', textTransform: 'uppercase' }}>
+                  {idType === 'aadhaar' ? 'Aadhaar Card Number' : idType === 'pan' ? 'PAN Card Number' : idType === 'passport' ? 'Passport Number' : "Driver's License Number"}
+                </label>
+                <input 
+                  type="text"
+                  value={idNumber}
+                  onChange={(e) => setIdNumber(e.target.value)}
+                  placeholder={
+                    idType === 'aadhaar' ? '1234-5678-9012' : 
+                    idType === 'pan' ? 'ABCDE1234F' : 
+                    'A1234567'
+                  }
+                  maxLength={idType === 'aadhaar' ? 14 : 12}
+                  style={{
+                    width: '100%',
+                    padding: '12px',
+                    borderRadius: '12px',
+                    border: '1px solid #334155',
+                    backgroundColor: '#0f172a',
+                    color: '#fff',
+                    fontWeight: 800,
+                    fontSize: '14px',
+                    outline: 'none'
+                  }}
+                />
               </div>
 
               {/* Upload Drop Zone */}
@@ -163,29 +197,29 @@ export default function TrustPassportModal({ isOpen, onClose, onVerifySuccess })
                 style={{
                   border: `2px dashed ${idFileName ? '#10b981' : '#334155'}`,
                   borderRadius: '16px',
-                  padding: '24px',
+                  padding: '20px',
                   textAlign: 'center',
                   backgroundColor: '#0f172a',
                   cursor: 'pointer',
-                  marginBottom: '20px',
+                  marginBottom: '16px',
                   transition: '0.2s'
                 }}
               >
                 {idFileName ? (
                   <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '6px' }}>
-                    <CheckCircle2 size={36} color="#10b981" />
-                    <div style={{ fontSize: '14px', fontWeight: 800, color: '#10b981' }}>
-                      Document Loaded: {idFileName}
+                    <CheckCircle2 size={32} color="#10b981" />
+                    <div style={{ fontSize: '13px', fontWeight: 800, color: '#10b981' }}>
+                      Scan Uploaded: {idFileName}
                     </div>
                     <div style={{ fontSize: '11px', color: '#94a3b8' }}>Click to change file</div>
                   </div>
                 ) : (
                   <>
-                    <Upload size={32} color="#10b981" style={{ margin: '0 auto 8px' }} />
-                    <div style={{ fontSize: '14px', fontWeight: 700, color: '#f8fafc' }}>
-                      Click to Upload {idType === 'passport' ? 'Passport' : idType === 'national_id' ? 'National ID' : "Driver's License"} Scan
+                    <Upload size={28} color="#10b981" style={{ margin: '0 auto 6px' }} />
+                    <div style={{ fontSize: '13px', fontWeight: 700, color: '#f8fafc' }}>
+                      Click to Upload {idType === 'aadhaar' ? 'Aadhaar Card' : idType === 'pan' ? 'PAN Card' : idType === 'passport' ? 'Passport' : "License"} Photo / PDF
                     </div>
-                    <div style={{ fontSize: '11px', color: '#64748b', marginTop: '4px' }}>Supports JPG, PNG, PDF (Max 10MB)</div>
+                    <div style={{ fontSize: '11px', color: '#64748b', marginTop: '2px' }}>Front & Back image or PDF</div>
                   </>
                 )}
               </div>
@@ -194,14 +228,14 @@ export default function TrustPassportModal({ isOpen, onClose, onVerifySuccess })
 
           {step === 2 && (
             <div>
-              <h3 style={{ fontSize: '16px', fontWeight: 700, marginBottom: '8px' }}>Biometric Live Selfie Verification</h3>
+              <h3 style={{ fontSize: '16px', fontWeight: 700, marginBottom: '8px' }}>Biometric Live Selfie Match</h3>
               <p style={{ fontSize: '13px', color: '#94a3b8', marginBottom: '16px' }}>
-                Click below to capture a face selfie to verify matching identity with your uploaded document.
+                Position your face inside the circle to verify matching identity with your uploaded {idType.toUpperCase()}.
               </p>
 
               <div style={{
-                width: '180px',
-                height: '180px',
+                width: '170px',
+                height: '170px',
                 borderRadius: '50%',
                 border: `3px dashed ${selfieCaptured ? '#10b981' : '#0284c7'}`,
                 margin: '0 auto 20px',
@@ -231,20 +265,20 @@ export default function TrustPassportModal({ isOpen, onClose, onVerifySuccess })
                   cursor: 'pointer'
                 }}
               >
-                {selfieCaptured ? '✓ Biometric Match Confirmed' : 'Take Biometric Selfie'}
+                {selfieCaptured ? '✓ Facial Match Confirmed' : 'Take Biometric Selfie'}
               </button>
             </div>
           )}
 
           {step === 3 && (
             <div>
-              <h3 style={{ fontSize: '16px', fontWeight: 700, marginBottom: '8px' }}>Phone & Node Link Verification</h3>
+              <h3 style={{ fontSize: '16px', fontWeight: 700, marginBottom: '8px' }}>Phone OTP Verification</h3>
               <p style={{ fontSize: '13px', color: '#94a3b8', marginBottom: '16px' }}>
-                Verify your mobile number to receive your portable encrypted Trust Passport QR badge.
+                Verify your mobile number linked with your {idType === 'aadhaar' ? 'Aadhaar' : idType.toUpperCase()} to receive your encrypted Trust Passport badge.
               </p>
 
               <div style={{ marginBottom: '16px' }}>
-                <label style={{ fontSize: '11px', fontWeight: 700, color: '#64748b', display: 'block', marginBottom: '6px' }}>PHONE NUMBER</label>
+                <label style={{ fontSize: '11px', fontWeight: 700, color: '#64748b', display: 'block', marginBottom: '6px' }}>MOBILE NUMBER</label>
                 <input
                   type="text"
                   value={phone}
@@ -263,7 +297,7 @@ export default function TrustPassportModal({ isOpen, onClose, onVerifySuccess })
               </div>
 
               <div style={{ padding: '12px', borderRadius: '12px', backgroundColor: 'rgba(16, 185, 129, 0.1)', border: '1px solid rgba(16, 185, 129, 0.2)', fontSize: '12px', color: '#34d399' }}>
-                🔒 2FA OTP security code sent via SMS. Zero physical document copies are stored on central servers.
+                🔒 2FA OTP verification code sent. Zero physical document copies are stored on central servers.
               </div>
             </div>
           )}
@@ -285,7 +319,7 @@ export default function TrustPassportModal({ isOpen, onClose, onVerifySuccess })
               </div>
               <h2 style={{ fontSize: '22px', fontWeight: 900, color: '#fff', marginBottom: '8px' }}>Trust Passport Activated!</h2>
               <p style={{ fontSize: '14px', color: '#94a3b8', maxWidth: '380px', margin: '0 auto 20px', lineHeight: 1.5 }}>
-                Your identity has been verified. You now carry a verified **Trust Badge** across all hopabed.com stays worldwide.
+                Your {idType === 'aadhaar' ? 'Aadhaar Card' : idType === 'pan' ? 'PAN Card' : idType.toUpperCase()} has been verified. You now carry a verified **Trust Badge** across all hopabed.com stays worldwide.
               </p>
               <button
                 onClick={onClose}
