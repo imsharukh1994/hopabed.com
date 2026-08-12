@@ -1,10 +1,23 @@
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { Bot, Sparkles, X, Send, Award, DollarSign, MapPin, ChevronRight, Zap } from 'lucide-react';
 import { formatPrice } from '../utils/currency';
 
 export default function HopperAIAssistant({ isOpen, onClose, listings = [], selectedCurrency = 'USD', onSelectListing }) {
   const [query, setQuery] = useState('');
   const [selectedSkill, setSelectedSkill] = useState('');
+  const [isCloseFocused, setIsCloseFocused] = useState(false);
+  const [isSendFocused, setIsSendFocused] = useState(false);
+  const inputRef = useRef(null);
+
+  useEffect(() => {
+    if (isOpen) {
+      const timer = setTimeout(() => {
+        inputRef.current?.focus();
+      }, 100);
+      return () => clearTimeout(timer);
+    }
+  }, [isOpen]);
+
   const [chatMessages, setChatMessages] = useState([
     {
       sender: 'ai',
@@ -106,7 +119,20 @@ export default function HopperAIAssistant({ isOpen, onClose, listings = [], sele
         </div>
         <button 
           onClick={onClose}
-          style={{ background: 'none', border: 'none', color: '#fff', cursor: 'pointer', opacity: 0.8, padding: '4px' }}
+          aria-label="Close Hopper AI Companion"
+          onFocus={() => setIsCloseFocused(true)}
+          onBlur={() => setIsCloseFocused(false)}
+          style={{
+            background: 'none',
+            border: 'none',
+            color: '#fff',
+            cursor: 'pointer',
+            opacity: 0.8,
+            padding: '4px',
+            outline: isCloseFocused ? '2px solid #fff' : 'none',
+            outlineOffset: '2px',
+            borderRadius: '4px'
+          }}
         >
           <X size={20} />
         </button>
@@ -205,10 +231,12 @@ export default function HopperAIAssistant({ isOpen, onClose, listings = [], sele
       <div style={{ padding: '12px', backgroundColor: '#0f172a', borderTop: '1px solid #334155', display: 'flex', gap: '8px' }}>
         <input
           type="text"
+          ref={inputRef}
           value={query}
           onChange={(e) => setQuery(e.target.value)}
           onKeyDown={(e) => e.key === 'Enter' && handleSend()}
           placeholder="Ask AI: 'Stays under $10 in Tokyo'..."
+          aria-label="Ask Hopper AI companion about ultra-budget stays"
           style={{
             flex: 1,
             backgroundColor: '#1e293b',
@@ -222,6 +250,9 @@ export default function HopperAIAssistant({ isOpen, onClose, listings = [], sele
         />
         <button
           onClick={() => handleSend()}
+          aria-label="Send message"
+          onFocus={() => setIsSendFocused(true)}
+          onBlur={() => setIsSendFocused(false)}
           style={{
             backgroundColor: '#0284c7',
             border: 'none',
@@ -232,7 +263,9 @@ export default function HopperAIAssistant({ isOpen, onClose, listings = [], sele
             alignItems: 'center',
             justifyContent: 'center',
             color: '#fff',
-            cursor: 'pointer'
+            cursor: 'pointer',
+            outline: isSendFocused ? '3px solid #38bdf8' : 'none',
+            outlineOffset: '2px'
           }}
         >
           <Send size={16} />
