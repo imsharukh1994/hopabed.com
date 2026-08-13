@@ -1,38 +1,62 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Star, ShieldCheck, Heart, MapPin, Sparkles, Award } from 'lucide-react';
 import { formatPrice } from '../utils/currency';
 
 export default function ListingCard({ listing, onClick, onFavoriteToggle, isFavorite = false, selectedCurrency = 'USD' }) {
+  const [isFocused, setIsFocused] = useState(false);
+  const [isHovered, setIsHovered] = useState(false);
+  const [isHeartFocused, setIsHeartFocused] = useState(false);
+
+  const handleKeyDown = (e) => {
+    // Activate on Enter or Space keys
+    if (e.key === 'Enter' || e.key === ' ') {
+      e.preventDefault();
+      onClick(listing);
+    }
+  };
+
+  const ariaLabelText = `${listing.title}. Rating: ${listing.rating} stars from ${listing.reviewsCount} reviews. ${
+    listing.isServiceShare
+      ? `Service-Share stay, requiring ${listing.serviceShareDetails?.hoursPerDay} daily assistance`
+      : `Price: ${formatPrice(listing.pricePerNight, selectedCurrency)} per night`
+  }. Location: ${listing.city}, ${listing.country}. Press Enter or Space to view details.`;
+
   return (
     <div 
       onClick={() => onClick(listing)}
+      onKeyDown={handleKeyDown}
+      tabIndex={0}
+      role="button"
+      aria-label={ariaLabelText}
       style={{
         backgroundColor: 'var(--color-surface, #1e293b)',
         borderRadius: '16px',
         overflow: 'hidden',
-        border: '1px solid #334155',
-        boxShadow: '0 10px 25px rgba(0,0,0,0.2)',
-        transition: 'transform 0.2s, box-shadow 0.2s',
+        border: isFocused ? '1px solid var(--color-primary, #38bdf8)' : '1px solid #334155',
+        boxShadow: isFocused
+          ? '0 0 0 2px var(--color-primary, #38bdf8), 0 15px 30px rgba(0,0,0,0.3)'
+          : isHovered
+            ? '0 15px 30px rgba(0,0,0,0.3)'
+            : '0 10px 25px rgba(0,0,0,0.2)',
+        transform: (isFocused || isHovered) ? 'translateY(-4px)' : 'translateY(0)',
+        transition: 'transform 0.2s, box-shadow 0.2s, border-color 0.2s',
         cursor: 'pointer',
         display: 'flex',
         flexDirection: 'column',
-        position: 'relative'
+        position: 'relative',
+        outline: 'none'
       }}
       className="listing-card animate-fade-in"
-      onMouseEnter={(e) => {
-        e.currentTarget.style.transform = 'translateY(-4px)';
-        e.currentTarget.style.boxShadow = '0 15px 30px rgba(0,0,0,0.3)';
-      }}
-      onMouseLeave={(e) => {
-        e.currentTarget.style.transform = 'translateY(0)';
-        e.currentTarget.style.boxShadow = '0 10px 25px rgba(0,0,0,0.2)';
-      }}
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
+      onFocus={() => setIsFocused(true)}
+      onBlur={() => setIsFocused(false)}
     >
       {/* Photo Container */}
       <div style={{ position: 'relative', width: '100%', height: '190px', backgroundColor: '#0f172a' }}>
         <img 
           src={listing.images[0]} 
-          alt={listing.title} 
+          alt=""
           style={{ width: '100%', height: '100%', objectFit: 'cover' }}
           loading="lazy"
         />
@@ -43,6 +67,11 @@ export default function ListingCard({ listing, onClick, onFavoriteToggle, isFavo
             e.stopPropagation();
             if (onFavoriteToggle) onFavoriteToggle(listing.id);
           }}
+          onFocus={() => setIsHeartFocused(true)}
+          onBlur={() => setIsHeartFocused(false)}
+          aria-label={isFavorite ? `Remove ${listing.title} from favorites` : `Add ${listing.title} to favorites`}
+          aria-pressed={isFavorite}
+          title={isFavorite ? "Remove from favorites" : "Add to favorites"}
           style={{
             position: 'absolute',
             top: '12px',
@@ -56,7 +85,10 @@ export default function ListingCard({ listing, onClick, onFavoriteToggle, isFavo
             alignItems: 'center',
             justifyContent: 'center',
             border: 'none',
-            cursor: 'pointer'
+            cursor: 'pointer',
+            outline: isHeartFocused ? '2px solid var(--color-primary, #38bdf8)' : 'none',
+            outlineOffset: '2px',
+            zIndex: 10
           }}
         >
           <Heart size={18} fill={isFavorite ? '#ef4444' : 'none'} color={isFavorite ? '#ef4444' : '#fff'} />
@@ -100,7 +132,7 @@ export default function ListingCard({ listing, onClick, onFavoriteToggle, isFavo
           <h3 style={{ fontSize: '1.05rem', fontWeight: 800, color: '#fff', lineHeight: 1.3, margin: 0 }}>
             {listing.title}
           </h3>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '2px', fontSize: '0.85rem', fontWeight: 700, color: '#fbbf24' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '2px', fontSize: '0.85rem', fontWeight: 700, color: '#fbbf24' }} aria-hidden="true">
             <Star size={14} fill="#fbbf24" color="#fbbf24" />
             <span>{listing.rating}</span>
             <span style={{ color: '#94a3b8', fontWeight: 500 }}>({listing.reviewsCount})</span>
@@ -158,6 +190,8 @@ export default function ListingCard({ listing, onClick, onFavoriteToggle, isFavo
           </div>
 
           <button 
+            tabIndex={-1}
+            aria-hidden="true"
             style={{
               padding: '0.45rem 0.95rem',
               fontSize: '0.85rem',
