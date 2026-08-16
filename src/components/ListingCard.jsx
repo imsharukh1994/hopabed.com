@@ -39,6 +39,8 @@ export default function ListingCard({ listing, onClick, onFavoriteToggle, isFavo
 
         {/* Favorite Heart Button */}
         <button
+          aria-label={isFavorite ? "Remove from saved properties" : "Save property"}
+          title={isFavorite ? "Remove from saved properties" : "Save property"}
           onClick={(e) => {
             e.stopPropagation();
             if (onFavoriteToggle) onFavoriteToggle(listing.id);
