@@ -2,6 +2,16 @@ import React, { useState, useRef, useEffect } from 'react';
 import { Bot, Sparkles, X, Send, Award, DollarSign, MapPin, ChevronRight, Zap } from 'lucide-react';
 import { formatPrice } from '../utils/currency';
 
+/**
+ * Render an AI chat assistant for finding budget accommodations and Service-Share stays.
+ * @param {Object} props - Component configuration.
+ * @param {boolean} props.isOpen - Whether the assistant is visible.
+ * @param {Function} props.onClose - Called when the assistant closes.
+ * @param {Array<Object>} [props.listings=[]] - Listings available for matching.
+ * @param {string} [props.selectedCurrency='USD'] - Currency used to display nightly prices.
+ * @param {Function} props.onSelectListing - Called with a listing selected from the recommendations.
+ * @returns {JSX.Element|null} The assistant interface when open, otherwise `null`.
+ */
 export default function HopperAIAssistant({ isOpen, onClose, listings = [], selectedCurrency = 'USD', onSelectListing }) {
   const [query, setQuery] = useState('');
   const [selectedSkill, setSelectedSkill] = useState('');
