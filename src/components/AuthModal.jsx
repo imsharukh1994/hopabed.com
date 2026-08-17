@@ -256,7 +256,7 @@ export default function AuthModal({ initialMode = 'login', onClose, onLoginSucce
                 >
                   <option value="traveler">Backpacker / Traveler</option>
                   <option value="host">Individual Host (Spare Couch/Room)</option>
-                  <option value="hostel">Commercial Hostel Manager</option>
+                  <option value="hostel">Commercial Hostel / Hotel Manager</option>
                 </select>
               </div>
             )}
@@ -274,7 +274,7 @@ export default function AuthModal({ initialMode = 'login', onClose, onLoginSucce
           {/* Quick Demo Login Preset Buttons */}
           <div style={{ borderTop: '1px solid #334155', paddingTop: '1rem', display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
             <span style={{ fontSize: '0.72rem', fontWeight: 900, color: '#94a3b8', textTransform: 'uppercase', textAlign: 'center' }}>QUICK DEMO PRESETS</span>
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.5rem' }}>
+            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: '0.5rem' }}>
               <button 
                 type="button"
                 onClick={() => handleDemoLogin({
@@ -286,9 +286,25 @@ export default function AuthModal({ initialMode = 'login', onClose, onLoginSucce
                   trustPassport: true,
                   avatar: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=200&q=80'
                 })}
-                style={{ fontSize: '0.78rem', padding: '0.55rem', borderRadius: '10px', backgroundColor: '#0f172a', border: '1px solid #334155', color: '#fff', fontWeight: 700, cursor: 'pointer' }}
+                style={{ fontSize: '0.78rem', padding: '0.55rem', borderRadius: '10px', backgroundColor: '#0f172a', border: '1px solid #334155', color: '#fff', fontWeight: 700, cursor: 'pointer', textAlign: 'center' }}
               >
-                Anna Schmidt (Host)
+                Anna (Host)
+              </button>
+
+              <button 
+                type="button"
+                onClick={() => handleDemoLogin({
+                  id: 'usr-marcus',
+                  name: 'Marcus Hotel',
+                  email: 'marcus@hotel.com',
+                  role: 'hostel',
+                  isVerified: true,
+                  trustPassport: true,
+                  avatar: 'https://images.unsplash.com/photo-1560250097-0b93528c311a?auto=format&fit=crop&w=200&q=80'
+                })}
+                style={{ fontSize: '0.78rem', padding: '0.55rem', borderRadius: '10px', backgroundColor: '#0f172a', border: '1px solid #334155', color: '#fff', fontWeight: 700, cursor: 'pointer', textAlign: 'center' }}
+              >
+                Marcus (Hotel)
               </button>
 
               <button 
@@ -302,9 +318,9 @@ export default function AuthModal({ initialMode = 'login', onClose, onLoginSucce
                   trustPassport: true,
                   avatar: 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=200&q=80'
                 })}
-                style={{ fontSize: '0.78rem', padding: '0.55rem', borderRadius: '10px', backgroundColor: '#0f172a', border: '1px solid #334155', color: '#fff', fontWeight: 700, cursor: 'pointer' }}
+                style={{ fontSize: '0.78rem', padding: '0.55rem', borderRadius: '10px', backgroundColor: '#0f172a', border: '1px solid #334155', color: '#fff', fontWeight: 700, cursor: 'pointer', textAlign: 'center' }}
               >
-                John Doe (Guest)
+                John (Guest)
               </button>
             </div>
           </div>
