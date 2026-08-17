@@ -28,6 +28,8 @@ import ProofOfWorkModal from './components/ProofOfWorkModal';
 import CityGuideModal from './components/CityGuideModal';
 import HostInquiryModal from './components/HostInquiryModal';
 import HostReviewsModal from './components/HostReviewsModal';
+import HopperAIAssistant from './components/HopperAIAssistant';
+import { Bot } from 'lucide-react';
 
 import { getCloudListings, saveCloudListing, saveCloudBooking, updateCloudUserProfile } from './services/dbService';
 
@@ -40,6 +42,18 @@ import {
 
 export default function App() {
   const [activeTab, setActiveTab] = useState('landing'); 
+  const [showAIAssistant, setShowAIAssistant] = useState(false);
+  const [isBtnFocused, setIsBtnFocused] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const mediaQuery = window.matchMedia('(max-width: 768px)');
+    setIsMobile(mediaQuery.matches);
+    const listener = (e) => setIsMobile(e.matches);
+    mediaQuery.addEventListener('change', listener);
+    return () => mediaQuery.removeEventListener('change', listener);
+  }, []);
+
   const [cloudListings, setCloudListings] = useState([]);
   const [useDemoData, setUseDemoData] = useState(true);
   const [destinations] = useState(INITIAL_DESTINATIONS);
@@ -386,6 +400,51 @@ export default function App() {
         onClose={() => setReviewsListing(null)}
         listing={reviewsListing}
       />
+
+      {/* Hopper AI Assistant Component */}
+      <HopperAIAssistant
+        isOpen={showAIAssistant}
+        onClose={() => setShowAIAssistant(false)}
+        listings={activeListings}
+        selectedCurrency={selectedCurrency}
+        onSelectListing={handleSelectListing}
+      />
+
+      {/* Floating AI Assistant Toggle Button */}
+      {!showAIAssistant && (
+        <button
+          onClick={() => setShowAIAssistant(true)}
+          aria-expanded={showAIAssistant}
+          aria-label="Open Hopper AI Companion"
+          title="Open Hopper AI Chat Companion"
+          onFocus={() => setIsBtnFocused(true)}
+          onBlur={() => setIsBtnFocused(false)}
+          style={{
+            position: 'fixed',
+            bottom: isMobile ? '80px' : '24px',
+            right: '24px',
+            width: '50px',
+            height: '50px',
+            borderRadius: '50%',
+            background: 'linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-dark) 100%)',
+            color: '#fff',
+            border: 'none',
+            boxShadow: 'var(--shadow-lg)',
+            cursor: 'pointer',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            zIndex: 9998,
+            transition: 'transform 0.2s, background-color 0.2s',
+            outline: isBtnFocused ? '3px solid var(--color-accent)' : 'none',
+            outlineOffset: '2px'
+          }}
+          onMouseEnter={(e) => e.currentTarget.style.transform = 'scale(1.1)'}
+          onMouseLeave={(e) => e.currentTarget.style.transform = 'scale(1)'}
+        >
+          <Bot size={22} />
+        </button>
+      )}
 
       {/* Mobile Bottom Navigation Bar */}
       <MobileNav 
