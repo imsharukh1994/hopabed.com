@@ -4,7 +4,7 @@ import { formatPrice } from '../utils/currency';
 
 export default function ListingCard({ listing, onClick, onFavoriteToggle, isFavorite = false, selectedCurrency = 'USD' }) {
   return (
-    <div 
+    <article
       onClick={() => onClick(listing)}
       style={{
         backgroundColor: 'var(--color-surface, #1e293b)',
@@ -40,12 +40,13 @@ export default function ListingCard({ listing, onClick, onFavoriteToggle, isFavo
         {/* Favorite Heart Button */}
         <button
           type="button"
-          aria-label={isFavorite ? "Remove from favorites" : "Add to favorites"}
+          aria-label={isFavorite ? `Remove ${listing.title} from favorites` : `Add ${listing.title} to favorites`}
           title={isFavorite ? "Remove from favorites" : "Add to favorites"}
           onClick={(e) => {
             e.stopPropagation();
             if (onFavoriteToggle) onFavoriteToggle(listing.id);
           }}
+          className="focus-visible:ring-2 focus-visible:ring-sky-400 focus:outline-none"
           style={{
             position: 'absolute',
             top: '12px',
@@ -161,6 +162,13 @@ export default function ListingCard({ listing, onClick, onFavoriteToggle, isFavo
           </div>
 
           <button 
+            type="button"
+            aria-label={`View details for ${listing.title}`}
+            onClick={(e) => {
+              e.stopPropagation();
+              onClick(listing);
+            }}
+            className="focus-visible:ring-2 focus-visible:ring-sky-400 focus:outline-none"
             style={{
               padding: '0.45rem 0.95rem',
               fontSize: '0.85rem',
@@ -176,6 +184,6 @@ export default function ListingCard({ listing, onClick, onFavoriteToggle, isFavo
           </button>
         </div>
       </div>
-    </div>
+    </article>
   );
 }
