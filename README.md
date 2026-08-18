@@ -1,6 +1,6 @@
 <div align="center">
 
-<img src="https://raw.githubusercontent.com/imsharukh1994/hopabed.com/main/assets/favicon.png" alt="Hopabed" width="96">
+<img src="favicon.png" alt="Hopabed" width="96">
 
 # Hopabed
 
