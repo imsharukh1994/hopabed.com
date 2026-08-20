@@ -61,6 +61,7 @@ export default function Navbar({
         <div style={{ display: 'flex', alignItems: 'center', gap: '2.5rem' }}>
           <button 
             onClick={onRefreshHome || (() => setActiveTab('landing'))} 
+            aria-label="Bedhopper Home"
             style={{ background: 'none', border: 'none', cursor: 'pointer', display: 'inline-flex', alignItems: 'center' }}
             title="hopabed.com Home"
           >
@@ -68,7 +69,7 @@ export default function Navbar({
           </button>
 
           {/* Clean Navigation Bar */}
-          <nav style={{ display: 'flex', alignItems: 'center', gap: '1.5rem' }} className="desktop-nav">
+          <nav aria-label="Main navigation" style={{ display: 'flex', alignItems: 'center', gap: '1.5rem' }} className="desktop-nav">
             <button 
               onClick={() => setActiveTab('search')} 
               style={{ 
@@ -145,6 +146,7 @@ export default function Navbar({
           {/* Theme Toggle Button (Light ☀️ / Dark 🌙) */}
           <button
             onClick={onToggleTheme}
+            aria-label={`Switch to ${theme === 'dark' ? 'Light' : 'Dark'} Mode`}
             title={`Switch to ${theme === 'dark' ? 'Light' : 'Dark'} Mode`}
             style={{
               width: '38px',
@@ -169,6 +171,7 @@ export default function Navbar({
             <select 
               value={selectedCurrency} 
               onChange={(e) => setSelectedCurrency(e.target.value)}
+              aria-label="Select currency"
               style={{
                 border: '1px solid var(--color-border)',
                 borderRadius: '12px',
@@ -233,6 +236,9 @@ export default function Navbar({
             <div style={{ position: 'relative' }} ref={userMenuRef}>
               <button 
                 onClick={() => setShowUserMenu(!showUserMenu)}
+                aria-label="User account menu"
+                aria-expanded={showUserMenu}
+                aria-haspopup="true"
                 style={{
                   display: 'inline-flex',
                   alignItems: 'center',
