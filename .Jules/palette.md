@@ -1,7 +1,3 @@
-# Palette's Journal - Critical UX/Accessibility Learnings
-
-This journal is maintained by Palette to keep track of critical UX and accessibility learnings specific to this application.
-
-## 2026-08-12 - Rejecting Custom CSS for Isolated UX Components
-**Learning:** In this design system, altering shared global stylesheets (like `index.css`) is heavily restricted and can cause unexpected layout side effects. Reusable UX components (like floating action overlays or assistants) must be entirely self-contained, utilizing clean inline styles or dynamic JSX states to handle conditional formatting (like responsive height/positioning or focus styling).
-**Action:** Always favor isolated react inline style properties or state-driven dynamic styles for positioning and accessible focus indicators over global style sheets.
+## 2025-05-18 - Keyboard Navigation for Clickable Card Elements
+**Learning:** In card-based stay listings, rendering the outer wrapper as an interactive `<div>` with `onClick` without `role="button"`, `tabIndex`, or keyboard event listeners makes listings completely unreachable for keyboard and screen reader users. Additionally, having nested interactive buttons inside the card can create redundant or conflicting tab stops.
+**Action:** Always make interactive card wrappers semantically accessible with `role="button"`, `tabIndex={0}`, descriptive `aria-label`, and `onKeyDown` handlers (for Enter/Space), while marking redundant nested call-to-action buttons with `tabIndex={-1}` and `aria-hidden="true"`.
