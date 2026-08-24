@@ -29,15 +29,24 @@ export default function Navbar({
     }
   };
 
-  // Close dropdown when clicking outside
+  // Close dropdown when clicking outside or pressing Escape
   useEffect(() => {
     function handleClickOutside(event) {
       if (userMenuRef.current && !userMenuRef.current.contains(event.target)) {
         setShowUserMenu(false);
       }
     }
+    function handleKeyDown(event) {
+      if (event.key === 'Escape') {
+        setShowUserMenu(false);
+      }
+    }
     document.addEventListener("mousedown", handleClickOutside);
-    return () => document.removeEventListener("mousedown", handleClickOutside);
+    document.addEventListener("keydown", handleKeyDown);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+      document.removeEventListener("keydown", handleKeyDown);
+    };
   }, []);
 
   return (
@@ -145,6 +154,7 @@ export default function Navbar({
           {/* Theme Toggle Button (Light ☀️ / Dark 🌙) */}
           <button
             onClick={onToggleTheme}
+            aria-label={`Switch to ${theme === 'dark' ? 'Light' : 'Dark'} mode`}
             title={`Switch to ${theme === 'dark' ? 'Light' : 'Dark'} Mode`}
             style={{
               width: '38px',
@@ -169,6 +179,7 @@ export default function Navbar({
             <select 
               value={selectedCurrency} 
               onChange={(e) => setSelectedCurrency(e.target.value)}
+              aria-label="Select currency"
               style={{
                 border: '1px solid var(--color-border)',
                 borderRadius: '12px',
@@ -233,6 +244,9 @@ export default function Navbar({
             <div style={{ position: 'relative' }} ref={userMenuRef}>
               <button 
                 onClick={() => setShowUserMenu(!showUserMenu)}
+                aria-label="User menu"
+                aria-expanded={showUserMenu}
+                aria-haspopup="true"
                 style={{
                   display: 'inline-flex',
                   alignItems: 'center',
