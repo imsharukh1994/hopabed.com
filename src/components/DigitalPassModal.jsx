@@ -1,8 +1,10 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { QrCode, Download, Printer, MapPin, Calendar, User, ShieldCheck, X, Phone } from 'lucide-react';
 import { formatPrice } from '../utils/currency';
 
 export default function DigitalPassModal({ isOpen, onClose, booking, selectedCurrency = 'USD' }) {
+  const [isCloseFocused, setIsCloseFocused] = useState(false);
+
   if (!isOpen || !booking) return null;
 
   const handlePrint = () => {
@@ -44,7 +46,22 @@ export default function DigitalPassModal({ isOpen, onClose, booking, selectedCur
             <span style={{ fontSize: '18px' }}>🎟️</span>
             <span style={{ fontWeight: 800, fontSize: '15px', color: '#fff' }}>BedHopper Digital Wallet Pass</span>
           </div>
-          <button onClick={onClose} style={{ background: 'none', border: 'none', color: '#94a3b8', cursor: 'pointer' }}>
+          <button
+            onClick={onClose}
+            aria-label="Close digital pass"
+            onFocus={() => setIsCloseFocused(true)}
+            onBlur={() => setIsCloseFocused(false)}
+            style={{
+              background: 'none',
+              border: 'none',
+              color: '#94a3b8',
+              cursor: 'pointer',
+              padding: '4px',
+              borderRadius: '4px',
+              outline: isCloseFocused ? '2px solid #38bdf8' : 'none',
+              outlineOffset: '2px'
+            }}
+          >
             <X size={20} />
           </button>
         </div>

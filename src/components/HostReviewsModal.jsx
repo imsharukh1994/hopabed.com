@@ -1,7 +1,9 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { X, Star, ShieldCheck, ThumbsUp } from 'lucide-react';
 
 export default function HostReviewsModal({ isOpen, onClose, listing }) {
+  const [isCloseFocused, setIsCloseFocused] = useState(false);
+
   if (!isOpen || !listing) return null;
 
   const mockReviews = [
@@ -77,7 +79,22 @@ export default function HostReviewsModal({ isOpen, onClose, listing }) {
               {listing.rating} Rating Breakdown & Reviews
             </h3>
           </div>
-          <button onClick={onClose} style={{ background: 'none', border: 'none', color: '#fff', cursor: 'pointer' }}>
+          <button
+            onClick={onClose}
+            aria-label="Close host reviews"
+            onFocus={() => setIsCloseFocused(true)}
+            onBlur={() => setIsCloseFocused(false)}
+            style={{
+              background: 'none',
+              border: 'none',
+              color: '#fff',
+              cursor: 'pointer',
+              padding: '4px',
+              borderRadius: '4px',
+              outline: isCloseFocused ? '2px solid #fff' : 'none',
+              outlineOffset: '2px'
+            }}
+          >
             <X size={22} />
           </button>
         </div>
