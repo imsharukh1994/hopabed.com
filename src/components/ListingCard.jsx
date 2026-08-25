@@ -40,7 +40,7 @@ export default function ListingCard({ listing, onClick, onFavoriteToggle, isFavo
         {/* Favorite Heart Button */}
         <button
           type="button"
-          aria-label={isFavorite ? "Remove from favorites" : "Add to favorites"}
+          aria-label={isFavorite ? `Remove ${listing.title} from favorites` : `Add ${listing.title} to favorites`}
           title={isFavorite ? "Remove from favorites" : "Add to favorites"}
           onClick={(e) => {
             e.stopPropagation();
@@ -59,8 +59,11 @@ export default function ListingCard({ listing, onClick, onFavoriteToggle, isFavo
             alignItems: 'center',
             justifyContent: 'center',
             border: 'none',
-            cursor: 'pointer'
+            cursor: 'pointer',
+            transition: 'transform 0.15s ease'
           }}
+          onMouseEnter={(e) => e.currentTarget.style.transform = 'scale(1.1)'}
+          onMouseLeave={(e) => e.currentTarget.style.transform = 'scale(1)'}
         >
           <Heart size={18} fill={isFavorite ? '#ef4444' : 'none'} color={isFavorite ? '#ef4444' : '#fff'} />
         </button>
@@ -161,6 +164,12 @@ export default function ListingCard({ listing, onClick, onFavoriteToggle, isFavo
           </div>
 
           <button 
+            type="button"
+            aria-label={`View details for ${listing.title}`}
+            onClick={(e) => {
+              e.stopPropagation();
+              onClick(listing);
+            }}
             style={{
               padding: '0.45rem 0.95rem',
               fontSize: '0.85rem',
