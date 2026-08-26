@@ -141,7 +141,7 @@ export default function AuthModal({ initialMode = 'login', onClose, onLoginSucce
               {mode === 'login' ? 'Welcome Back to BedHopper' : 'Create BedHopper Account'}
             </h3>
           </div>
-          <button onClick={onClose} style={{ background: 'none', border: 'none', color: '#fff', cursor: 'pointer' }}>
+          <button onClick={onClose} aria-label="Close modal" style={{ background: 'none', border: 'none', color: '#fff', cursor: 'pointer' }}>
             <X size={22} />
           </button>
         </div>
