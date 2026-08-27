@@ -79,7 +79,11 @@ export default function EmergencySOSModal({ isOpen, onClose }) {
               <div style={{ fontSize: '12px', color: 'rgba(255, 255, 255, 0.85)' }}>Community Safety Broadcast System</div>
             </div>
           </div>
-          <button onClick={onClose} style={{ background: 'none', border: 'none', color: '#fff', cursor: 'pointer' }}>
+          <button
+            onClick={onClose}
+            aria-label="Close emergency SOS modal"
+            style={{ background: 'none', border: 'none', color: '#fff', cursor: 'pointer' }}
+          >
             <X size={20} />
           </button>
         </div>
@@ -87,20 +91,25 @@ export default function EmergencySOSModal({ isOpen, onClose }) {
         <div style={{ padding: '24px', textAlign: 'center' }}>
           {!isBroadcasting && !broadcastSent && (
             <div>
-              <div style={{
-                width: '90px',
-                height: '90px',
-                borderRadius: '50%',
-                backgroundColor: 'rgba(239, 68, 68, 0.15)',
-                border: '2px solid #ef4444',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                margin: '0 auto 20px',
-                cursor: 'pointer'
-              }} onClick={handleStartBroadcast}>
+              <button
+                type="button"
+                aria-label="Activate Emergency SOS Broadcast"
+                onClick={handleStartBroadcast}
+                style={{
+                  width: '90px',
+                  height: '90px',
+                  borderRadius: '50%',
+                  backgroundColor: 'rgba(239, 68, 68, 0.15)',
+                  border: '2px solid #ef4444',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  margin: '0 auto 20px',
+                  cursor: 'pointer'
+                }}
+              >
                 <Radio size={48} color="#ef4444" />
-              </div>
+              </button>
 
               <h3 style={{ fontSize: '18px', fontWeight: 800, color: '#fff', marginBottom: '8px' }}>
                 Need Immediate Help?
