@@ -3,16 +3,27 @@ import { Star, ShieldCheck, Heart, MapPin, Sparkles, Award } from 'lucide-react'
 import { formatPrice } from '../utils/currency';
 
 export default function ListingCard({ listing, onClick, onFavoriteToggle, isFavorite = false, selectedCurrency = 'USD' }) {
+  const handleKeyDown = (e) => {
+    if (e.key === 'Enter' || e.key === ' ') {
+      e.preventDefault();
+      onClick(listing);
+    }
+  };
+
   return (
     <div 
+      tabIndex={0}
+      role="button"
+      aria-label={`View details for ${listing.title}`}
       onClick={() => onClick(listing)}
+      onKeyDown={handleKeyDown}
       style={{
         backgroundColor: 'var(--color-surface, #1e293b)',
         borderRadius: '16px',
         overflow: 'hidden',
         border: '1px solid #334155',
         boxShadow: '0 10px 25px rgba(0,0,0,0.2)',
-        transition: 'transform 0.2s, box-shadow 0.2s',
+        transition: 'transform 0.2s, box-shadow 0.2s, outline 0.2s',
         cursor: 'pointer',
         display: 'flex',
         flexDirection: 'column',
@@ -26,6 +37,15 @@ export default function ListingCard({ listing, onClick, onFavoriteToggle, isFavo
       onMouseLeave={(e) => {
         e.currentTarget.style.transform = 'translateY(0)';
         e.currentTarget.style.boxShadow = '0 10px 25px rgba(0,0,0,0.2)';
+      }}
+      onFocus={(e) => {
+        if (e.currentTarget.matches(':focus-visible')) {
+          e.currentTarget.style.outline = '3px solid var(--color-accent, #0284c7)';
+          e.currentTarget.style.outlineOffset = '2px';
+        }
+      }}
+      onBlur={(e) => {
+        e.currentTarget.style.outline = 'none';
       }}
     >
       {/* Photo Container */}
