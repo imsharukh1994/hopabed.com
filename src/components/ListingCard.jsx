@@ -3,9 +3,20 @@ import { Star, ShieldCheck, Heart, MapPin, Sparkles, Award } from 'lucide-react'
 import { formatPrice } from '../utils/currency';
 
 export default function ListingCard({ listing, onClick, onFavoriteToggle, isFavorite = false, selectedCurrency = 'USD' }) {
+  const handleKeyDown = (e) => {
+    if (e.key === 'Enter' || e.key === ' ') {
+      e.preventDefault();
+      onClick(listing);
+    }
+  };
+
   return (
     <div 
+      role="button"
+      tabIndex={0}
+      aria-label={`View details for ${listing.title}`}
       onClick={() => onClick(listing)}
+      onKeyDown={handleKeyDown}
       style={{
         backgroundColor: 'var(--color-surface, #1e293b)',
         borderRadius: '16px',
@@ -16,7 +27,8 @@ export default function ListingCard({ listing, onClick, onFavoriteToggle, isFavo
         cursor: 'pointer',
         display: 'flex',
         flexDirection: 'column',
-        position: 'relative'
+        position: 'relative',
+        outline: 'none'
       }}
       className="listing-card animate-fade-in"
       onMouseEnter={(e) => {
@@ -26,6 +38,13 @@ export default function ListingCard({ listing, onClick, onFavoriteToggle, isFavo
       onMouseLeave={(e) => {
         e.currentTarget.style.transform = 'translateY(0)';
         e.currentTarget.style.boxShadow = '0 10px 25px rgba(0,0,0,0.2)';
+      }}
+      onFocus={(e) => {
+        e.currentTarget.style.outline = '2px solid var(--color-primary, #0284c7)';
+        e.currentTarget.style.outlineOffset = '2px';
+      }}
+      onBlur={(e) => {
+        e.currentTarget.style.outline = 'none';
       }}
     >
       {/* Photo Container */}
