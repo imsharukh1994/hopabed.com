@@ -31,10 +31,14 @@ export default function MobileNav({ activeTab, setActiveTab, unreadCount = 1 }) 
         const Icon = item.icon;
         const isActive = activeTab === item.id;
 
+        const ariaLabel = item.badge > 0 ? `${item.label}, ${item.badge} unread` : item.label;
+
         return (
           <button
             key={item.id}
             onClick={() => setActiveTab(item.id)}
+            aria-label={ariaLabel}
+            aria-current={isActive ? 'page' : undefined}
             style={{
               flex: 1,
               display: 'flex',
