@@ -3,9 +3,20 @@ import { Star, ShieldCheck, Heart, MapPin, Sparkles, Award } from 'lucide-react'
 import { formatPrice } from '../utils/currency';
 
 export default function ListingCard({ listing, onClick, onFavoriteToggle, isFavorite = false, selectedCurrency = 'USD' }) {
+  const handleKeyDown = (e) => {
+    if (e.key === 'Enter' || e.key === ' ') {
+      e.preventDefault();
+      onClick(listing);
+    }
+  };
+
   return (
     <div 
+      role="button"
+      tabIndex={0}
+      aria-label={`View details for ${listing.title} in ${listing.city}`}
       onClick={() => onClick(listing)}
+      onKeyDown={handleKeyDown}
       style={{
         backgroundColor: 'var(--color-surface, #1e293b)',
         borderRadius: '16px',
@@ -45,6 +56,9 @@ export default function ListingCard({ listing, onClick, onFavoriteToggle, isFavo
           onClick={(e) => {
             e.stopPropagation();
             if (onFavoriteToggle) onFavoriteToggle(listing.id);
+          }}
+          onKeyDown={(e) => {
+            e.stopPropagation();
           }}
           style={{
             position: 'absolute',
@@ -161,6 +175,7 @@ export default function ListingCard({ listing, onClick, onFavoriteToggle, isFavo
           </div>
 
           <button 
+            tabIndex={-1}
             style={{
               padding: '0.45rem 0.95rem',
               fontSize: '0.85rem',
