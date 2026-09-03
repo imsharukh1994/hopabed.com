@@ -161,6 +161,12 @@ export default function ListingCard({ listing, onClick, onFavoriteToggle, isFavo
           </div>
 
           <button 
+            type="button"
+            aria-label={`View details for ${listing.title}`}
+            onClick={(e) => {
+              e.stopPropagation();
+              onClick(listing);
+            }}
             style={{
               padding: '0.45rem 0.95rem',
               fontSize: '0.85rem',
