@@ -1,17 +1,33 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Star, ShieldCheck, Heart, MapPin, Sparkles, Award } from 'lucide-react';
 import { formatPrice } from '../utils/currency';
 
 export default function ListingCard({ listing, onClick, onFavoriteToggle, isFavorite = false, selectedCurrency = 'USD' }) {
+  const [isFocused, setIsFocused] = useState(false);
+
+  const handleKeyDown = (e) => {
+    if (e.key === 'Enter' || e.key === ' ') {
+      e.preventDefault();
+      onClick(listing);
+    }
+  };
+
   return (
     <div 
+      tabIndex={0}
+      role="button"
+      aria-label={`View details for ${listing.title}`}
       onClick={() => onClick(listing)}
+      onKeyDown={handleKeyDown}
+      onFocus={() => setIsFocused(true)}
+      onBlur={() => setIsFocused(false)}
       style={{
         backgroundColor: 'var(--color-surface, #1e293b)',
         borderRadius: '16px',
         overflow: 'hidden',
         border: '1px solid #334155',
-        boxShadow: '0 10px 25px rgba(0,0,0,0.2)',
+        boxShadow: isFocused ? '0 0 0 3px var(--color-primary, #38bdf8)' : '0 10px 25px rgba(0,0,0,0.2)',
+        outline: 'none',
         transition: 'transform 0.2s, box-shadow 0.2s',
         cursor: 'pointer',
         display: 'flex',
@@ -21,11 +37,11 @@ export default function ListingCard({ listing, onClick, onFavoriteToggle, isFavo
       className="listing-card animate-fade-in"
       onMouseEnter={(e) => {
         e.currentTarget.style.transform = 'translateY(-4px)';
-        e.currentTarget.style.boxShadow = '0 15px 30px rgba(0,0,0,0.3)';
+        e.currentTarget.style.boxShadow = isFocused ? '0 0 0 3px var(--color-primary, #38bdf8)' : '0 15px 30px rgba(0,0,0,0.3)';
       }}
       onMouseLeave={(e) => {
         e.currentTarget.style.transform = 'translateY(0)';
-        e.currentTarget.style.boxShadow = '0 10px 25px rgba(0,0,0,0.2)';
+        e.currentTarget.style.boxShadow = isFocused ? '0 0 0 3px var(--color-primary, #38bdf8)' : '0 10px 25px rgba(0,0,0,0.2)';
       }}
     >
       {/* Photo Container */}
@@ -160,7 +176,7 @@ export default function ListingCard({ listing, onClick, onFavoriteToggle, isFavo
             )}
           </div>
 
-          <button 
+          <span
             style={{
               padding: '0.45rem 0.95rem',
               fontSize: '0.85rem',
@@ -168,12 +184,11 @@ export default function ListingCard({ listing, onClick, onFavoriteToggle, isFavo
               borderRadius: '12px',
               backgroundColor: '#0284c7',
               color: '#fff',
-              border: 'none',
-              cursor: 'pointer'
+              display: 'inline-block'
             }}
           >
             View Details
-          </button>
+          </span>
         </div>
       </div>
     </div>
