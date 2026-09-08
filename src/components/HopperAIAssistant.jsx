@@ -147,14 +147,16 @@ export default function HopperAIAssistant({ isOpen, onClose, listings = [], sele
           {['Dog Walking', 'Language Tutoring', 'Graphic Design', 'Web Dev', 'Gardening'].map(skill => (
             <button
               key={skill}
+              type="button"
               onClick={() => handleSkillSelect(skill)}
+              aria-pressed={selectedSkill === skill}
               style={{
                 fontSize: '11px',
                 padding: '4px 10px',
                 borderRadius: '12px',
                 backgroundColor: selectedSkill === skill ? '#0284c7' : '#1e293b',
                 color: '#fff',
-                border: '1px solid #334155',
+                border: selectedSkill === skill ? '1px solid #38bdf8' : '1px solid #334155',
                 whiteSpace: 'nowrap',
                 cursor: 'pointer'
               }}
@@ -188,41 +190,52 @@ export default function HopperAIAssistant({ isOpen, onClose, listings = [], sele
             <div style={{ fontSize: '11px', color: '#38bdf8', fontWeight: 700, textTransform: 'uppercase' }}>
               RECOMMENDED MATCHES ({matchedStays.length})
             </div>
-            {matchedStays.map(listing => (
-              <div
-                key={listing.id}
-                onClick={() => { onSelectListing(listing); onClose(); }}
-                style={{
-                  backgroundColor: '#0f172a',
-                  border: '1px solid #334155',
-                  borderRadius: '12px',
-                  padding: '10px',
-                  display: 'flex',
-                  alignItems: 'center',
-                  gap: '10px',
-                  cursor: 'pointer',
-                  transition: 'all 0.2s'
-                }}
-              >
-                <img 
-                  src={listing.images[0]} 
-                  alt={listing.title} 
-                  style={{ width: '50px', height: '50px', borderRadius: '8px', objectFit: 'cover' }} 
-                />
-                <div style={{ flex: 1, minWidth: 0 }}>
-                  <div style={{ fontSize: '12px', fontWeight: 700, color: '#fff', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
-                    {listing.title}
+            {matchedStays.map(listing => {
+              const priceText = listing.isServiceShare
+                ? 'FREE (Service Share)'
+                : `${formatPrice(listing.pricePerNight, selectedCurrency)} / night`;
+
+              return (
+                <button
+                  key={listing.id}
+                  type="button"
+                  onClick={() => { onSelectListing(listing); onClose(); }}
+                  aria-label={`Select stay: ${listing.title}, located in ${listing.city}, ${listing.country}. Price: ${priceText}`}
+                  style={{
+                    backgroundColor: '#0f172a',
+                    border: '1px solid #334155',
+                    borderRadius: '12px',
+                    padding: '10px',
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '10px',
+                    cursor: 'pointer',
+                    transition: 'all 0.2s',
+                    textAlign: 'left',
+                    width: '100%',
+                    color: 'inherit'
+                  }}
+                >
+                  <img
+                    src={listing.images[0]}
+                    alt={listing.title}
+                    style={{ width: '50px', height: '50px', borderRadius: '8px', objectFit: 'cover' }}
+                  />
+                  <div style={{ flex: 1, minWidth: 0 }}>
+                    <div style={{ fontSize: '12px', fontWeight: 700, color: '#fff', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+                      {listing.title}
+                    </div>
+                    <div style={{ fontSize: '11px', color: '#94a3b8', display: 'flex', alignItems: 'center', gap: '4px' }}>
+                      <MapPin size={10} /> {listing.city}, {listing.country}
+                    </div>
+                    <div style={{ fontSize: '11px', fontWeight: 700, color: '#38bdf8', marginTop: '2px' }}>
+                      {priceText}
+                    </div>
                   </div>
-                  <div style={{ fontSize: '11px', color: '#94a3b8', display: 'flex', alignItems: 'center', gap: '4px' }}>
-                    <MapPin size={10} /> {listing.city}, {listing.country}
-                  </div>
-                  <div style={{ fontSize: '11px', fontWeight: 700, color: '#38bdf8', marginTop: '2px' }}>
-                    {listing.isServiceShare ? 'FREE (Service Share)' : `${formatPrice(listing.pricePerNight, selectedCurrency)} / night`}
-                  </div>
-                </div>
-                <ChevronRight size={16} color="#94a3b8" />
-              </div>
-            ))}
+                  <ChevronRight size={16} color="#94a3b8" />
+                </button>
+              );
+            })}
           </div>
         )}
       </div>
