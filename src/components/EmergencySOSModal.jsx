@@ -33,17 +33,22 @@ export default function EmergencySOSModal({ isOpen, onClose }) {
   };
 
   return (
-    <div style={{
-      position: 'fixed',
-      top: 0, left: 0, right: 0, bottom: 0,
-      backgroundColor: 'rgba(15, 23, 42, 0.9)',
-      backdropFilter: 'blur(10px)',
-      display: 'flex',
-      alignItems: 'center',
-      justifyContent: 'center',
-      zIndex: 100000,
-      padding: '20px'
-    }}>
+    <div
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="sos-modal-title"
+      style={{
+        position: 'fixed',
+        top: 0, left: 0, right: 0, bottom: 0,
+        backgroundColor: 'rgba(15, 23, 42, 0.9)',
+        backdropFilter: 'blur(10px)',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        zIndex: 100000,
+        padding: '20px'
+      }}
+    >
       <div style={{
         width: '100%',
         maxWidth: '480px',
@@ -75,11 +80,15 @@ export default function EmergencySOSModal({ isOpen, onClose }) {
               <ShieldAlert size={26} color="#fff" />
             </div>
             <div>
-              <div style={{ fontSize: '18px', fontWeight: 800, color: '#fff' }}>Solo Traveler Emergency SOS</div>
+              <div id="sos-modal-title" style={{ fontSize: '18px', fontWeight: 800, color: '#fff' }}>Solo Traveler Emergency SOS</div>
               <div style={{ fontSize: '12px', color: 'rgba(255, 255, 255, 0.85)' }}>Community Safety Broadcast System</div>
             </div>
           </div>
-          <button onClick={onClose} style={{ background: 'none', border: 'none', color: '#fff', cursor: 'pointer' }}>
+          <button
+            onClick={onClose}
+            aria-label="Close emergency modal"
+            style={{ background: 'none', border: 'none', color: '#fff', cursor: 'pointer' }}
+          >
             <X size={20} />
           </button>
         </div>
@@ -87,18 +96,30 @@ export default function EmergencySOSModal({ isOpen, onClose }) {
         <div style={{ padding: '24px', textAlign: 'center' }}>
           {!isBroadcasting && !broadcastSent && (
             <div>
-              <div style={{
-                width: '90px',
-                height: '90px',
-                borderRadius: '50%',
-                backgroundColor: 'rgba(239, 68, 68, 0.15)',
-                border: '2px solid #ef4444',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                margin: '0 auto 20px',
-                cursor: 'pointer'
-              }} onClick={handleStartBroadcast}>
+              <div
+                role="button"
+                tabIndex={0}
+                aria-label="Start emergency broadcast"
+                onClick={handleStartBroadcast}
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault();
+                    handleStartBroadcast();
+                  }
+                }}
+                style={{
+                  width: '90px',
+                  height: '90px',
+                  borderRadius: '50%',
+                  backgroundColor: 'rgba(239, 68, 68, 0.15)',
+                  border: '2px solid #ef4444',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  margin: '0 auto 20px',
+                  cursor: 'pointer'
+                }}
+              >
                 <Radio size={48} color="#ef4444" />
               </div>
 
@@ -146,7 +167,7 @@ export default function EmergencySOSModal({ isOpen, onClose }) {
           )}
 
           {isBroadcasting && !broadcastSent && (
-            <div>
+            <div aria-live="assertive">
               <div style={{
                 fontSize: '48px',
                 fontWeight: 900,
@@ -182,7 +203,7 @@ export default function EmergencySOSModal({ isOpen, onClose }) {
           )}
 
           {broadcastSent && (
-            <div>
+            <div aria-live="assertive">
               <div style={{
                 width: '70px',
                 height: '70px',
