@@ -90,14 +90,16 @@ export default function HostCalculator({ onStartHosting }) {
           {/* 1. Beds Count Slider */}
           <div>
             <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '6px', fontSize: '0.9rem', fontWeight: 800 }}>
-              <span>Number of Beds Available:</span>
+              <label htmlFor="beds-count-slider">Number of Beds Available:</label>
               <span style={{ color: 'var(--color-primary)', fontSize: '1.05rem' }}>{bedsCount} {bedsCount === 1 ? 'Bed / Couch' : 'Beds'}</span>
             </div>
             <input 
+              id="beds-count-slider"
               type="range" 
               min="1" 
               max={hostType === 'individual' ? '5' : '50'} 
               value={bedsCount}
+              aria-valuetext={`${bedsCount} ${bedsCount === 1 ? 'bed or couch' : 'beds'}`}
               onChange={(e) => setBedsCount(Number(e.target.value))}
               style={{ width: '100%', accentColor: 'var(--color-primary)', cursor: 'pointer' }}
             />
@@ -106,14 +108,16 @@ export default function HostCalculator({ onStartHosting }) {
           {/* 2. Nightly Rate Slider */}
           <div>
             <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '6px', fontSize: '0.9rem', fontWeight: 800 }}>
-              <span>Nightly Rate per Bed ($):</span>
+              <label htmlFor="nightly-rate-slider">Nightly Rate per Bed ($):</label>
               <span style={{ color: 'var(--color-primary)', fontSize: '1.05rem' }}>${nightlyRate} / night</span>
             </div>
             <input 
+              id="nightly-rate-slider"
               type="range" 
               min="2" 
               max="40" 
               value={nightlyRate}
+              aria-valuetext={`$${nightlyRate} per night`}
               onChange={(e) => setNightlyRate(Number(e.target.value))}
               style={{ width: '100%', accentColor: 'var(--color-primary)', cursor: 'pointer' }}
             />
@@ -122,14 +126,16 @@ export default function HostCalculator({ onStartHosting }) {
           {/* 3. Occupancy Days Slider */}
           <div>
             <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '6px', fontSize: '0.9rem', fontWeight: 800 }}>
-              <span>Occupied Days per Month:</span>
+              <label htmlFor="occupancy-days-slider">Occupied Days per Month:</label>
               <span style={{ color: 'var(--color-primary)', fontSize: '1.05rem' }}>{occupancyDays} days / mo</span>
             </div>
             <input 
+              id="occupancy-days-slider"
               type="range" 
               min="5" 
               max="30" 
               value={occupancyDays}
+              aria-valuetext={`${occupancyDays} occupied days per month`}
               onChange={(e) => setOccupancyDays(Number(e.target.value))}
               style={{ width: '100%', accentColor: 'var(--color-primary)', cursor: 'pointer' }}
             />
