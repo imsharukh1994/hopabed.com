@@ -19,6 +19,8 @@ import OpenProtocolPage from './pages/OpenProtocolPage';
 import HostelPartnersPage from './pages/HostelPartnersPage';
 import TravelGuidesPage from './pages/TravelGuidesPage';
 import SkillExchangePage from './pages/SkillExchangePage';
+import MyPassesPage from './pages/MyPassesPage';
+import PassVerificationPage from './pages/PassVerificationPage';
 
 // Feature Components & Modals
 import TrustPassportModal from './components/TrustPassportModal';
@@ -108,6 +110,7 @@ export default function App() {
   const [showSOSModal, setShowSOSModal] = useState(false);
   const [selectedPassBooking, setSelectedPassBooking] = useState(null);
   const [selectedProofBooking, setSelectedProofBooking] = useState(null);
+  const [verifyPassToken, setVerifyPassToken] = useState(null);
 
   // Restore User Session from LocalStorage on Mount
   const [currentUser, setCurrentUser] = useState(() => {
@@ -140,6 +143,21 @@ export default function App() {
     loadCloudData();
   }, []);
 
+  // Handle QR verification from URL hash (e.g., #verify/<token>)
+  useEffect(() => {
+    function handleHash() {
+      const hash = window.location.hash;
+      const match = hash.match(/^#verify\/(.+)$/);
+      if (match) {
+        setVerifyPassToken(match[1]);
+        setActiveTab('verify-pass');
+      }
+    }
+    handleHash();
+    window.addEventListener('hashchange', handleHash);
+    return () => window.removeEventListener('hashchange', handleHash);
+  }, []);
+
   // Navigation Handlers
   const handleSearch = ({ location }) => {
     if (location) setSearchQuery(location);
@@ -161,10 +179,29 @@ export default function App() {
   };
 
   const handleConfirmBooking = async (newBooking) => {
-    setBookings([newBooking, ...bookings]);
+    const bookingWithStatus = {
+      ...newBooking,
+      bookingStatus: 'PENDING_HOST_APPROVAL',
+      status: 'Pending',
+    };
+    setBookings([bookingWithStatus, ...bookings]);
     setBookingModalData(null);
     setActiveTab('trips');
-    await saveCloudBooking(newBooking, currentUser?.id);
+    await saveCloudBooking(bookingWithStatus, currentUser?.id);
+  };
+
+  const handleBookingApproved = (bookingId, pass) => {
+    setBookings(prev => prev.map(b =>
+      b.id === bookingId
+        ? { ...b, bookingStatus: 'PASS_ACTIVE', status: 'Confirmed', digitalPass: pass, passCode: pass.passCode, nodeCode: pass.nodeCode, qrToken: pass.qrToken }
+        : b
+    ));
+  };
+
+  const handleBookingRejected = (bookingId) => {
+    setBookings(prev => prev.map(b =>
+      b.id === bookingId ? { ...b, bookingStatus: 'REJECTED', status: 'Cancelled' } : b
+    ));
   };
 
   const handlePublishListing = async (newListing) => {
@@ -262,8 +299,11 @@ export default function App() {
           <HostDashboard 
             listings={activeListings}
             bookings={bookings}
+            currentUser={currentUser}
             onCreateNewListing={() => setActiveTab('wizard')}
             onOpenMessaging={() => setActiveTab('messaging')}
+            onBookingApproved={handleBookingApproved}
+            onBookingRejected={handleBookingRejected}
           />
         )}
 
@@ -288,6 +328,27 @@ export default function App() {
             onOpenDigitalPass={(b) => setSelectedPassBooking(b)}
             onOpenProofOfWork={(b) => setSelectedProofBooking(b)}
             selectedCurrency={selectedCurrency}
+            currentUser={currentUser}
+          />
+        )}
+
+        {activeTab === 'my-passes' && (
+          <MyPassesPage
+            currentUser={currentUser}
+            bookings={bookings}
+            onOpenDigitalPass={(b) => setSelectedPassBooking(b)}
+            onNavigate={setActiveTab}
+          />
+        )}
+
+        {activeTab === 'verify-pass' && (
+          <PassVerificationPage
+            qrToken={verifyPassToken}
+            currentUser={currentUser}
+            onBack={() => {
+              window.location.hash = '';
+              setActiveTab('trips');
+            }}
           />
         )}
 
@@ -365,6 +426,7 @@ export default function App() {
         isOpen={!!selectedPassBooking}
         onClose={() => setSelectedPassBooking(null)}
         booking={selectedPassBooking}
+        currentUser={currentUser}
         selectedCurrency={selectedCurrency}
       />
 

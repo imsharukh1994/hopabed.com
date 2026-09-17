@@ -144,3 +144,99 @@ CREATE POLICY "Public Storage Select" ON storage.objects FOR SELECT USING (bucke
 DROP POLICY IF EXISTS "Public Storage Insert" ON storage.objects;
 CREATE POLICY "Public Storage Insert" ON storage.objects FOR INSERT WITH CHECK (bucket_id = 'hopabed.bucket');
 
+
+-- ═══════════════════════════════════════════════════════════════════
+-- BedHopper Digital Wallet Pass Schema Extension
+-- Version: 2.0.0 — Added with Digital Pass feature
+-- ═══════════════════════════════════════════════════════════════════
+
+-- Add Node Code to listings (unique, human-readable property identifier)
+ALTER TABLE listings ADD COLUMN IF NOT EXISTS node_code VARCHAR(20) UNIQUE;
+
+-- Add extended booking status to bookings
+ALTER TABLE bookings ADD COLUMN IF NOT EXISTS booking_status VARCHAR(50) DEFAULT 'PENDING_HOST_APPROVAL';
+-- booking_status values: PENDING_HOST_APPROVAL, PASS_ACTIVE, CHECKED_IN, CHECKED_OUT, REJECTED, CANCELLED
+
+-- 9. DIGITAL PASSES TABLE
+CREATE TABLE IF NOT EXISTS digital_passes (
+    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    booking_id VARCHAR(100) NOT NULL,           -- References bookings.booking_code
+    guest_id TEXT,                              -- References users.id
+    host_id TEXT,                               -- References users.id
+    listing_id TEXT,                            -- References listings.id
+    pass_code VARCHAR(30) UNIQUE NOT NULL,      -- BH-PASS-XXXXXXXX (public display)
+    pass_hash TEXT NOT NULL,                    -- Derived verification hash
+    qr_token TEXT UNIQUE NOT NULL,              -- URL-safe token embedded in QR code
+    node_code VARCHAR(20),                      -- Property node code BH-XXXXXX
+    guest_name VARCHAR(255),
+    host_name VARCHAR(255),
+    property_name VARCHAR(255),
+    check_in DATE,
+    check_out DATE,
+    status VARCHAR(30) DEFAULT 'ACTIVE',        -- ACTIVE, CHECKED_IN, CHECKED_OUT, CANCELLED, EXPIRED
+    issued_at TIMESTAMPTZ DEFAULT NOW(),
+    expires_at TIMESTAMPTZ,
+    checked_in_at TIMESTAMPTZ,
+    checked_out_at TIMESTAMPTZ,
+    created_at TIMESTAMPTZ DEFAULT NOW(),
+    updated_at TIMESTAMPTZ DEFAULT NOW()
+);
+
+-- 10. CHECK-INS TABLE (audit of every check-in event)
+CREATE TABLE IF NOT EXISTS check_ins (
+    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    pass_id UUID REFERENCES digital_passes(id) ON DELETE CASCADE,
+    booking_id TEXT,
+    verified_by TEXT,                           -- Host user ID who confirmed
+    verification_method VARCHAR(50) DEFAULT 'qr_scan',  -- qr_scan | manual
+    verified_at TIMESTAMPTZ DEFAULT NOW(),
+    ip_address TEXT,                            -- Optional: store verifier IP
+    created_at TIMESTAMPTZ DEFAULT NOW()
+);
+
+-- 11. PASS AUDIT LOGS TABLE
+CREATE TABLE IF NOT EXISTS pass_audit_logs (
+    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    pass_id UUID REFERENCES digital_passes(id) ON DELETE SET NULL,
+    action VARCHAR(100) NOT NULL,               -- PASS_GENERATED, CHECKED_IN, CHECKED_OUT, PASS_CANCELLED, etc.
+    performed_by TEXT,                          -- User ID who performed the action
+    metadata JSONB,                             -- Additional context
+    created_at TIMESTAMPTZ DEFAULT NOW()
+);
+
+-- INDEXES FOR PASS PERFORMANCE
+CREATE INDEX IF NOT EXISTS idx_passes_booking ON digital_passes(booking_id);
+CREATE INDEX IF NOT EXISTS idx_passes_guest ON digital_passes(guest_id);
+CREATE INDEX IF NOT EXISTS idx_passes_host ON digital_passes(host_id);
+CREATE INDEX IF NOT EXISTS idx_passes_qr_token ON digital_passes(qr_token);
+CREATE INDEX IF NOT EXISTS idx_passes_pass_code ON digital_passes(pass_code);
+CREATE INDEX IF NOT EXISTS idx_checkins_pass ON check_ins(pass_id);
+CREATE INDEX IF NOT EXISTS idx_audit_pass ON pass_audit_logs(pass_id);
+
+-- RLS FOR DIGITAL PASSES (public read for verification, write restricted)
+ALTER TABLE digital_passes ENABLE ROW LEVEL SECURITY;
+ALTER TABLE check_ins ENABLE ROW LEVEL SECURITY;
+ALTER TABLE pass_audit_logs ENABLE ROW LEVEL SECURITY;
+
+DROP POLICY IF EXISTS "Public passes viewable" ON digital_passes;
+CREATE POLICY "Public passes viewable" ON digital_passes FOR SELECT USING (true);
+
+DROP POLICY IF EXISTS "Public passes insertable" ON digital_passes;
+CREATE POLICY "Public passes insertable" ON digital_passes FOR INSERT WITH CHECK (true);
+
+DROP POLICY IF EXISTS "Public passes updatable" ON digital_passes;
+CREATE POLICY "Public passes updatable" ON digital_passes FOR UPDATE USING (true);
+
+DROP POLICY IF EXISTS "Public check_ins insertable" ON check_ins;
+CREATE POLICY "Public check_ins insertable" ON check_ins FOR INSERT WITH CHECK (true);
+
+DROP POLICY IF EXISTS "Public check_ins viewable" ON check_ins;
+CREATE POLICY "Public check_ins viewable" ON check_ins FOR SELECT USING (true);
+
+DROP POLICY IF EXISTS "Public audit logs insertable" ON pass_audit_logs;
+CREATE POLICY "Public audit logs insertable" ON pass_audit_logs FOR INSERT WITH CHECK (true);
+
+DROP POLICY IF EXISTS "Public audit logs viewable" ON pass_audit_logs;
+CREATE POLICY "Public audit logs viewable" ON pass_audit_logs FOR SELECT USING (true);
+
+

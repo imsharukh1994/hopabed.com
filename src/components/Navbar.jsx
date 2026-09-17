@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import Logo from './Logo';
-import { Globe, User, ShieldCheck, Heart, Sparkles, Building2, Cpu, Compass, Menu, LogOut, Briefcase, Sun, Moon, Flame } from 'lucide-react';
+import { Globe, User, ShieldCheck, Heart, Sparkles, Building2, Cpu, Compass, Menu, LogOut, Briefcase, Sun, Moon, Flame, Wallet } from 'lucide-react';
 import { CURRENCIES } from '../utils/currency';
 
 export default function Navbar({ 
@@ -282,6 +282,14 @@ export default function Navbar({
                   >
                     <Compass size={16} />
                     <span>My Trips & Pass</span>
+                  </button>
+
+                  <button 
+                    onClick={() => { setActiveTab('my-passes'); setShowUserMenu(false); }}
+                    style={{ padding: '0.65rem 1.25rem', display: 'flex', alignItems: 'center', gap: '10px', fontSize: '0.88rem', fontWeight: 700, textAlign: 'left', backgroundColor: 'transparent', border: 'none', color: 'var(--color-accent)', cursor: 'pointer' }}
+                  >
+                    <Wallet size={16} />
+                    <span>My Digital Passes</span>
                   </button>
 
                   <button 

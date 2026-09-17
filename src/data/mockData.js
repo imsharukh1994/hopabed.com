@@ -12,6 +12,7 @@ export const INITIAL_DESTINATIONS = [
 export const INITIAL_LISTINGS = [
   {
     id: 'bh-101',
+    nodeCode: 'BH-SKYH7X',
     title: 'Cozy couch in Sukhumvit',
     city: 'Bangkok',
     country: 'Thailand',
@@ -46,6 +47,7 @@ export const INITIAL_LISTINGS = [
   },
   {
     id: 'bh-102',
+    nodeCode: 'BH-WLJGRX',
     title: 'Wanderlust Hostel - Dorm Bed',
     city: 'Bangkok',
     country: 'Thailand',
@@ -79,6 +81,7 @@ export const INITIAL_LISTINGS = [
   },
   {
     id: 'bh-103',
+    nodeCode: 'BH-ARIND3',
     title: 'Service-Share Bed (Dog Walking & Reception)',
     city: 'Bangkok',
     country: 'Thailand',
@@ -119,6 +122,7 @@ export const INITIAL_LISTINGS = [
   },
   {
     id: 'bh-104',
+    nodeCode: 'BH-SHIBY4',
     title: 'Futuristic Capsule Pod in Shibuya',
     city: 'Tokyo',
     country: 'Japan',
@@ -152,6 +156,7 @@ export const INITIAL_LISTINGS = [
   },
   {
     id: 'bh-105',
+    nodeCode: 'BH-SHNJK5',
     title: 'Service-Share Stay: English Tutoring & Web Fixes',
     city: 'Tokyo',
     country: 'Japan',
@@ -192,6 +197,7 @@ export const INITIAL_LISTINGS = [
   },
   {
     id: 'bh-106',
+    nodeCode: 'BH-ALFM06',
     title: 'Alfama Historic Attic Couch',
     city: 'Lisbon',
     country: 'Portugal',
@@ -225,6 +231,7 @@ export const INITIAL_LISTINGS = [
   },
   {
     id: 'bh-107',
+    nodeCode: 'BH-KBERG7',
     title: 'Service-Share: Garden Painting & Mural Artist',
     city: 'Berlin',
     country: 'Germany',
@@ -265,6 +272,7 @@ export const INITIAL_LISTINGS = [
   },
   {
     id: 'bh-108',
+    nodeCode: 'BH-CGGU08',
     title: 'Canggu Eco Beach Hammock & Bed',
     city: 'Bali',
     country: 'Indonesia',
@@ -378,8 +386,25 @@ export const INITIAL_BOOKINGS = [
     serviceFee: 0.80,
     totalPrice: 10.80,
     status: 'Confirmed',
+    bookingStatus: 'PASS_ACTIVE',
+    nodeCode: 'BH-SKYH7X',
     paymentStatus: 'Paid via Stripe Connect',
-    createdDate: '10 Aug 2026'
+    createdDate: '10 Aug 2026',
+    digitalPass: {
+      passCode: 'BH-PASS-A4F2C901',
+      passHash: 'A4F2C901DEMO',
+      qrToken: 'demo-qr-token-BH202608100412',
+      nodeCode: 'BH-SKYH7X',
+      guestName: 'John Doe',
+      hostName: 'Anna Schmidt',
+      propertyName: 'Cozy couch in Sukhumvit',
+      checkIn: '12 Aug 2026',
+      checkOut: '14 Aug 2026',
+      status: 'ACTIVE',
+      issuedAt: '2026-08-10T10:00:00Z',
+      expiresAt: '2026-08-15T23:59:59Z',
+      bookingId: 'BH-202608100412',
+    }
   },
   {
     id: 'BH-202608100415',
@@ -397,9 +422,49 @@ export const INITIAL_BOOKINGS = [
     serviceFee: 0.00,
     totalPrice: 0.00,
     status: 'Confirmed',
+    bookingStatus: 'PASS_ACTIVE',
     isServiceShare: true,
+    nodeCode: 'BH-ARIND3',
     paymentStatus: '$20 Refundable Deposit Held',
-    createdDate: '10 Aug 2026'
+    createdDate: '10 Aug 2026',
+    digitalPass: {
+      passCode: 'BH-PASS-B7D3E2F0',
+      passHash: 'B7D3E2F0DEMO',
+      qrToken: 'demo-qr-token-BH202608100415',
+      nodeCode: 'BH-ARIND3',
+      guestName: 'Maria Garcia',
+      hostName: 'Tom Holland',
+      propertyName: 'Service-Share Bed (Dog Walking)',
+      checkIn: '15 Aug 2026',
+      checkOut: '18 Aug 2026',
+      status: 'ACTIVE',
+      issuedAt: '2026-08-10T12:00:00Z',
+      expiresAt: '2026-08-19T23:59:59Z',
+      bookingId: 'BH-202608100415',
+    }
+  },
+  {
+    id: 'BH-202608100420',
+    listingId: 'bh-107',
+    listingTitle: 'Service-Share: Garden Painting & Mural Artist',
+    guestName: 'Alex Rivera',
+    guestAvatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=200&q=80',
+    hostName: 'Greta Neumann',
+    checkIn: '20 Aug 2026',
+    checkOut: '24 Aug 2026',
+    nights: 4,
+    guests: 1,
+    nightlyPrice: 0.00,
+    subtotal: 0.00,
+    serviceFee: 0.00,
+    totalPrice: 0.00,
+    status: 'Pending',
+    bookingStatus: 'PENDING_HOST_APPROVAL',
+    isServiceShare: true,
+    nodeCode: 'BH-KBERG7',
+    paymentStatus: '$20 Refundable Deposit Held',
+    createdDate: '17 Aug 2026',
+    digitalPass: null
   }
 ];
 

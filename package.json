@@ -12,8 +12,10 @@
   "dependencies": {
     "@supabase/supabase-js": "^2.112.2",
     "canvas-confetti": "^1.9.2",
+    "html2canvas": "^1.4.1",
     "leaflet": "^1.9.4",
     "lucide-react": "^0.344.0",
+    "qrcode": "^1.5.4",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-leaflet": "^4.2.1"

@@ -238,3 +238,68 @@ img {
 .animate-fade-in {
   animation: fadeIn 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
+
+/* ─────────────────────────────────────────────
+   Digital Pass Print Styles
+   Only the pass card is printed — rest is hidden
+─────────────────────────────────────────────── */
+@media print {
+  /* Hide everything */
+  body > * {
+    display: none !important;
+  }
+
+  /* Show only the pass print area */
+  .digital-pass-print-area {
+    display: block !important;
+    position: fixed !important;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 99999;
+    padding: 30px;
+    background: white !important;
+    color: #0f172a !important;
+    font-family: 'Inter', sans-serif;
+  }
+
+  /* Force dark pass card to print with colors */
+  @page {
+    size: A5 portrait;
+    margin: 10mm;
+  }
+
+  .digital-pass-print-area * {
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+
+  /* Hide non-print elements */
+  .no-print {
+    display: none !important;
+  }
+}
+
+/* ─────────────────────────────────────────────
+   Badge Verified Utility
+─────────────────────────────────────────────── */
+.badge-verified {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 3px 10px;
+  borderRadius: 10px;
+  font-size: 12px;
+  font-weight: 800;
+  background-color: rgba(16, 185, 129, 0.1);
+  color: #10b981;
+}
+
+/* ─────────────────────────────────────────────
+   Dashboard Layout (responsive)
+─────────────────────────────────────────────── */
+@media (max-width: 768px) {
+  .dashboard-layout {
+    grid-template-columns: 1fr !important;
+  }
+}
