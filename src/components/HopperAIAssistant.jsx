@@ -7,6 +7,8 @@ export default function HopperAIAssistant({ isOpen, onClose, listings = [], sele
   const [selectedSkill, setSelectedSkill] = useState('');
   const [isCloseFocused, setIsCloseFocused] = useState(false);
   const [isSendFocused, setIsSendFocused] = useState(false);
+  const [focusedSkill, setFocusedSkill] = useState(null);
+  const [focusedMatchId, setFocusedMatchId] = useState(null);
   const inputRef = useRef(null);
 
   useEffect(() => {
@@ -147,7 +149,12 @@ export default function HopperAIAssistant({ isOpen, onClose, listings = [], sele
           {['Dog Walking', 'Language Tutoring', 'Graphic Design', 'Web Dev', 'Gardening'].map(skill => (
             <button
               key={skill}
+              type="button"
               onClick={() => handleSkillSelect(skill)}
+              onFocus={() => setFocusedSkill(skill)}
+              onBlur={() => setFocusedSkill(null)}
+              aria-pressed={selectedSkill === skill}
+              title={`Filter stays by ${skill}`}
               style={{
                 fontSize: '11px',
                 padding: '4px 10px',
@@ -156,7 +163,9 @@ export default function HopperAIAssistant({ isOpen, onClose, listings = [], sele
                 color: '#fff',
                 border: '1px solid #334155',
                 whiteSpace: 'nowrap',
-                cursor: 'pointer'
+                cursor: 'pointer',
+                outline: focusedSkill === skill ? '2px solid #38bdf8' : 'none',
+                outlineOffset: '1px'
               }}
             >
               {skill}
@@ -191,16 +200,30 @@ export default function HopperAIAssistant({ isOpen, onClose, listings = [], sele
             {matchedStays.map(listing => (
               <div
                 key={listing.id}
+                role="button"
+                tabIndex={0}
+                aria-label={`View stay details for ${listing.title} in ${listing.city}`}
                 onClick={() => { onSelectListing(listing); onClose(); }}
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault();
+                    onSelectListing(listing);
+                    onClose();
+                  }
+                }}
+                onFocus={() => setFocusedMatchId(listing.id)}
+                onBlur={() => setFocusedMatchId(null)}
                 style={{
                   backgroundColor: '#0f172a',
-                  border: '1px solid #334155',
+                  border: focusedMatchId === listing.id ? '1px solid #38bdf8' : '1px solid #334155',
                   borderRadius: '12px',
                   padding: '10px',
                   display: 'flex',
                   alignItems: 'center',
                   gap: '10px',
                   cursor: 'pointer',
+                  outline: focusedMatchId === listing.id ? '2px solid #38bdf8' : 'none',
+                  outlineOffset: '2px',
                   transition: 'all 0.2s'
                 }}
               >
