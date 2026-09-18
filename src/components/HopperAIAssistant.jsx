@@ -14,9 +14,20 @@ export default function HopperAIAssistant({ isOpen, onClose, listings = [], sele
       const timer = setTimeout(() => {
         inputRef.current?.focus();
       }, 100);
-      return () => clearTimeout(timer);
+
+      const handleKeyDown = (e) => {
+        if (e.key === 'Escape') {
+          onClose();
+        }
+      };
+
+      window.addEventListener('keydown', handleKeyDown);
+      return () => {
+        clearTimeout(timer);
+        window.removeEventListener('keydown', handleKeyDown);
+      };
     }
-  }, [isOpen]);
+  }, [isOpen, onClose]);
 
   const [chatMessages, setChatMessages] = useState([
     {
@@ -72,23 +83,27 @@ export default function HopperAIAssistant({ isOpen, onClose, listings = [], sele
   };
 
   return (
-    <div style={{
-      position: 'fixed',
-      bottom: '80px',
-      right: '24px',
-      width: '380px',
-      maxWidth: 'calc(100vw - 32px)',
-      height: '560px',
-      maxHeight: 'calc(100vh - 120px)',
-      backgroundColor: '#1e293b',
-      borderRadius: '20px',
-      boxShadow: '0 20px 40px rgba(0,0,0,0.4), 0 0 0 1px rgba(255,255,255,0.1)',
-      zIndex: 9999,
-      display: 'flex',
-      flexDirection: 'column',
-      overflow: 'hidden',
-      color: '#f8fafc'
-    }}>
+    <div
+      role="dialog"
+      aria-label="Hopper AI Companion"
+      style={{
+        position: 'fixed',
+        bottom: '80px',
+        right: '24px',
+        width: '380px',
+        maxWidth: 'calc(100vw - 32px)',
+        height: '560px',
+        maxHeight: 'calc(100vh - 120px)',
+        backgroundColor: '#1e293b',
+        borderRadius: '20px',
+        boxShadow: '0 20px 40px rgba(0,0,0,0.4), 0 0 0 1px rgba(255,255,255,0.1)',
+        zIndex: 9999,
+        display: 'flex',
+        flexDirection: 'column',
+        overflow: 'hidden',
+        color: '#f8fafc'
+      }}
+    >
       {/* Header */}
       <div style={{
         padding: '16px 20px',
@@ -191,7 +206,17 @@ export default function HopperAIAssistant({ isOpen, onClose, listings = [], sele
             {matchedStays.map(listing => (
               <div
                 key={listing.id}
+                role="button"
+                tabIndex={0}
+                aria-label={`View details for ${listing.title} in ${listing.city}`}
                 onClick={() => { onSelectListing(listing); onClose(); }}
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault();
+                    onSelectListing(listing);
+                    onClose();
+                  }
+                }}
                 style={{
                   backgroundColor: '#0f172a',
                   border: '1px solid #334155',
