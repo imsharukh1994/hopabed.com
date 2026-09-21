@@ -103,17 +103,23 @@ export default function AuthModal({ initialMode = 'login', onClose, onLoginSucce
   };
 
   return (
-    <div style={{
-      position: 'fixed',
-      inset: 0,
-      backgroundColor: 'rgba(15, 23, 42, 0.85)',
-      backdropFilter: 'blur(8px)',
-      display: 'flex',
-      alignItems: 'center',
-      justifyContent: 'center',
-      zIndex: 10000,
-      padding: '1rem'
-    }} className="animate-fade-in">
+    <div
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="auth-modal-title"
+      style={{
+        position: 'fixed',
+        inset: 0,
+        backgroundColor: 'rgba(15, 23, 42, 0.85)',
+        backdropFilter: 'blur(8px)',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        zIndex: 10000,
+        padding: '1rem'
+      }}
+      className="animate-fade-in"
+    >
       <div style={{
         backgroundColor: '#1e293b',
         borderRadius: '24px',
@@ -137,11 +143,11 @@ export default function AuthModal({ initialMode = 'login', onClose, onLoginSucce
         }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
             <ShieldCheck size={22} color="#fff" />
-            <h3 style={{ fontSize: '1.25rem', fontWeight: 900, color: '#fff', margin: 0 }}>
+            <h3 id="auth-modal-title" style={{ fontSize: '1.25rem', fontWeight: 900, color: '#fff', margin: 0 }}>
               {mode === 'login' ? 'Welcome Back to BedHopper' : 'Create BedHopper Account'}
             </h3>
           </div>
-          <button onClick={onClose} style={{ background: 'none', border: 'none', color: '#fff', cursor: 'pointer' }}>
+          <button onClick={onClose} aria-label="Close authentication modal" style={{ background: 'none', border: 'none', color: '#fff', cursor: 'pointer' }}>
             <X size={22} />
           </button>
         </div>
@@ -201,10 +207,11 @@ export default function AuthModal({ initialMode = 'login', onClose, onLoginSucce
           <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '0.9rem' }}>
             {mode === 'signup' && (
               <div>
-                <label style={{ fontSize: '0.75rem', fontWeight: 900, color: '#94a3b8', textTransform: 'uppercase' }}>FULL NAME</label>
+                <label htmlFor="auth-fullname" style={{ fontSize: '0.75rem', fontWeight: 900, color: '#94a3b8', textTransform: 'uppercase' }}>FULL NAME</label>
                 <div style={{ position: 'relative', marginTop: '4px' }}>
                   <User size={18} color="#94a3b8" style={{ position: 'absolute', left: '12px', top: '50%', transform: 'translateY(-50%)' }} />
                   <input 
+                    id="auth-fullname"
                     type="text"
                     value={name}
                     onChange={(e) => setName(e.target.value)}
@@ -217,10 +224,11 @@ export default function AuthModal({ initialMode = 'login', onClose, onLoginSucce
             )}
 
             <div>
-              <label style={{ fontSize: '0.75rem', fontWeight: 900, color: '#94a3b8', textTransform: 'uppercase' }}>EMAIL ADDRESS</label>
+              <label htmlFor="auth-email" style={{ fontSize: '0.75rem', fontWeight: 900, color: '#94a3b8', textTransform: 'uppercase' }}>EMAIL ADDRESS</label>
               <div style={{ position: 'relative', marginTop: '4px' }}>
                 <Mail size={18} color="#94a3b8" style={{ position: 'absolute', left: '12px', top: '50%', transform: 'translateY(-50%)' }} />
                 <input 
+                  id="auth-email"
                   type="email"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
@@ -232,10 +240,11 @@ export default function AuthModal({ initialMode = 'login', onClose, onLoginSucce
             </div>
 
             <div>
-              <label style={{ fontSize: '0.75rem', fontWeight: 900, color: '#94a3b8', textTransform: 'uppercase' }}>PASSWORD</label>
+              <label htmlFor="auth-password" style={{ fontSize: '0.75rem', fontWeight: 900, color: '#94a3b8', textTransform: 'uppercase' }}>PASSWORD</label>
               <div style={{ position: 'relative', marginTop: '4px' }}>
                 <Lock size={18} color="#94a3b8" style={{ position: 'absolute', left: '12px', top: '50%', transform: 'translateY(-50%)' }} />
                 <input 
+                  id="auth-password"
                   type="password"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
@@ -248,8 +257,9 @@ export default function AuthModal({ initialMode = 'login', onClose, onLoginSucce
 
             {mode === 'signup' && (
               <div>
-                <label style={{ fontSize: '0.75rem', fontWeight: 900, color: '#94a3b8', textTransform: 'uppercase' }}>ACCOUNT ROLE</label>
+                <label htmlFor="auth-role" style={{ fontSize: '0.75rem', fontWeight: 900, color: '#94a3b8', textTransform: 'uppercase' }}>ACCOUNT ROLE</label>
                 <select 
+                  id="auth-role"
                   value={role}
                   onChange={(e) => setRole(e.target.value)}
                   style={{ width: '100%', padding: '0.7rem 0.8rem', borderRadius: '12px', border: '1px solid #334155', backgroundColor: '#0f172a', color: '#fff', marginTop: '4px', fontWeight: 700, fontSize: '0.9rem', cursor: 'pointer', outline: 'none' }}
