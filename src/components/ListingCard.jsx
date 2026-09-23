@@ -5,6 +5,8 @@ import { formatPrice } from '../utils/currency';
 export default function ListingCard({ listing, onClick, onFavoriteToggle, isFavorite = false, selectedCurrency = 'USD' }) {
   const [isHovered, setIsHovered] = useState(false);
   const [isFocused, setIsFocused] = useState(false);
+  const [isHeartHovered, setIsHeartHovered] = useState(false);
+  const [isHeartFocused, setIsHeartFocused] = useState(false);
 
   const handleKeyDown = (e) => {
     if (e.key === 'Enter' || e.key === ' ') {
@@ -58,7 +60,7 @@ export default function ListingCard({ listing, onClick, onFavoriteToggle, isFavo
         {/* Favorite Heart Button */}
         <button
           type="button"
-          aria-label={isFavorite ? "Remove from favorites" : "Add to favorites"}
+          aria-label={isFavorite ? `Remove ${listing.title} from favorites` : `Add ${listing.title} to favorites`}
           title={isFavorite ? "Remove from favorites" : "Add to favorites"}
           onClick={(e) => {
             e.stopPropagation();
@@ -67,11 +69,15 @@ export default function ListingCard({ listing, onClick, onFavoriteToggle, isFavo
           onKeyDown={(e) => {
             e.stopPropagation();
           }}
+          onMouseEnter={() => setIsHeartHovered(true)}
+          onMouseLeave={() => setIsHeartHovered(false)}
+          onFocus={() => setIsHeartFocused(true)}
+          onBlur={() => setIsHeartFocused(false)}
           style={{
             position: 'absolute',
             top: '12px',
             right: '12px',
-            backgroundColor: 'rgba(15, 23, 42, 0.75)',
+            backgroundColor: isHeartHovered ? 'rgba(15, 23, 42, 0.95)' : 'rgba(15, 23, 42, 0.75)',
             backdropFilter: 'blur(4px)',
             width: '32px',
             height: '32px',
@@ -79,8 +85,11 @@ export default function ListingCard({ listing, onClick, onFavoriteToggle, isFavo
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
-            border: 'none',
-            cursor: 'pointer'
+            border: isHeartFocused ? '2px solid #38bdf8' : 'none',
+            outline: 'none',
+            cursor: 'pointer',
+            transform: isHeartHovered ? 'scale(1.15)' : 'scale(1)',
+            transition: 'transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1), background-color 0.2s, border 0.2s'
           }}
         >
           <Heart size={18} fill={isFavorite ? '#ef4444' : 'none'} color={isFavorite ? '#ef4444' : '#fff'} />
@@ -188,9 +197,11 @@ export default function ListingCard({ listing, onClick, onFavoriteToggle, isFavo
               fontSize: '0.85rem',
               fontWeight: 800,
               borderRadius: '12px',
-              backgroundColor: '#0284c7',
+              backgroundColor: isElevated ? '#0369a1' : '#0284c7',
               color: '#fff',
-              display: 'inline-block'
+              display: 'inline-block',
+              transform: isElevated ? 'scale(1.03)' : 'scale(1)',
+              transition: 'background-color 0.2s, transform 0.2s'
             }}
           >
             View Details
