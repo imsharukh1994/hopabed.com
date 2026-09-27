@@ -21,13 +21,13 @@ export default function Footer({ onNavigate }) {
               hopabed.com is the open-source, ultra-low-cost accommodation protocol. Connecting budget travelers with verified couches, dorms, and service-share stays worldwide.
             </p>
             <div style={{ display: 'flex', gap: '1rem', marginTop: '0.5rem' }}>
-              <a href="https://github.com/imsharukh1994/bedhopper" target="_blank" rel="noreferrer" style={{ color: '#F8FAFC', backgroundColor: '#1E293B', padding: '0.5rem', borderRadius: '50%' }}>
+              <a href="https://github.com/imsharukh1994/bedhopper" target="_blank" rel="noreferrer" aria-label="BedHopper GitHub Repository" style={{ color: '#F8FAFC', backgroundColor: '#1E293B', padding: '0.5rem', borderRadius: '50%', display: 'inline-flex', alignItems: 'center', justifyContent: 'center' }}>
                 <Github size={18} />
               </a>
-              <a href="#" style={{ color: '#F8FAFC', backgroundColor: '#1E293B', padding: '0.5rem', borderRadius: '50%' }}>
+              <a href="#" aria-label="BedHopper Twitter Profile" style={{ color: '#F8FAFC', backgroundColor: '#1E293B', padding: '0.5rem', borderRadius: '50%', display: 'inline-flex', alignItems: 'center', justifyContent: 'center' }}>
                 <Twitter size={18} />
               </a>
-              <a href="#" style={{ color: '#F8FAFC', backgroundColor: '#1E293B', padding: '0.5rem', borderRadius: '50%' }}>
+              <a href="#" aria-label="Contact BedHopper Support Email" style={{ color: '#F8FAFC', backgroundColor: '#1E293B', padding: '0.5rem', borderRadius: '50%', display: 'inline-flex', alignItems: 'center', justifyContent: 'center' }}>
                 <Mail size={18} />
               </a>
             </div>
@@ -65,33 +65,33 @@ export default function Footer({ onNavigate }) {
           {/* Col 1: Stays */}
           <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
             <h4 style={{ color: '#F8FAFC', fontSize: '0.95rem', fontWeight: 800 }}>Explore Stays</h4>
-            <button onClick={() => onNavigate('search')} style={{ textIndent: 0, textAlign: 'left', color: '#94A3B8', fontSize: '0.88rem' }}>Bangkok Beds ($2/night)</button>
-            <button onClick={() => onNavigate('search')} style={{ textIndent: 0, textAlign: 'left', color: '#94A3B8', fontSize: '0.88rem' }}>Mexico City Stays ($5/night)</button>
-            <button onClick={() => onNavigate('search')} style={{ textIndent: 0, textAlign: 'left', color: '#94A3B8', fontSize: '0.88rem' }}>Lisbon Backpackers ($4/night)</button>
-            <button onClick={() => onNavigate('search')} style={{ textIndent: 0, textAlign: 'left', color: '#94A3B8', fontSize: '0.88rem' }}>Verified Backpacker Stays</button>
+            <button onClick={() => onNavigate('search')} style={{ background: 'none', border: 'none', padding: 0, cursor: 'pointer', textAlign: 'left', color: '#94A3B8', fontSize: '0.88rem' }}>Bangkok Beds ($2/night)</button>
+            <button onClick={() => onNavigate('search')} style={{ background: 'none', border: 'none', padding: 0, cursor: 'pointer', textAlign: 'left', color: '#94A3B8', fontSize: '0.88rem' }}>Mexico City Stays ($5/night)</button>
+            <button onClick={() => onNavigate('search')} style={{ background: 'none', border: 'none', padding: 0, cursor: 'pointer', textAlign: 'left', color: '#94A3B8', fontSize: '0.88rem' }}>Lisbon Backpackers ($4/night)</button>
+            <button onClick={() => onNavigate('search')} style={{ background: 'none', border: 'none', padding: 0, cursor: 'pointer', textAlign: 'left', color: '#94A3B8', fontSize: '0.88rem' }}>Verified Backpacker Stays</button>
           </div>
 
           {/* Col 2: For Hosts & Hostels */}
           <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
             <h4 style={{ color: '#F8FAFC', fontSize: '0.95rem', fontWeight: 800 }}>Hosts & Hostels</h4>
-            <button onClick={() => onNavigate('wizard')} style={{ textIndent: 0, textAlign: 'left', color: '#94A3B8', fontSize: '0.88rem' }}>Become a Bed Host</button>
-            <button onClick={() => onNavigate('hostel-partners')} style={{ textIndent: 0, textAlign: 'left', color: '#94A3B8', fontSize: '0.88rem' }}>Commercial Hostel Portal</button>
-            <button onClick={() => onNavigate('host-dashboard')} style={{ textIndent: 0, textAlign: 'left', color: '#94A3B8', fontSize: '0.88rem' }}>Host Dashboard</button>
-            <button onClick={() => onNavigate('search')} style={{ textIndent: 0, textAlign: 'left', color: '#94A3B8', fontSize: '0.88rem' }}>Extreme-Budget Guarantee</button>
+            <button onClick={() => onNavigate('wizard')} style={{ background: 'none', border: 'none', padding: 0, cursor: 'pointer', textAlign: 'left', color: '#94A3B8', fontSize: '0.88rem' }}>Become a Bed Host</button>
+            <button onClick={() => onNavigate('hostel-partners')} style={{ background: 'none', border: 'none', padding: 0, cursor: 'pointer', textAlign: 'left', color: '#94A3B8', fontSize: '0.88rem' }}>Commercial Hostel Portal</button>
+            <button onClick={() => onNavigate('host-dashboard')} style={{ background: 'none', border: 'none', padding: 0, cursor: 'pointer', textAlign: 'left', color: '#94A3B8', fontSize: '0.88rem' }}>Host Dashboard</button>
+            <button onClick={() => onNavigate('search')} style={{ background: 'none', border: 'none', padding: 0, cursor: 'pointer', textAlign: 'left', color: '#94A3B8', fontSize: '0.88rem' }}>Extreme-Budget Guarantee</button>
           </div>
 
           {/* Col 3: Travel Guides & Perks */}
           <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
             <h4 style={{ color: '#F8FAFC', fontSize: '0.95rem', fontWeight: 800 }}>Community & Guides</h4>
-            <button onClick={() => onNavigate('travel-guides')} style={{ textIndent: 0, textAlign: 'left', color: '#94A3B8', fontSize: '0.88rem' }}>Budget Travel Guides</button>
-            <button onClick={() => onNavigate('search')} style={{ textIndent: 0, textAlign: 'left', color: '#94A3B8', fontSize: '0.88rem' }}>Top Backpacker Hubs</button>
-            <button onClick={() => onNavigate('profile')} style={{ textIndent: 0, textAlign: 'left', color: 'var(--color-teal-light)', fontSize: '0.88rem', fontWeight: 700 }}>Portable Trust Passport</button>
+            <button onClick={() => onNavigate('travel-guides')} style={{ background: 'none', border: 'none', padding: 0, cursor: 'pointer', textAlign: 'left', color: '#94A3B8', fontSize: '0.88rem' }}>Budget Travel Guides</button>
+            <button onClick={() => onNavigate('search')} style={{ background: 'none', border: 'none', padding: 0, cursor: 'pointer', textAlign: 'left', color: '#94A3B8', fontSize: '0.88rem' }}>Top Backpacker Hubs</button>
+            <button onClick={() => onNavigate('profile')} style={{ background: 'none', border: 'none', padding: 0, cursor: 'pointer', textAlign: 'left', color: 'var(--color-teal-light)', fontSize: '0.88rem', fontWeight: 700 }}>Portable Trust Passport</button>
           </div>
 
           {/* Col 4: Trust & Legal */}
           <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
             <h4 style={{ color: '#F8FAFC', fontSize: '0.95rem', fontWeight: 800 }}>Trust & Safety</h4>
-            <button onClick={() => onNavigate('admin')} style={{ textIndent: 0, textAlign: 'left', color: '#94A3B8', fontSize: '0.88rem' }}>Safety Center & Moderation</button>
+            <button onClick={() => onNavigate('admin')} style={{ background: 'none', border: 'none', padding: 0, cursor: 'pointer', textAlign: 'left', color: '#94A3B8', fontSize: '0.88rem' }}>Safety Center & Moderation</button>
             <span style={{ fontSize: '0.88rem' }}>Terms of Service</span>
             <span style={{ fontSize: '0.88rem' }}>Privacy Policy</span>
             <span style={{ fontSize: '0.88rem' }}>Community Guidelines</span>
