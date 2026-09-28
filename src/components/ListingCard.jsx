@@ -5,6 +5,7 @@ import { formatPrice } from '../utils/currency';
 export default function ListingCard({ listing, onClick, onFavoriteToggle, isFavorite = false, selectedCurrency = 'USD' }) {
   const [isHovered, setIsHovered] = useState(false);
   const [isFocused, setIsFocused] = useState(false);
+  const [isHeartFocused, setIsHeartFocused] = useState(false);
 
   const handleKeyDown = (e) => {
     if (e.key === 'Enter' || e.key === ' ') {
@@ -67,6 +68,14 @@ export default function ListingCard({ listing, onClick, onFavoriteToggle, isFavo
           onKeyDown={(e) => {
             e.stopPropagation();
           }}
+          onFocus={(e) => {
+            e.stopPropagation();
+            setIsHeartFocused(true);
+          }}
+          onBlur={(e) => {
+            e.stopPropagation();
+            setIsHeartFocused(false);
+          }}
           style={{
             position: 'absolute',
             top: '12px',
@@ -80,6 +89,8 @@ export default function ListingCard({ listing, onClick, onFavoriteToggle, isFavo
             alignItems: 'center',
             justifyContent: 'center',
             border: 'none',
+            outline: isHeartFocused ? '2px solid #38bdf8' : 'none',
+            outlineOffset: '2px',
             cursor: 'pointer'
           }}
         >
