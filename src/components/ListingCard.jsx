@@ -5,6 +5,8 @@ import { formatPrice } from '../utils/currency';
 export default function ListingCard({ listing, onClick, onFavoriteToggle, isFavorite = false, selectedCurrency = 'USD' }) {
   const [isHovered, setIsHovered] = useState(false);
   const [isFocused, setIsFocused] = useState(false);
+  const [isFavHovered, setIsFavHovered] = useState(false);
+  const [isFavFocused, setIsFavFocused] = useState(false);
 
   const handleKeyDown = (e) => {
     if (e.key === 'Enter' || e.key === ' ') {
@@ -67,11 +69,15 @@ export default function ListingCard({ listing, onClick, onFavoriteToggle, isFavo
           onKeyDown={(e) => {
             e.stopPropagation();
           }}
+          onMouseEnter={() => setIsFavHovered(true)}
+          onMouseLeave={() => setIsFavHovered(false)}
+          onFocus={() => setIsFavFocused(true)}
+          onBlur={() => setIsFavFocused(false)}
           style={{
             position: 'absolute',
             top: '12px',
             right: '12px',
-            backgroundColor: 'rgba(15, 23, 42, 0.75)',
+            backgroundColor: isFavHovered ? 'rgba(15, 23, 42, 0.95)' : 'rgba(15, 23, 42, 0.75)',
             backdropFilter: 'blur(4px)',
             width: '32px',
             height: '32px',
@@ -80,7 +86,11 @@ export default function ListingCard({ listing, onClick, onFavoriteToggle, isFavo
             alignItems: 'center',
             justifyContent: 'center',
             border: 'none',
-            cursor: 'pointer'
+            cursor: 'pointer',
+            outline: isFavFocused ? '2px solid #38bdf8' : 'none',
+            outlineOffset: '2px',
+            transform: (isFavHovered || isFavFocused) ? 'scale(1.1)' : 'scale(1)',
+            transition: 'transform 0.15s ease, background-color 0.15s ease, outline 0.15s ease'
           }}
         >
           <Heart size={18} fill={isFavorite ? '#ef4444' : 'none'} color={isFavorite ? '#ef4444' : '#fff'} />
