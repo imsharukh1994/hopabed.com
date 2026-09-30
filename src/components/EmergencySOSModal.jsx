@@ -20,6 +20,17 @@ export default function EmergencySOSModal({ isOpen, onClose }) {
     return () => clearInterval(timer);
   }, [isOpen, countdown, isBroadcasting, broadcastSent]);
 
+  useEffect(() => {
+    if (!isOpen) return;
+    const handleKeyDown = (e) => {
+      if (e.key === 'Escape') {
+        onClose();
+      }
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [isOpen, onClose]);
+
   if (!isOpen) return null;
 
   const handleStartBroadcast = () => {
@@ -44,16 +55,21 @@ export default function EmergencySOSModal({ isOpen, onClose }) {
       zIndex: 100000,
       padding: '20px'
     }}>
-      <div style={{
-        width: '100%',
-        maxWidth: '480px',
-        backgroundColor: '#1e293b',
-        borderRadius: '24px',
-        border: '1px solid rgba(239, 68, 68, 0.4)',
-        boxShadow: '0 25px 50px -12px rgba(239, 68, 68, 0.3)',
-        overflow: 'hidden',
-        color: '#f8fafc'
-      }}>
+      <div
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="emergency-sos-title"
+        style={{
+          width: '100%',
+          maxWidth: '480px',
+          backgroundColor: '#1e293b',
+          borderRadius: '24px',
+          border: '1px solid rgba(239, 68, 68, 0.4)',
+          boxShadow: '0 25px 50px -12px rgba(239, 68, 68, 0.3)',
+          overflow: 'hidden',
+          color: '#f8fafc'
+        }}
+      >
         {/* Header */}
         <div style={{
           padding: '20px',
@@ -75,11 +91,15 @@ export default function EmergencySOSModal({ isOpen, onClose }) {
               <ShieldAlert size={26} color="#fff" />
             </div>
             <div>
-              <div style={{ fontSize: '18px', fontWeight: 800, color: '#fff' }}>Solo Traveler Emergency SOS</div>
+              <div id="emergency-sos-title" style={{ fontSize: '18px', fontWeight: 800, color: '#fff' }}>Solo Traveler Emergency SOS</div>
               <div style={{ fontSize: '12px', color: 'rgba(255, 255, 255, 0.85)' }}>Community Safety Broadcast System</div>
             </div>
           </div>
-          <button onClick={onClose} style={{ background: 'none', border: 'none', color: '#fff', cursor: 'pointer' }}>
+          <button
+            onClick={onClose}
+            aria-label="Close emergency SOS modal"
+            style={{ background: 'none', border: 'none', color: '#fff', cursor: 'pointer' }}
+          >
             <X size={20} />
           </button>
         </div>
@@ -87,18 +107,30 @@ export default function EmergencySOSModal({ isOpen, onClose }) {
         <div style={{ padding: '24px', textAlign: 'center' }}>
           {!isBroadcasting && !broadcastSent && (
             <div>
-              <div style={{
-                width: '90px',
-                height: '90px',
-                borderRadius: '50%',
-                backgroundColor: 'rgba(239, 68, 68, 0.15)',
-                border: '2px solid #ef4444',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                margin: '0 auto 20px',
-                cursor: 'pointer'
-              }} onClick={handleStartBroadcast}>
+              <div
+                role="button"
+                tabIndex={0}
+                aria-label="Start emergency broadcast"
+                onClick={handleStartBroadcast}
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault();
+                    handleStartBroadcast();
+                  }
+                }}
+                style={{
+                  width: '90px',
+                  height: '90px',
+                  borderRadius: '50%',
+                  backgroundColor: 'rgba(239, 68, 68, 0.15)',
+                  border: '2px solid #ef4444',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  margin: '0 auto 20px',
+                  cursor: 'pointer'
+                }}
+              >
                 <Radio size={48} color="#ef4444" />
               </div>
 
