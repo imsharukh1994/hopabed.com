@@ -244,9 +244,10 @@ export default function Navbar({
             <div style={{ position: 'relative' }} ref={userMenuRef}>
               <button 
                 onClick={() => setShowUserMenu(!showUserMenu)}
-                aria-label="User menu"
+                aria-label={`User menu for ${currentUser?.name || 'Account'}`}
                 aria-expanded={showUserMenu}
                 aria-haspopup="true"
+                className="user-menu-button"
                 style={{
                   display: 'inline-flex',
                   alignItems: 'center',
