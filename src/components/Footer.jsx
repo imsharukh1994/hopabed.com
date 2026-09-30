@@ -1,8 +1,9 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Logo from './Logo';
 import { Globe, Heart, ShieldCheck, Github, Twitter, Mail, ArrowRight } from 'lucide-react';
 
 export default function Footer({ onNavigate }) {
+  const [focusedSocial, setFocusedSocial] = useState(null);
   return (
     <footer style={{
       backgroundColor: '#0F172A',
@@ -21,13 +22,69 @@ export default function Footer({ onNavigate }) {
               hopabed.com is the open-source, ultra-low-cost accommodation protocol. Connecting budget travelers with verified couches, dorms, and service-share stays worldwide.
             </p>
             <div style={{ display: 'flex', gap: '1rem', marginTop: '0.5rem' }}>
-              <a href="https://github.com/imsharukh1994/bedhopper" target="_blank" rel="noreferrer" style={{ color: '#F8FAFC', backgroundColor: '#1E293B', padding: '0.5rem', borderRadius: '50%' }}>
+              <a
+                href="https://github.com/imsharukh1994/bedhopper"
+                target="_blank"
+                rel="noreferrer"
+                aria-label="GitHub Repository"
+                title="GitHub Repository"
+                onFocus={() => setFocusedSocial('github')}
+                onBlur={() => setFocusedSocial(null)}
+                style={{
+                  color: '#F8FAFC',
+                  backgroundColor: '#1E293B',
+                  padding: '0.5rem',
+                  borderRadius: '50%',
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  outline: 'none',
+                  boxShadow: focusedSocial === 'github' ? '0 0 0 3px #0284c7' : 'none',
+                  transition: 'box-shadow 0.2s ease'
+                }}
+              >
                 <Github size={18} />
               </a>
-              <a href="#" style={{ color: '#F8FAFC', backgroundColor: '#1E293B', padding: '0.5rem', borderRadius: '50%' }}>
+              <a
+                href="#"
+                aria-label="Twitter Page"
+                title="Twitter Page"
+                onFocus={() => setFocusedSocial('twitter')}
+                onBlur={() => setFocusedSocial(null)}
+                style={{
+                  color: '#F8FAFC',
+                  backgroundColor: '#1E293B',
+                  padding: '0.5rem',
+                  borderRadius: '50%',
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  outline: 'none',
+                  boxShadow: focusedSocial === 'twitter' ? '0 0 0 3px #0284c7' : 'none',
+                  transition: 'box-shadow 0.2s ease'
+                }}
+              >
                 <Twitter size={18} />
               </a>
-              <a href="#" style={{ color: '#F8FAFC', backgroundColor: '#1E293B', padding: '0.5rem', borderRadius: '50%' }}>
+              <a
+                href="mailto:contact@hopabed.com"
+                aria-label="Send Email"
+                title="Send Email"
+                onFocus={() => setFocusedSocial('email')}
+                onBlur={() => setFocusedSocial(null)}
+                style={{
+                  color: '#F8FAFC',
+                  backgroundColor: '#1E293B',
+                  padding: '0.5rem',
+                  borderRadius: '50%',
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  outline: 'none',
+                  boxShadow: focusedSocial === 'email' ? '0 0 0 3px #0284c7' : 'none',
+                  transition: 'box-shadow 0.2s ease'
+                }}
+              >
                 <Mail size={18} />
               </a>
             </div>
