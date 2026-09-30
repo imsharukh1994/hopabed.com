@@ -20,6 +20,16 @@ export default function EmergencySOSModal({ isOpen, onClose }) {
     return () => clearInterval(timer);
   }, [isOpen, countdown, isBroadcasting, broadcastSent]);
 
+  useEffect(() => {
+    const handleKeyDown = (e) => {
+      if (e.key === 'Escape' && isOpen) {
+        onClose();
+      }
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [isOpen, onClose]);
+
   if (!isOpen) return null;
 
   const handleStartBroadcast = () => {
@@ -33,17 +43,23 @@ export default function EmergencySOSModal({ isOpen, onClose }) {
   };
 
   return (
-    <div style={{
-      position: 'fixed',
-      top: 0, left: 0, right: 0, bottom: 0,
-      backgroundColor: 'rgba(15, 23, 42, 0.9)',
-      backdropFilter: 'blur(10px)',
-      display: 'flex',
-      alignItems: 'center',
-      justifyContent: 'center',
-      zIndex: 100000,
-      padding: '20px'
-    }}>
+    <div
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="sos-modal-title"
+      aria-describedby="sos-modal-desc"
+      style={{
+        position: 'fixed',
+        top: 0, left: 0, right: 0, bottom: 0,
+        backgroundColor: 'rgba(15, 23, 42, 0.9)',
+        backdropFilter: 'blur(10px)',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        zIndex: 100000,
+        padding: '20px'
+      }}
+    >
       <div style={{
         width: '100%',
         maxWidth: '480px',
@@ -75,11 +91,15 @@ export default function EmergencySOSModal({ isOpen, onClose }) {
               <ShieldAlert size={26} color="#fff" />
             </div>
             <div>
-              <div style={{ fontSize: '18px', fontWeight: 800, color: '#fff' }}>Solo Traveler Emergency SOS</div>
-              <div style={{ fontSize: '12px', color: 'rgba(255, 255, 255, 0.85)' }}>Community Safety Broadcast System</div>
+              <div id="sos-modal-title" style={{ fontSize: '18px', fontWeight: 800, color: '#fff' }}>Solo Traveler Emergency SOS</div>
+              <div id="sos-modal-desc" style={{ fontSize: '12px', color: 'rgba(255, 255, 255, 0.85)' }}>Community Safety Broadcast System</div>
             </div>
           </div>
-          <button onClick={onClose} style={{ background: 'none', border: 'none', color: '#fff', cursor: 'pointer' }}>
+          <button
+            onClick={onClose}
+            aria-label="Close Emergency SOS modal"
+            style={{ background: 'none', border: 'none', color: '#fff', cursor: 'pointer' }}
+          >
             <X size={20} />
           </button>
         </div>
