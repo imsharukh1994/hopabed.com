@@ -3,6 +3,7 @@ import { X, Utensils, Bus, Wifi, ShieldAlert, MapPin, Sparkles } from 'lucide-re
 
 export default function CityGuideModal({ isOpen, onClose, cityName = 'Bangkok' }) {
   const [activeTab, setActiveTab] = useState('eats');
+  const [focusedElement, setFocusedElement] = useState(null);
 
   if (!isOpen) return null;
 
@@ -105,7 +106,25 @@ export default function CityGuideModal({ isOpen, onClose, cityName = 'Bangkok' }
               {cityName} Backpacker City Guide
             </h3>
           </div>
-          <button onClick={onClose} style={{ background: 'none', border: 'none', color: '#fff', cursor: 'pointer' }}>
+          <button
+            onClick={onClose}
+            aria-label="Close Backpacker City Guide"
+            onFocus={() => setFocusedElement('close')}
+            onBlur={() => setFocusedElement(null)}
+            style={{
+              background: 'none',
+              border: 'none',
+              color: '#fff',
+              cursor: 'pointer',
+              padding: '4px',
+              borderRadius: '6px',
+              outline: focusedElement === 'close' ? '2px solid #FFFFFF' : 'none',
+              outlineOffset: '2px',
+              display: 'inline-flex',
+              alignItems: 'center',
+              justifyContent: 'center'
+            }}
+          >
             <X size={22} />
           </button>
         </div>
@@ -113,7 +132,11 @@ export default function CityGuideModal({ isOpen, onClose, cityName = 'Bangkok' }
         {/* Modal Content */}
         <div style={{ padding: '1.5rem', display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
           {/* Navigation Category Tabs */}
-          <div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap' }}>
+          <div
+            role="tablist"
+            aria-label="City Guide Categories"
+            style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap' }}
+          >
             {[
               { id: 'eats', label: 'Cheap Eats ($1-$3)', icon: Utensils, color: '#f4845f' },
               { id: 'transit', label: 'Transit Hacks', icon: Bus, color: '#0284c7' },
@@ -122,10 +145,17 @@ export default function CityGuideModal({ isOpen, onClose, cityName = 'Bangkok' }
             ].map(tab => {
               const Icon = tab.icon;
               const isActive = activeTab === tab.id;
+              const isFocused = focusedElement === `tab-${tab.id}`;
               return (
                 <button
                   key={tab.id}
+                  id={`tab-${tab.id}`}
+                  role="tab"
+                  aria-selected={isActive}
+                  aria-controls={`panel-${tab.id}`}
                   onClick={() => setActiveTab(tab.id)}
+                  onFocus={() => setFocusedElement(`tab-${tab.id}`)}
+                  onBlur={() => setFocusedElement(null)}
                   style={{
                     padding: '0.5rem 0.85rem',
                     borderRadius: '16px',
@@ -138,7 +168,10 @@ export default function CityGuideModal({ isOpen, onClose, cityName = 'Bangkok' }
                     display: 'inline-flex',
                     alignItems: 'center',
                     gap: '6px',
-                    cursor: 'pointer'
+                    cursor: 'pointer',
+                    outline: isFocused ? `2px solid ${isActive ? tab.color : 'var(--color-primary, #0284c7)'}` : 'none',
+                    outlineOffset: '2px',
+                    transition: 'outline 0.1s ease, background-color 0.1s ease'
                   }}
                 >
                   <Icon size={15} />
@@ -149,7 +182,12 @@ export default function CityGuideModal({ isOpen, onClose, cityName = 'Bangkok' }
           </div>
 
           {/* Active Tab Content */}
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '0.85rem' }}>
+          <div
+            id={`panel-${activeTab}`}
+            role="tabpanel"
+            aria-labelledby={`tab-${activeTab}`}
+            style={{ display: 'flex', flexDirection: 'column', gap: '0.85rem' }}
+          >
             {activeTab === 'eats' && currentCityData.eats.map((item, idx) => (
               <div key={idx} style={{ padding: '1rem', backgroundColor: 'var(--color-bg)', borderRadius: '16px', border: '1px solid var(--color-border)', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                 <div>
