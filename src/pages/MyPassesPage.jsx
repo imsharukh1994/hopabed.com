@@ -129,7 +129,6 @@ export default function MyPassesPage({ currentUser, bookings = [], onOpenDigital
               padding: '0.6rem 1.1rem',
               fontWeight: 800,
               fontSize: '0.88rem',
-              borderBottom: filter === tab.id ? '2px solid var(--color-accent)' : '2px solid transparent',
               color: filter === tab.id ? 'var(--color-accent)' : 'var(--color-text-muted)',
               backgroundColor: 'transparent',
               border: 'none',
