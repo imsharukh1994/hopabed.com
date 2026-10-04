@@ -79,7 +79,8 @@ export default function Navbar({
           {/* Clean Navigation Bar */}
           <nav style={{ display: 'flex', alignItems: 'center', gap: '1.5rem' }} className="desktop-nav">
             <button 
-              onClick={() => setActiveTab('search')} 
+              onClick={() => setActiveTab('search')}
+              aria-current={activeTab === 'search' ? 'page' : undefined}
               style={{ 
                 color: activeTab === 'search' ? 'var(--color-primary)' : 'var(--color-text-muted)',
                 fontWeight: activeTab === 'search' ? 800 : 600,
@@ -111,7 +112,8 @@ export default function Navbar({
             </button>
 
             <button 
-              onClick={() => setActiveTab('hostel-partners')} 
+              onClick={() => setActiveTab('hostel-partners')}
+              aria-current={activeTab === 'hostel-partners' ? 'page' : undefined}
               style={{ 
                 color: activeTab === 'hostel-partners' ? 'var(--color-accent)' : 'var(--color-text-muted)',
                 fontWeight: activeTab === 'hostel-partners' ? 800 : 600,
@@ -129,7 +131,8 @@ export default function Navbar({
             </button>
 
             <button 
-              onClick={() => setActiveTab('travel-guides')} 
+              onClick={() => setActiveTab('travel-guides')}
+              aria-current={activeTab === 'travel-guides' ? 'page' : undefined}
               style={{ 
                 color: activeTab === 'travel-guides' ? 'var(--color-primary)' : 'var(--color-text-muted)',
                 fontWeight: activeTab === 'travel-guides' ? 800 : 600,
