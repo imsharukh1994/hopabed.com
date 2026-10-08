@@ -476,7 +476,8 @@ export default function App() {
       {!showAIAssistant && (
         <button
           onClick={() => setShowAIAssistant(true)}
-          aria-expanded={showAIAssistant}
+          aria-expanded={false}
+          aria-controls="hopper-ai-assistant"
           aria-label="Open Hopper AI Companion"
           title="Open Hopper AI Chat Companion"
           onFocus={() => setIsBtnFocused(true)}
