@@ -72,7 +72,11 @@ export default function HopperAIAssistant({ isOpen, onClose, listings = [], sele
   };
 
   return (
-    <div style={{
+    <div
+      id="hopper-ai-assistant"
+      role="dialog"
+      aria-label="Hopper AI Companion"
+      style={{
       position: 'fixed',
       bottom: '80px',
       right: '24px',
