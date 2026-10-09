@@ -20,6 +20,18 @@ export default function EmergencySOSModal({ isOpen, onClose }) {
     return () => clearInterval(timer);
   }, [isOpen, countdown, isBroadcasting, broadcastSent]);
 
+  useEffect(() => {
+    function handleKeyDown(e) {
+      if (e.key === 'Escape') {
+        onClose();
+      }
+    }
+    if (isOpen) {
+      window.addEventListener('keydown', handleKeyDown);
+    }
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [isOpen, onClose]);
+
   if (!isOpen) return null;
 
   const handleStartBroadcast = () => {
@@ -33,17 +45,22 @@ export default function EmergencySOSModal({ isOpen, onClose }) {
   };
 
   return (
-    <div style={{
-      position: 'fixed',
-      top: 0, left: 0, right: 0, bottom: 0,
-      backgroundColor: 'rgba(15, 23, 42, 0.9)',
-      backdropFilter: 'blur(10px)',
-      display: 'flex',
-      alignItems: 'center',
-      justifyContent: 'center',
-      zIndex: 100000,
-      padding: '20px'
-    }}>
+    <div
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="emergency-sos-title"
+      style={{
+        position: 'fixed',
+        top: 0, left: 0, right: 0, bottom: 0,
+        backgroundColor: 'rgba(15, 23, 42, 0.9)',
+        backdropFilter: 'blur(10px)',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        zIndex: 100000,
+        padding: '20px'
+      }}
+    >
       <div style={{
         width: '100%',
         maxWidth: '480px',
@@ -75,11 +92,11 @@ export default function EmergencySOSModal({ isOpen, onClose }) {
               <ShieldAlert size={26} color="#fff" />
             </div>
             <div>
-              <div style={{ fontSize: '18px', fontWeight: 800, color: '#fff' }}>Solo Traveler Emergency SOS</div>
+              <div id="emergency-sos-title" style={{ fontSize: '18px', fontWeight: 800, color: '#fff' }}>Solo Traveler Emergency SOS</div>
               <div style={{ fontSize: '12px', color: 'rgba(255, 255, 255, 0.85)' }}>Community Safety Broadcast System</div>
             </div>
           </div>
-          <button onClick={onClose} style={{ background: 'none', border: 'none', color: '#fff', cursor: 'pointer' }}>
+          <button onClick={onClose} aria-label="Close emergency modal" style={{ background: 'none', border: 'none', color: '#fff', cursor: 'pointer' }}>
             <X size={20} />
           </button>
         </div>
@@ -87,20 +104,25 @@ export default function EmergencySOSModal({ isOpen, onClose }) {
         <div style={{ padding: '24px', textAlign: 'center' }}>
           {!isBroadcasting && !broadcastSent && (
             <div>
-              <div style={{
-                width: '90px',
-                height: '90px',
-                borderRadius: '50%',
-                backgroundColor: 'rgba(239, 68, 68, 0.15)',
-                border: '2px solid #ef4444',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                margin: '0 auto 20px',
-                cursor: 'pointer'
-              }} onClick={handleStartBroadcast}>
+              <button
+                type="button"
+                aria-label="Start emergency broadcast"
+                onClick={handleStartBroadcast}
+                style={{
+                  width: '90px',
+                  height: '90px',
+                  borderRadius: '50%',
+                  backgroundColor: 'rgba(239, 68, 68, 0.15)',
+                  border: '2px solid #ef4444',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  margin: '0 auto 20px',
+                  cursor: 'pointer'
+                }}
+              >
                 <Radio size={48} color="#ef4444" />
-              </div>
+              </button>
 
               <h3 style={{ fontSize: '18px', fontWeight: 800, color: '#fff', marginBottom: '8px' }}>
                 Need Immediate Help?
@@ -127,6 +149,7 @@ export default function EmergencySOSModal({ isOpen, onClose }) {
 
               <button
                 onClick={handleStartBroadcast}
+                aria-label="Broadcast Emergency SOS"
                 style={{
                   width: '100%',
                   padding: '16px',
@@ -164,6 +187,7 @@ export default function EmergencySOSModal({ isOpen, onClose }) {
 
               <button
                 onClick={handleCancelBroadcast}
+                aria-label="Cancel emergency broadcast"
                 style={{
                   width: '100%',
                   padding: '14px',
@@ -219,6 +243,7 @@ export default function EmergencySOSModal({ isOpen, onClose }) {
 
               <button
                 onClick={onClose}
+                aria-label="Dismiss emergency window"
                 style={{
                   width: '100%',
                   padding: '14px',
