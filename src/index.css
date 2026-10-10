@@ -288,7 +288,7 @@ img {
   align-items: center;
   gap: 4px;
   padding: 3px 10px;
-  borderRadius: 10px;
+  border-radius: 10px;
   font-size: 12px;
   font-weight: 800;
   background-color: rgba(16, 185, 129, 0.1);
