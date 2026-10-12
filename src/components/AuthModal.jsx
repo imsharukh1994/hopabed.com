@@ -1,10 +1,20 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { X, Mail, Lock, User, ShieldCheck, Sparkles, ArrowRight, CheckCircle2, AlertCircle, Github } from 'lucide-react';
 import { supabase, isCloudConnected } from '../lib/supabaseClient';
 import { saveCloudUser, getCloudUserByEmail } from '../services/dbService';
 
 export default function AuthModal({ initialMode = 'login', onClose, onLoginSuccess }) {
   const [mode, setMode] = useState(initialMode); // 'login' or 'signup'
+
+  useEffect(() => {
+    function handleKeyDown(event) {
+      if (event.key === 'Escape') {
+        onClose();
+      }
+    }
+    document.addEventListener('keydown', handleKeyDown);
+    return () => document.removeEventListener('keydown', handleKeyDown);
+  }, [onClose]);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [name, setName] = useState('');
@@ -103,17 +113,23 @@ export default function AuthModal({ initialMode = 'login', onClose, onLoginSucce
   };
 
   return (
-    <div style={{
-      position: 'fixed',
-      inset: 0,
-      backgroundColor: 'rgba(15, 23, 42, 0.85)',
-      backdropFilter: 'blur(8px)',
-      display: 'flex',
-      alignItems: 'center',
-      justifyContent: 'center',
-      zIndex: 10000,
-      padding: '1rem'
-    }} className="animate-fade-in">
+    <div
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="auth-modal-title"
+      style={{
+        position: 'fixed',
+        inset: 0,
+        backgroundColor: 'rgba(15, 23, 42, 0.85)',
+        backdropFilter: 'blur(8px)',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        zIndex: 10000,
+        padding: '1rem'
+      }}
+      className="animate-fade-in"
+    >
       <div style={{
         backgroundColor: '#1e293b',
         borderRadius: '24px',
@@ -137,11 +153,15 @@ export default function AuthModal({ initialMode = 'login', onClose, onLoginSucce
         }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
             <ShieldCheck size={22} color="#fff" />
-            <h3 style={{ fontSize: '1.25rem', fontWeight: 900, color: '#fff', margin: 0 }}>
+            <h3 id="auth-modal-title" style={{ fontSize: '1.25rem', fontWeight: 900, color: '#fff', margin: 0 }}>
               {mode === 'login' ? 'Welcome Back to BedHopper' : 'Create BedHopper Account'}
             </h3>
           </div>
-          <button onClick={onClose} style={{ background: 'none', border: 'none', color: '#fff', cursor: 'pointer' }}>
+          <button
+            onClick={onClose}
+            aria-label="Close authentication modal"
+            style={{ background: 'none', border: 'none', color: '#fff', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
+          >
             <X size={22} />
           </button>
         </div>
