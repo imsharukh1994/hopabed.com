@@ -105,7 +105,7 @@ export default function CityGuideModal({ isOpen, onClose, cityName = 'Bangkok' }
               {cityName} Backpacker City Guide
             </h3>
           </div>
-          <button onClick={onClose} style={{ background: 'none', border: 'none', color: '#fff', cursor: 'pointer' }}>
+          <button onClick={onClose} aria-label="Close city guide modal" style={{ background: 'none', border: 'none', color: '#fff', cursor: 'pointer' }}>
             <X size={22} />
           </button>
         </div>

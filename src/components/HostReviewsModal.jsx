@@ -77,7 +77,7 @@ export default function HostReviewsModal({ isOpen, onClose, listing }) {
               {listing.rating} Rating Breakdown & Reviews
             </h3>
           </div>
-          <button onClick={onClose} style={{ background: 'none', border: 'none', color: '#fff', cursor: 'pointer' }}>
+          <button onClick={onClose} aria-label="Close host reviews modal" style={{ background: 'none', border: 'none', color: '#fff', cursor: 'pointer' }}>
             <X size={22} />
           </button>
         </div>

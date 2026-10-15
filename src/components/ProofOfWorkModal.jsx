@@ -55,7 +55,7 @@ export default function ProofOfWorkModal({ isOpen, onClose, booking, onComplete 
               <div style={{ fontSize: '11px', color: 'rgba(255, 255, 255, 0.85)' }}>Service-Share Deposit Return Flow</div>
             </div>
           </div>
-          <button onClick={onClose} style={{ background: 'none', border: 'none', color: '#fff', cursor: 'pointer' }}>
+          <button onClick={onClose} aria-label="Close proof of work modal" style={{ background: 'none', border: 'none', color: '#fff', cursor: 'pointer' }}>
             <X size={20} />
           </button>
         </div>

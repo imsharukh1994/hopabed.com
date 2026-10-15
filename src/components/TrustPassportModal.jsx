@@ -163,7 +163,7 @@ export default function TrustPassportModal({ isOpen, onClose, onVerifySuccess })
               <div style={{ fontSize: '12px', color: 'rgba(255, 255, 255, 0.85)' }}>Live UIDAI Aadhaar OTP via Sandbox.co.in (Authorized TSP)</div>
             </div>
           </div>
-          <button onClick={onClose} style={{ background: 'none', border: 'none', color: '#fff', cursor: 'pointer' }}>
+          <button onClick={onClose} aria-label="Close trust passport modal" style={{ background: 'none', border: 'none', color: '#fff', cursor: 'pointer' }}>
             <X size={22} />
           </button>
         </div>

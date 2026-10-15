@@ -93,7 +93,7 @@ export default function BookingFlowModal({ bookingData, onClose, onConfirmBookin
             {step === 3 && '🎉 Booking Confirmed!'}
           </h3>
           {step !== 3 && (
-            <button onClick={onClose} style={{ background: 'none', border: 'none', color: '#fff', cursor: 'pointer' }}>
+            <button onClick={onClose} aria-label="Close booking modal" style={{ background: 'none', border: 'none', color: '#fff', cursor: 'pointer' }}>
               <X size={22} />
             </button>
           )}
