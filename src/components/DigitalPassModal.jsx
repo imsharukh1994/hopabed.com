@@ -295,7 +295,7 @@ export default function DigitalPassModal({ isOpen, onClose, booking, currentUser
                 )}
               </div>
             </div>
-            <button onClick={onClose} className="no-print" style={{ background: 'rgba(255,255,255,0.08)', border: 'none', color: '#94a3b8', cursor: 'pointer', borderRadius: '50%', width: '32px', height: '32px', display: 'flex', alignItems: 'center', justifyContent: 'center', transition: 'all 0.2s' }}
+            <button onClick={onClose} aria-label="Close digital pass modal" className="no-print" style={{ background: 'rgba(255,255,255,0.08)', border: 'none', color: '#94a3b8', cursor: 'pointer', borderRadius: '50%', width: '32px', height: '32px', display: 'flex', alignItems: 'center', justifyContent: 'center', transition: 'all 0.2s' }}
               onMouseEnter={e => e.currentTarget.style.background = 'rgba(255,255,255,0.15)'}
               onMouseLeave={e => e.currentTarget.style.background = 'rgba(255,255,255,0.08)'}
             >

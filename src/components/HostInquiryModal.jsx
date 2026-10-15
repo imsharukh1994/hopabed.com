@@ -58,7 +58,7 @@ export default function HostInquiryModal({ isOpen, onClose, listing }) {
               Ask {listing.host?.name || 'Host'} a Question
             </h3>
           </div>
-          <button onClick={onClose} style={{ background: 'none', border: 'none', color: '#fff', cursor: 'pointer' }}>
+          <button onClick={onClose} aria-label="Close host inquiry modal" style={{ background: 'none', border: 'none', color: '#fff', cursor: 'pointer' }}>
             <X size={20} />
           </button>
         </div>

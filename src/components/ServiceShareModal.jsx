@@ -77,7 +77,7 @@ export default function ServiceShareModal({ listing, onClose, onAgreementSigned 
             <Sparkles size={20} color="var(--color-teal)" />
             <h3 style={{ fontSize: '1.2rem', fontWeight: 900 }}>Service-Share Digital Task Agreement</h3>
           </div>
-          <button onClick={onClose} style={{ color: 'var(--color-text-muted)', cursor: 'pointer' }}>
+          <button onClick={onClose} aria-label="Close service share modal" style={{ color: 'var(--color-text-muted)', cursor: 'pointer', background: 'none', border: 'none' }}>
             <X size={22} />
           </button>
         </div>
