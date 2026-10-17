@@ -21,13 +21,13 @@ export default function Footer({ onNavigate }) {
               hopabed.com is the open-source, ultra-low-cost accommodation protocol. Connecting budget travelers with verified couches, dorms, and service-share stays worldwide.
             </p>
             <div style={{ display: 'flex', gap: '1rem', marginTop: '0.5rem' }}>
-              <a href="https://github.com/imsharukh1994/bedhopper" target="_blank" rel="noreferrer" style={{ color: '#F8FAFC', backgroundColor: '#1E293B', padding: '0.5rem', borderRadius: '50%' }}>
+              <a href="https://github.com/imsharukh1994/bedhopper" target="_blank" rel="noreferrer" aria-label="GitHub Repository" style={{ color: '#F8FAFC', backgroundColor: '#1E293B', padding: '0.5rem', borderRadius: '50%' }}>
                 <Github size={18} />
               </a>
-              <a href="#" style={{ color: '#F8FAFC', backgroundColor: '#1E293B', padding: '0.5rem', borderRadius: '50%' }}>
+              <a href="#" aria-label="Twitter Page" style={{ color: '#F8FAFC', backgroundColor: '#1E293B', padding: '0.5rem', borderRadius: '50%' }}>
                 <Twitter size={18} />
               </a>
-              <a href="#" style={{ color: '#F8FAFC', backgroundColor: '#1E293B', padding: '0.5rem', borderRadius: '50%' }}>
+              <a href="#" aria-label="Send Email" style={{ color: '#F8FAFC', backgroundColor: '#1E293B', padding: '0.5rem', borderRadius: '50%' }}>
                 <Mail size={18} />
               </a>
             </div>
@@ -41,6 +41,7 @@ export default function Footer({ onNavigate }) {
               <input 
                 type="email" 
                 placeholder="Enter your email address" 
+                aria-label="Email address for subscription"
                 required 
                 style={{
                   flex: 1,
