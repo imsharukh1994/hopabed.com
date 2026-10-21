@@ -116,7 +116,7 @@ export default function MyPassesPage({ currentUser, bookings = [], onOpenDigital
       </div>
 
       {/* Filter tabs */}
-      <div style={{ display: 'flex', gap: '6px', marginBottom: '1.5rem', borderBottom: '1px solid var(--color-border)', paddingBottom: '0' }}>
+      <div role="tablist" aria-label="Filter digital passes" style={{ display: 'flex', gap: '6px', marginBottom: '1.5rem', borderBottom: '1px solid var(--color-border)', paddingBottom: '0' }}>
         {[
           { id: 'all', label: `All (${passes.length})` },
           { id: 'active', label: `Active (${passes.filter(p => p.status === 'ACTIVE' || p.status === 'CHECKED_IN').length})` },
@@ -124,12 +124,13 @@ export default function MyPassesPage({ currentUser, bookings = [], onOpenDigital
         ].map(tab => (
           <button
             key={tab.id}
+            role="tab"
+            aria-selected={filter === tab.id}
             onClick={() => setFilter(tab.id)}
             style={{
               padding: '0.6rem 1.1rem',
               fontWeight: 800,
               fontSize: '0.88rem',
-              borderBottom: filter === tab.id ? '2px solid var(--color-accent)' : '2px solid transparent',
               color: filter === tab.id ? 'var(--color-accent)' : 'var(--color-text-muted)',
               backgroundColor: 'transparent',
               border: 'none',
@@ -278,6 +279,7 @@ function PassCard({ pass, onView }) {
       {/* Right: View button */}
       <button
         onClick={onView}
+        aria-label={`View digital pass for ${pass.propertyName || 'Stay Pass'}`}
         style={{
           padding: '10px 20px',
           backgroundColor: '#0284c7',
