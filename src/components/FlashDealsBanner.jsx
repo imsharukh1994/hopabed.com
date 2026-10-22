@@ -1,6 +1,84 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Flame, Clock, ArrowRight, Zap } from 'lucide-react';
 import { formatPrice } from '../utils/currency';
+
+function FlashDealCard({ deal, onSelectListing, listings, selectedCurrency }) {
+  const [isHovered, setIsHovered] = useState(false);
+  const [isFocused, setIsFocused] = useState(false);
+
+  return (
+    <div
+      style={{
+        backgroundColor: 'var(--color-bg)',
+        border: '1px solid var(--color-border)',
+        borderRadius: 'var(--radius-md)',
+        padding: '1rem',
+        display: 'flex',
+        flexDirection: 'column',
+        gap: '0.5rem',
+        transition: 'var(--transition)'
+      }}
+    >
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
+        <div>
+          <span style={{ fontSize: '0.75rem', fontWeight: 800, color: 'var(--color-text-muted)' }}>
+            📍 {deal.city}, {deal.country}
+          </span>
+          <h4 style={{ fontSize: '0.92rem', fontWeight: 800, color: 'var(--color-text-main)', margin: '2px 0 0 0' }}>
+            {deal.title}
+          </h4>
+        </div>
+
+        <div style={{ textAlign: 'right' }}>
+          <div style={{ fontSize: '1.1rem', fontWeight: 900, color: 'var(--color-primary)' }}>
+            {formatPrice(deal.price, selectedCurrency)}
+          </div>
+          <div style={{ fontSize: '0.75rem', color: 'var(--color-text-muted)', textDecoration: 'line-through' }}>
+            {formatPrice(deal.originalPrice, selectedCurrency)}
+          </div>
+        </div>
+      </div>
+
+      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', borderTop: '1px solid var(--color-border)', paddingTop: '0.5rem', marginTop: '0.25rem' }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '4px', fontSize: '0.75rem', color: '#f59e0b', fontWeight: 700 }}>
+          <Clock size={13} /> {deal.timeLeft} left • {deal.bedsLeft} bed left
+        </div>
+
+        <button
+          type="button"
+          aria-label={`Grab bed for ${deal.title} in ${deal.city}`}
+          onClick={() => {
+            const item = listings.find(l => l.id === deal.id);
+            if (item) onSelectListing(item);
+          }}
+          onMouseEnter={() => setIsHovered(true)}
+          onMouseLeave={() => setIsHovered(false)}
+          onFocus={() => setIsFocused(true)}
+          onBlur={() => setIsFocused(false)}
+          style={{
+            padding: '0.35rem 0.75rem',
+            borderRadius: '12px',
+            backgroundColor: isHovered ? 'var(--color-primary-dark)' : 'var(--color-primary)',
+            color: '#fff',
+            fontSize: '0.78rem',
+            fontWeight: 800,
+            border: 'none',
+            cursor: 'pointer',
+            display: 'inline-flex',
+            alignItems: 'center',
+            gap: '4px',
+            outline: isFocused ? '2px solid var(--color-accent)' : 'none',
+            outlineOffset: '2px',
+            transform: isHovered ? 'translateY(-1px)' : 'none',
+            transition: 'var(--transition)'
+          }}
+        >
+          Grab Bed <ArrowRight size={13} />
+        </button>
+      </div>
+    </div>
+  );
+}
 
 export default function FlashDealsBanner({ onSelectListing, listings = [], selectedCurrency = 'USD' }) {
   const flashDeals = [
@@ -80,67 +158,13 @@ export default function FlashDealsBanner({ onSelectListing, listings = [], selec
         gap: '1rem'
       }}>
         {flashDeals.map((deal) => (
-          <div 
+          <FlashDealCard
             key={deal.id}
-            style={{
-              backgroundColor: 'var(--color-bg)',
-              border: '1px solid var(--color-border)',
-              borderRadius: 'var(--radius-md)',
-              padding: '1rem',
-              display: 'flex',
-              flexDirection: 'column',
-              gap: '0.5rem',
-              transition: 'var(--transition)'
-            }}
-          >
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
-              <div>
-                <span style={{ fontSize: '0.75rem', fontWeight: 800, color: 'var(--color-text-muted)' }}>
-                  📍 {deal.city}, {deal.country}
-                </span>
-                <h4 style={{ fontSize: '0.92rem', fontWeight: 800, color: 'var(--color-text-main)', margin: '2px 0 0 0' }}>
-                  {deal.title}
-                </h4>
-              </div>
-
-              <div style={{ textAlign: 'right' }}>
-                <div style={{ fontSize: '1.1rem', fontWeight: 900, color: 'var(--color-primary)' }}>
-                  {formatPrice(deal.price, selectedCurrency)}
-                </div>
-                <div style={{ fontSize: '0.75rem', color: 'var(--color-text-muted)', textDecoration: 'line-through' }}>
-                  {formatPrice(deal.originalPrice, selectedCurrency)}
-                </div>
-              </div>
-            </div>
-
-            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', borderTop: '1px solid var(--color-border)', paddingTop: '0.5rem', marginTop: '0.25rem' }}>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '4px', fontSize: '0.75rem', color: '#f59e0b', fontWeight: 700 }}>
-                <Clock size={13} /> {deal.timeLeft} left • {deal.bedsLeft} bed left
-              </div>
-
-              <button
-                onClick={() => {
-                  const item = listings.find(l => l.id === deal.id);
-                  if (item) onSelectListing(item);
-                }}
-                style={{
-                  padding: '0.35rem 0.75rem',
-                  borderRadius: '12px',
-                  backgroundColor: 'var(--color-primary)',
-                  color: '#fff',
-                  fontSize: '0.78rem',
-                  fontWeight: 800,
-                  border: 'none',
-                  cursor: 'pointer',
-                  display: 'inline-flex',
-                  alignItems: 'center',
-                  gap: '4px'
-                }}
-              >
-                Grab Bed <ArrowRight size={13} />
-              </button>
-            </div>
-          </div>
+            deal={deal}
+            onSelectListing={onSelectListing}
+            listings={listings}
+            selectedCurrency={selectedCurrency}
+          />
         ))}
       </div>
     </div>
