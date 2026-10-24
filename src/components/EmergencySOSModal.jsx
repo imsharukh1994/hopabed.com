@@ -8,6 +8,18 @@ export default function EmergencySOSModal({ isOpen, onClose }) {
   const [userLocation, setUserLocation] = useState('13.7563° N, 100.5018° E (Bangkok Central Node)');
 
   useEffect(() => {
+    const handleKeyDown = (e) => {
+      if (e.key === 'Escape' && isOpen) {
+        onClose();
+      }
+    };
+    if (isOpen) {
+      window.addEventListener('keydown', handleKeyDown);
+    }
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [isOpen, onClose]);
+
+  useEffect(() => {
     let timer;
     if (isOpen && countdown > 0 && !broadcastSent && isBroadcasting) {
       timer = setInterval(() => {
@@ -33,17 +45,22 @@ export default function EmergencySOSModal({ isOpen, onClose }) {
   };
 
   return (
-    <div style={{
-      position: 'fixed',
-      top: 0, left: 0, right: 0, bottom: 0,
-      backgroundColor: 'rgba(15, 23, 42, 0.9)',
-      backdropFilter: 'blur(10px)',
-      display: 'flex',
-      alignItems: 'center',
-      justifyContent: 'center',
-      zIndex: 100000,
-      padding: '20px'
-    }}>
+    <div
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="sos-modal-title"
+      style={{
+        position: 'fixed',
+        top: 0, left: 0, right: 0, bottom: 0,
+        backgroundColor: 'rgba(15, 23, 42, 0.9)',
+        backdropFilter: 'blur(10px)',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        zIndex: 100000,
+        padding: '20px'
+      }}
+    >
       <div style={{
         width: '100%',
         maxWidth: '480px',
@@ -75,11 +92,16 @@ export default function EmergencySOSModal({ isOpen, onClose }) {
               <ShieldAlert size={26} color="#fff" />
             </div>
             <div>
-              <div style={{ fontSize: '18px', fontWeight: 800, color: '#fff' }}>Solo Traveler Emergency SOS</div>
+              <div id="sos-modal-title" style={{ fontSize: '18px', fontWeight: 800, color: '#fff' }}>Solo Traveler Emergency SOS</div>
               <div style={{ fontSize: '12px', color: 'rgba(255, 255, 255, 0.85)' }}>Community Safety Broadcast System</div>
             </div>
           </div>
-          <button onClick={onClose} style={{ background: 'none', border: 'none', color: '#fff', cursor: 'pointer' }}>
+          <button
+            type="button"
+            onClick={onClose}
+            aria-label="Close emergency SOS modal"
+            style={{ background: 'none', border: 'none', color: '#fff', cursor: 'pointer' }}
+          >
             <X size={20} />
           </button>
         </div>
@@ -87,20 +109,25 @@ export default function EmergencySOSModal({ isOpen, onClose }) {
         <div style={{ padding: '24px', textAlign: 'center' }}>
           {!isBroadcasting && !broadcastSent && (
             <div>
-              <div style={{
-                width: '90px',
-                height: '90px',
-                borderRadius: '50%',
-                backgroundColor: 'rgba(239, 68, 68, 0.15)',
-                border: '2px solid #ef4444',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                margin: '0 auto 20px',
-                cursor: 'pointer'
-              }} onClick={handleStartBroadcast}>
+              <button
+                type="button"
+                aria-label="Activate emergency SOS broadcast"
+                onClick={handleStartBroadcast}
+                style={{
+                  width: '90px',
+                  height: '90px',
+                  borderRadius: '50%',
+                  backgroundColor: 'rgba(239, 68, 68, 0.15)',
+                  border: '2px solid #ef4444',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  margin: '0 auto 20px',
+                  cursor: 'pointer'
+                }}
+              >
                 <Radio size={48} color="#ef4444" />
-              </div>
+              </button>
 
               <h3 style={{ fontSize: '18px', fontWeight: 800, color: '#fff', marginBottom: '8px' }}>
                 Need Immediate Help?
@@ -126,6 +153,7 @@ export default function EmergencySOSModal({ isOpen, onClose }) {
               </div>
 
               <button
+                type="button"
                 onClick={handleStartBroadcast}
                 style={{
                   width: '100%',
@@ -163,6 +191,7 @@ export default function EmergencySOSModal({ isOpen, onClose }) {
               </p>
 
               <button
+                type="button"
                 onClick={handleCancelBroadcast}
                 style={{
                   width: '100%',
@@ -218,6 +247,7 @@ export default function EmergencySOSModal({ isOpen, onClose }) {
               </div>
 
               <button
+                type="button"
                 onClick={onClose}
                 style={{
                   width: '100%',
