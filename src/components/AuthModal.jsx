@@ -103,17 +103,23 @@ export default function AuthModal({ initialMode = 'login', onClose, onLoginSucce
   };
 
   return (
-    <div style={{
-      position: 'fixed',
-      inset: 0,
-      backgroundColor: 'rgba(15, 23, 42, 0.85)',
-      backdropFilter: 'blur(8px)',
-      display: 'flex',
-      alignItems: 'center',
-      justifyContent: 'center',
-      zIndex: 10000,
-      padding: '1rem'
-    }} className="animate-fade-in">
+    <div
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="auth-modal-title"
+      style={{
+        position: 'fixed',
+        inset: 0,
+        backgroundColor: 'rgba(15, 23, 42, 0.85)',
+        backdropFilter: 'blur(8px)',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        zIndex: 10000,
+        padding: '1rem'
+      }}
+      className="animate-fade-in"
+    >
       <div style={{
         backgroundColor: '#1e293b',
         borderRadius: '24px',
@@ -137,11 +143,16 @@ export default function AuthModal({ initialMode = 'login', onClose, onLoginSucce
         }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
             <ShieldCheck size={22} color="#fff" />
-            <h3 style={{ fontSize: '1.25rem', fontWeight: 900, color: '#fff', margin: 0 }}>
+            <h3 id="auth-modal-title" style={{ fontSize: '1.25rem', fontWeight: 900, color: '#fff', margin: 0 }}>
               {mode === 'login' ? 'Welcome Back to BedHopper' : 'Create BedHopper Account'}
             </h3>
           </div>
-          <button onClick={onClose} style={{ background: 'none', border: 'none', color: '#fff', cursor: 'pointer' }}>
+          <button
+            type="button"
+            aria-label="Close authentication modal"
+            onClick={onClose}
+            style={{ background: 'none', border: 'none', color: '#fff', cursor: 'pointer' }}
+          >
             <X size={22} />
           </button>
         </div>
@@ -157,6 +168,8 @@ export default function AuthModal({ initialMode = 'login', onClose, onLoginSucce
             border: '1px solid #334155'
           }}>
             <button
+              type="button"
+              aria-pressed={mode === 'login'}
               onClick={() => setMode('login')}
               style={{
                 flex: 1,
@@ -173,6 +186,8 @@ export default function AuthModal({ initialMode = 'login', onClose, onLoginSucce
               Log In
             </button>
             <button
+              type="button"
+              aria-pressed={mode === 'signup'}
               onClick={() => setMode('signup')}
               style={{
                 flex: 1,
