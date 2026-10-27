@@ -79,7 +79,11 @@ export default function EmergencySOSModal({ isOpen, onClose }) {
               <div style={{ fontSize: '12px', color: 'rgba(255, 255, 255, 0.85)' }}>Community Safety Broadcast System</div>
             </div>
           </div>
-          <button onClick={onClose} style={{ background: 'none', border: 'none', color: '#fff', cursor: 'pointer' }}>
+          <button
+            onClick={onClose}
+            aria-label="Close emergency modal"
+            style={{ background: 'none', border: 'none', color: '#fff', cursor: 'pointer' }}
+          >
             <X size={20} />
           </button>
         </div>
