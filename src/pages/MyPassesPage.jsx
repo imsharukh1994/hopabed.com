@@ -116,32 +116,38 @@ export default function MyPassesPage({ currentUser, bookings = [], onOpenDigital
       </div>
 
       {/* Filter tabs */}
-      <div style={{ display: 'flex', gap: '6px', marginBottom: '1.5rem', borderBottom: '1px solid var(--color-border)', paddingBottom: '0' }}>
+      <div role="tablist" aria-label="Filter passes" style={{ display: 'flex', gap: '6px', marginBottom: '1.5rem', borderBottom: '1px solid var(--color-border)', paddingBottom: '0' }}>
         {[
           { id: 'all', label: `All (${passes.length})` },
           { id: 'active', label: `Active (${passes.filter(p => p.status === 'ACTIVE' || p.status === 'CHECKED_IN').length})` },
           { id: 'past', label: `Past (${passes.filter(p => ['CHECKED_OUT','CANCELLED','EXPIRED'].includes(p.status)).length})` },
-        ].map(tab => (
-          <button
-            key={tab.id}
-            onClick={() => setFilter(tab.id)}
-            style={{
-              padding: '0.6rem 1.1rem',
-              fontWeight: 800,
-              fontSize: '0.88rem',
-              borderBottom: filter === tab.id ? '2px solid var(--color-accent)' : '2px solid transparent',
-              color: filter === tab.id ? 'var(--color-accent)' : 'var(--color-text-muted)',
-              backgroundColor: 'transparent',
-              border: 'none',
-              borderBottom: filter === tab.id ? '2px solid #0284c7' : '2px solid transparent',
-              cursor: 'pointer',
-              transition: 'all 0.2s',
-              fontFamily: 'Nunito, sans-serif',
-            }}
-          >
-            {tab.label}
-          </button>
-        ))}
+        ].map(tab => {
+          const isSelected = filter === tab.id;
+          return (
+            <button
+              key={tab.id}
+              role="tab"
+              aria-selected={isSelected}
+              onClick={() => setFilter(tab.id)}
+              style={{
+                padding: '0.6rem 1.1rem',
+                fontWeight: 800,
+                fontSize: '0.88rem',
+                color: isSelected ? 'var(--color-accent, #0284c7)' : 'var(--color-text-muted)',
+                backgroundColor: 'transparent',
+                border: 'none',
+                borderBottom: isSelected ? '2px solid #0284c7' : '2px solid transparent',
+                borderRadius: '4px 4px 0 0',
+                cursor: 'pointer',
+                transition: 'all 0.2s',
+                fontFamily: 'Nunito, sans-serif',
+                outlineOffset: '2px',
+              }}
+            >
+              {tab.label}
+            </button>
+          );
+        })}
       </div>
 
       {/* Pass cards */}
