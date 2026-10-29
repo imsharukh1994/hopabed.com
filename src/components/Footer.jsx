@@ -21,13 +21,13 @@ export default function Footer({ onNavigate }) {
               hopabed.com is the open-source, ultra-low-cost accommodation protocol. Connecting budget travelers with verified couches, dorms, and service-share stays worldwide.
             </p>
             <div style={{ display: 'flex', gap: '1rem', marginTop: '0.5rem' }}>
-              <a href="https://github.com/imsharukh1994/bedhopper" target="_blank" rel="noreferrer" style={{ color: '#F8FAFC', backgroundColor: '#1E293B', padding: '0.5rem', borderRadius: '50%' }}>
+              <a href="https://github.com/imsharukh1994/bedhopper" target="_blank" rel="noreferrer" aria-label="Visit BedHopper on GitHub" style={{ color: '#F8FAFC', backgroundColor: '#1E293B', padding: '0.5rem', borderRadius: '50%' }}>
                 <Github size={18} />
               </a>
-              <a href="#" style={{ color: '#F8FAFC', backgroundColor: '#1E293B', padding: '0.5rem', borderRadius: '50%' }}>
+              <a href="#" aria-label="Visit BedHopper on Twitter" style={{ color: '#F8FAFC', backgroundColor: '#1E293B', padding: '0.5rem', borderRadius: '50%' }}>
                 <Twitter size={18} />
               </a>
-              <a href="#" style={{ color: '#F8FAFC', backgroundColor: '#1E293B', padding: '0.5rem', borderRadius: '50%' }}>
+              <a href="#" aria-label="Contact us via email" style={{ color: '#F8FAFC', backgroundColor: '#1E293B', padding: '0.5rem', borderRadius: '50%' }}>
                 <Mail size={18} />
               </a>
             </div>
@@ -40,6 +40,8 @@ export default function Footer({ onNavigate }) {
             <form onSubmit={(e) => { e.preventDefault(); alert('Subscribed to hopabed.com alerts!'); }} style={{ display: 'flex', gap: '8px', marginTop: '0.5rem' }}>
               <input 
                 type="email" 
+                id="footer-newsletter-email"
+                aria-label="Email address for newsletter"
                 placeholder="Enter your email address" 
                 required 
                 style={{
@@ -53,7 +55,7 @@ export default function Footer({ onNavigate }) {
                   outline: 'none'
                 }}
               />
-              <button type="submit" className="btn-primary" style={{ padding: '0.65rem 1.25rem', fontSize: '0.88rem' }}>
+              <button type="submit" className="btn-primary" aria-label="Subscribe to newsletter" style={{ padding: '0.65rem 1.25rem', fontSize: '0.88rem' }}>
                 Join <ArrowRight size={16} />
               </button>
             </form>
