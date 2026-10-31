@@ -108,6 +108,7 @@ export default function SearchResultsPage({ listings = [], onSelectListing, init
               value={searchLocation} 
               onChange={(e) => setSearchLocation(e.target.value)}
               placeholder="Search destination (e.g. Bangkok, Tokyo, Lisbon)..."
+              aria-label="Search destination by city, country or region"
               style={{
                 width: '100%',
                 padding: '0.65rem 1.2rem',
@@ -147,6 +148,7 @@ export default function SearchResultsPage({ listings = [], onSelectListing, init
             <select 
               value={sortBy} 
               onChange={(e) => setSortBy(e.target.value)}
+              aria-label="Sort listings"
               style={{
                 padding: '0.5rem 0.8rem',
                 borderRadius: '20px',
@@ -170,35 +172,39 @@ export default function SearchResultsPage({ listings = [], onSelectListing, init
           </div>
 
           {/* Type Filter Buttons */}
-          {[
-            { id: 'all', label: 'All Stays' },
-            { id: 'couch', label: 'Couch Space' },
-            { id: 'dorm', label: 'Dorm Bed' },
-            { id: 'private', label: 'Private Room' },
-            { id: 'service-share', label: 'Service-Share (FREE)' }
-          ].map(t => (
-            <button
-              key={t.id}
-              onClick={() => setSelectedType(t.id)}
-              style={{
-                padding: '0.4rem 0.85rem',
-                borderRadius: '20px',
-                fontSize: '0.8rem',
-                fontWeight: 700,
-                border: '1px solid',
-                borderColor: selectedType === t.id ? '#0284c7' : 'var(--color-border)',
-                backgroundColor: selectedType === t.id ? '#0284c7' : 'var(--color-bg)',
-                color: '#fff',
-                cursor: 'pointer'
-              }}
-            >
-              {t.label}
-            </button>
-          ))}
+          <div role="group" aria-label="Filter stays by type" style={{ display: 'inline-flex', gap: '0.5rem', flexWrap: 'wrap' }}>
+            {[
+              { id: 'all', label: 'All Stays' },
+              { id: 'couch', label: 'Couch Space' },
+              { id: 'dorm', label: 'Dorm Bed' },
+              { id: 'private', label: 'Private Room' },
+              { id: 'service-share', label: 'Service-Share (FREE)' }
+            ].map(t => (
+              <button
+                key={t.id}
+                onClick={() => setSelectedType(t.id)}
+                aria-pressed={selectedType === t.id}
+                style={{
+                  padding: '0.4rem 0.85rem',
+                  borderRadius: '20px',
+                  fontSize: '0.8rem',
+                  fontWeight: 700,
+                  border: '1px solid',
+                  borderColor: selectedType === t.id ? '#0284c7' : 'var(--color-border)',
+                  backgroundColor: selectedType === t.id ? '#0284c7' : 'var(--color-bg)',
+                  color: '#fff',
+                  cursor: 'pointer'
+                }}
+              >
+                {t.label}
+              </button>
+            ))}
+          </div>
 
           {/* Verified Toggle Chip */}
           <button
             onClick={() => setVerifiedOnly(!verifiedOnly)}
+            aria-pressed={verifiedOnly}
             style={{
               padding: '0.4rem 0.85rem',
               borderRadius: '20px',
@@ -223,6 +229,7 @@ export default function SearchResultsPage({ listings = [], onSelectListing, init
             <select
               value={radiusKm}
               onChange={(e) => setRadiusKm(Number(e.target.value))}
+              aria-label="Search radius in kilometers"
               style={{
                 padding: '0.3rem 0.6rem',
                 borderRadius: '12px',
