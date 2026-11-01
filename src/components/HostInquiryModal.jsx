@@ -1,9 +1,21 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { X, Send, MessageCircle, CheckCircle, ShieldCheck } from 'lucide-react';
 
 export default function HostInquiryModal({ isOpen, onClose, listing }) {
   const [question, setQuestion] = useState('');
   const [sent, setSent] = useState(false);
+  const [isCloseFocused, setIsCloseFocused] = useState(false);
+
+  useEffect(() => {
+    if (!isOpen) return;
+    const handleKeyDown = (e) => {
+      if (e.key === 'Escape') {
+        onClose();
+      }
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [isOpen, onClose]);
 
   if (!isOpen || !listing) return null;
 
@@ -30,18 +42,23 @@ export default function HostInquiryModal({ isOpen, onClose, listing }) {
       zIndex: 2500,
       padding: '1rem'
     }} className="animate-fade-in">
-      <div style={{
-        backgroundColor: 'var(--color-surface)',
-        borderRadius: '24px',
-        maxWidth: '480px',
-        width: '100%',
-        boxShadow: 'var(--shadow-lg)',
-        border: '1px solid var(--color-border)',
-        display: 'flex',
-        flexDirection: 'column',
-        color: 'var(--color-text-main)',
-        overflow: 'hidden'
-      }}>
+      <div
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="host-inquiry-modal-title"
+        style={{
+          backgroundColor: 'var(--color-surface)',
+          borderRadius: '24px',
+          maxWidth: '480px',
+          width: '100%',
+          boxShadow: 'var(--shadow-lg)',
+          border: '1px solid var(--color-border)',
+          display: 'flex',
+          flexDirection: 'column',
+          color: 'var(--color-text-main)',
+          overflow: 'hidden'
+        }}
+      >
         {/* Modal Header */}
         <div style={{
           padding: '1.25rem 1.5rem',
@@ -54,11 +71,30 @@ export default function HostInquiryModal({ isOpen, onClose, listing }) {
         }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
             <MessageCircle size={20} />
-            <h3 style={{ fontSize: '1.1rem', fontWeight: 800, color: '#fff', margin: 0 }}>
+            <h3 id="host-inquiry-modal-title" style={{ fontSize: '1.1rem', fontWeight: 800, color: '#fff', margin: 0 }}>
               Ask {listing.host?.name || 'Host'} a Question
             </h3>
           </div>
-          <button onClick={onClose} style={{ background: 'none', border: 'none', color: '#fff', cursor: 'pointer' }}>
+          <button
+            onClick={onClose}
+            aria-label="Close host inquiry dialog"
+            title="Close dialog (Esc)"
+            onFocus={() => setIsCloseFocused(true)}
+            onBlur={() => setIsCloseFocused(false)}
+            style={{
+              background: 'none',
+              border: 'none',
+              color: '#fff',
+              cursor: 'pointer',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              padding: '4px',
+              borderRadius: '6px',
+              outline: isCloseFocused ? '2px solid #fff' : 'none',
+              outlineOffset: '2px'
+            }}
+          >
             <X size={20} />
           </button>
         </div>
