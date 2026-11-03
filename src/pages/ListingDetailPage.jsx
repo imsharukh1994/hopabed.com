@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Star, ShieldCheck, Heart, MapPin, Share2, CheckCircle, Wifi, Coffee, Sparkles, AlertCircle, ArrowLeft, MessageCircle } from 'lucide-react';
+import { Star, ShieldCheck, Heart, MapPin, Share2, CheckCircle, Check, Wifi, Coffee, Sparkles, AlertCircle, ArrowLeft, MessageCircle } from 'lucide-react';
 import ServiceShareModal from '../components/ServiceShareModal';
 import { formatPrice } from '../utils/currency';
 
@@ -7,6 +7,8 @@ export default function ListingDetailPage({ listing, onBack, onBook, onOpenInqui
   const [checkInDate, setCheckInDate] = useState('2026-08-12');
   const [checkOutDate, setCheckOutDate] = useState('2026-08-14');
   const [guestsCount, setGuestsCount] = useState(1);
+  const [isSaved, setIsSaved] = useState(false);
+  const [isCopied, setIsCopied] = useState(false);
   const [showServiceShareModal, setShowServiceShareModal] = useState(false);
 
   if (!listing) return null;
@@ -74,11 +76,45 @@ export default function ListingDetailPage({ listing, onBack, onBook, onOpenInqui
 
         {/* Share & Save Buttons */}
         <div style={{ display: 'flex', gap: '0.5rem' }}>
-          <button className="btn-outline" style={{ display: 'inline-flex', alignItems: 'center', gap: '6px', fontSize: '0.85rem' }}>
-            <Share2 size={16} /> Share
+          <button
+            className="btn-outline"
+            aria-label={isCopied ? "Link copied to clipboard" : "Share this stay"}
+            onClick={async () => {
+              if (navigator.share) {
+                try {
+                  await navigator.share({ title: listing.title, url: window.location.href });
+                } catch { /* cancelled */ }
+              } else {
+                try {
+                  await navigator.clipboard.writeText(window.location.href);
+                  setIsCopied(true);
+                  setTimeout(() => setIsCopied(false), 2000);
+                } catch {
+                  prompt('Copy link to this stay:', window.location.href);
+                }
+              }
+            }}
+            style={{ display: 'inline-flex', alignItems: 'center', gap: '6px', fontSize: '0.85rem', color: isCopied ? '#10b981' : undefined }}
+          >
+            {isCopied ? <Check size={16} color="#10b981" /> : <Share2 size={16} />}
+            <span>{isCopied ? 'Link Copied!' : 'Share'}</span>
           </button>
-          <button className="btn-outline" style={{ display: 'inline-flex', alignItems: 'center', gap: '6px', fontSize: '0.85rem' }}>
-            <Heart size={16} /> Save
+          <button
+            className="btn-outline"
+            aria-label={isSaved ? "Remove stay from saved wishlist" : "Save stay to wishlist"}
+            aria-pressed={isSaved}
+            onClick={() => setIsSaved(!isSaved)}
+            style={{
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: '6px',
+              fontSize: '0.85rem',
+              color: isSaved ? '#ef4444' : undefined,
+              borderColor: isSaved ? '#ef4444' : undefined
+            }}
+          >
+            <Heart size={16} fill={isSaved ? '#ef4444' : 'none'} color={isSaved ? '#ef4444' : 'currentColor'} />
+            <span>{isSaved ? 'Saved' : 'Save'}</span>
           </button>
         </div>
       </div>
