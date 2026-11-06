@@ -7,16 +7,25 @@ export default function HopperAIAssistant({ isOpen, onClose, listings = [], sele
   const [selectedSkill, setSelectedSkill] = useState('');
   const [isCloseFocused, setIsCloseFocused] = useState(false);
   const [isSendFocused, setIsSendFocused] = useState(false);
+  const [isTyping, setIsTyping] = useState(false);
   const inputRef = useRef(null);
+  const messagesEndRef = useRef(null);
 
   useEffect(() => {
     if (isOpen) {
       const timer = setTimeout(() => {
         inputRef.current?.focus();
       }, 100);
-      return () => clearTimeout(timer);
+      const handleKeyDown = (e) => {
+        if (e.key === 'Escape') onClose();
+      };
+      window.addEventListener('keydown', handleKeyDown);
+      return () => {
+        clearTimeout(timer);
+        window.removeEventListener('keydown', handleKeyDown);
+      };
     }
-  }, [isOpen]);
+  }, [isOpen, onClose]);
 
   const [chatMessages, setChatMessages] = useState([
     {
@@ -26,15 +35,20 @@ export default function HopperAIAssistant({ isOpen, onClose, listings = [], sele
   ]);
   const [matchedStays, setMatchedStays] = useState([]);
 
+  useEffect(() => {
+    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+  }, [chatMessages, matchedStays, isTyping]);
+
   if (!isOpen) return null;
 
   const handleSend = (textToSend) => {
     const activeText = textToSend || query;
-    if (!activeText.trim()) return;
+    if (!activeText.trim() || isTyping) return;
 
     const userMsg = { sender: 'user', text: activeText };
     setChatMessages(prev => [...prev, userMsg]);
     setQuery('');
+    setIsTyping(true);
 
     // Process Query & Find Matches
     setTimeout(() => {
@@ -62,6 +76,7 @@ export default function HopperAIAssistant({ isOpen, onClose, listings = [], sele
         ...prev,
         { sender: 'ai', text: aiResponseText }
       ]);
+      setIsTyping(false);
       setMatchedStays(matches);
     }, 600);
   };
@@ -72,7 +87,11 @@ export default function HopperAIAssistant({ isOpen, onClose, listings = [], sele
   };
 
   return (
-    <div style={{
+    <div
+      role="dialog"
+      aria-label="Hopper AI Companion"
+      aria-modal="false"
+      style={{
       position: 'fixed',
       bottom: '80px',
       right: '24px',
@@ -182,6 +201,16 @@ export default function HopperAIAssistant({ isOpen, onClose, listings = [], sele
           </div>
         ))}
 
+        {isTyping && (
+          <div
+            aria-live="polite"
+            style={{ alignSelf: 'flex-start', backgroundColor: '#334155', color: '#38bdf8', padding: '8px 14px', borderRadius: '16px 16px 16px 4px', fontSize: '12px', fontWeight: 700, display: 'flex', alignItems: 'center', gap: '6px' }}
+          >
+            <Sparkles size={13} />
+            <span>Hopper AI is matching beds...</span>
+          </div>
+        )}
+
         {/* Matched Stays Container */}
         {matchedStays.length > 0 && (
           <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', marginTop: '6px' }}>
@@ -225,6 +254,7 @@ export default function HopperAIAssistant({ isOpen, onClose, listings = [], sele
             ))}
           </div>
         )}
+        <div ref={messagesEndRef} />
       </div>
 
       {/* Input Form */}
@@ -250,11 +280,12 @@ export default function HopperAIAssistant({ isOpen, onClose, listings = [], sele
         />
         <button
           onClick={() => handleSend()}
+          disabled={!query.trim() || isTyping}
           aria-label="Send message"
           onFocus={() => setIsSendFocused(true)}
           onBlur={() => setIsSendFocused(false)}
           style={{
-            backgroundColor: '#0284c7',
+            backgroundColor: (!query.trim() || isTyping) ? '#334155' : '#0284c7',
             border: 'none',
             borderRadius: '12px',
             width: '38px',
@@ -262,11 +293,13 @@ export default function HopperAIAssistant({ isOpen, onClose, listings = [], sele
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
-            color: '#fff',
-            cursor: 'pointer',
+            color: (!query.trim() || isTyping) ? '#64748b' : '#fff',
+            cursor: (!query.trim() || isTyping) ? 'not-allowed' : 'pointer',
             outline: isSendFocused ? '3px solid #38bdf8' : 'none',
-            outlineOffset: '2px'
+            outlineOffset: '2px',
+            transition: 'background-color 0.2s, color 0.2s'
           }}
+          title={!query.trim() ? "Type a question first" : "Send message"}
         >
           <Send size={16} />
         </button>
