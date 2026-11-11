@@ -1,8 +1,15 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { X, Utensils, Bus, Wifi, ShieldAlert, MapPin, Sparkles } from 'lucide-react';
 
 export default function CityGuideModal({ isOpen, onClose, cityName = 'Bangkok' }) {
   const [activeTab, setActiveTab] = useState('eats');
+
+  useEffect(() => {
+    if (!isOpen) return;
+    const onKey = (e) => { if (e.key === 'Escape') onClose?.(); };
+    document.addEventListener('keydown', onKey);
+    return () => document.removeEventListener('keydown', onKey);
+  }, [isOpen, onClose]);
 
   if (!isOpen) return null;
 
@@ -63,7 +70,7 @@ export default function CityGuideModal({ isOpen, onClose, cityName = 'Bangkok' }
   const currentCityData = cityGuidesData[cityName] || cityGuidesData.Bangkok;
 
   return (
-    <div style={{
+    <div onClick={onClose} style={{
       position: 'fixed',
       inset: 0,
       backgroundColor: 'rgba(15, 23, 42, 0.85)',
@@ -74,7 +81,7 @@ export default function CityGuideModal({ isOpen, onClose, cityName = 'Bangkok' }
       zIndex: 2500,
       padding: '1rem'
     }} className="animate-fade-in">
-      <div style={{
+      <div role="dialog" aria-modal="true" aria-labelledby="city-guide-title" onClick={(e) => e.stopPropagation()} style={{
         backgroundColor: 'var(--color-surface)',
         borderRadius: '24px',
         maxWidth: '620px',
@@ -101,19 +108,19 @@ export default function CityGuideModal({ isOpen, onClose, cityName = 'Bangkok' }
         }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
             <MapPin size={20} />
-            <h3 style={{ fontSize: '1.2rem', fontWeight: 900, color: '#fff', margin: 0 }}>
+            <h3 id="city-guide-title" style={{ fontSize: '1.2rem', fontWeight: 900, color: '#fff', margin: 0 }}>
               {cityName} Backpacker City Guide
             </h3>
           </div>
-          <button onClick={onClose} style={{ background: 'none', border: 'none', color: '#fff', cursor: 'pointer' }}>
-            <X size={22} />
+          <button onClick={onClose} aria-label="Close city guide" title="Close (Esc)" style={{ background: 'rgba(255,255,255,0.12)', border: 'none', color: '#fff', cursor: 'pointer', borderRadius: '50%', width: '32px', height: '32px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+            <X size={20} />
           </button>
         </div>
 
         {/* Modal Content */}
         <div style={{ padding: '1.5rem', display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
           {/* Navigation Category Tabs */}
-          <div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap' }}>
+          <div role="tablist" aria-label="City guide categories" style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap' }}>
             {[
               { id: 'eats', label: 'Cheap Eats ($1-$3)', icon: Utensils, color: '#f4845f' },
               { id: 'transit', label: 'Transit Hacks', icon: Bus, color: '#0284c7' },
@@ -125,6 +132,8 @@ export default function CityGuideModal({ isOpen, onClose, cityName = 'Bangkok' }
               return (
                 <button
                   key={tab.id}
+                  role="tab"
+                  aria-selected={isActive}
                   onClick={() => setActiveTab(tab.id)}
                   style={{
                     padding: '0.5rem 0.85rem',
